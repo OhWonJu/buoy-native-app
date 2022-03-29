@@ -2,10 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { verticallTransition, horizontalTransition } from "./NavigationOptions";
-
 import Home from "../screens/HomeScreens/index";
-// import Notification from "../screens/NotificationScreens/Notification";
-// import Setting from "../screens/MyPageScreens/SettingScreens/index";
+import GroupList from "../screens/GroupListScreens/index";
+import GroupManage from "../screens/GroupManageScreens/index";
 
 const Stacks = createStackNavigator();
 
@@ -19,24 +18,19 @@ export default ({ screenName }) => {
       {screenName === "Home" ? (
         <Stacks.Screen name={"Home"} component={Home} />
       ) : null}
-      {/* <Stacks.Screen
-        name="Notification"
-        component={Notification}
+      {screenName === "GroupList" ? (
+        <Stacks.Screen name={"GroupList"} component={GroupList} />
+      ) : null}
+      <Stacks.Screen
+        name={"GroupManage"}
+        component={GroupManage}
         options={{
           presentation: "card",
+          headerShown: false,
           ...verticallTransition,
-          gestureDirection: "vertical-inverted",
+          gestureEnabled: false,
         }}
       />
-      <Stacks.Screen
-        name="Setting"
-        component={Setting}
-        options={{
-          presentation: "card",
-          gestureEnabled: true,
-          ...horizontalTransition,
-        }}
-      /> */}
     </Stacks.Navigator>
   );
 };

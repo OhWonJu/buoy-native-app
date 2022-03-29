@@ -1,11 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StatusBar } from "react-native";
 import styled from "styled-components/native";
 
-export default HomeView = () => {
+import CommonHeader from "../../components/CommonHeader";
+import Container from "../../components/Container";
+import HomeTopTabNav from "../../navigators/HomeTopTabNav";
+
+export default HomeView = ({ headerHeight, setHeaderHeight }) => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <>
+      <StatusBar />
+      <HomeTopTabNav
+        headerHeight={headerHeight}
+        setHeaderHeight={setHeaderHeight}
+      />
+    </>
   );
 };

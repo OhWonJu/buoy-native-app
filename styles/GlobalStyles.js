@@ -1,8 +1,8 @@
 import { StyleSheet, Platform } from "react-native";
 
 export const shadows = StyleSheet.create({
-  photoWrapper: {
-    borderRadius: 100,
+  boxWrapper: {
+    borderRadius: 15,
     ...Platform.select({
       ios: {
         shadowColor: "#000",
