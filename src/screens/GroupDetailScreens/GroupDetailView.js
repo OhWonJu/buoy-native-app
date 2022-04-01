@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { MockData } from "../../../MockData";
 
@@ -10,12 +10,10 @@ import GroupMap from "../../components/Group/GroupMap";
 export default GroupDetailView = ({ navigation, route }) => {
   const data = MockData.find((data) => data.id === route.name);
   return (
-    <>
-      <GroupScrollView navigation={navigation} route={route} paddingSet={false}>
-        <GroupNoti data={data} />
-        <GroupMap />
-      </GroupScrollView>
-    </>
+    <ScrollView>
+      <GroupNoti data={data} />
+      <GroupMap />
+    </ScrollView>
   );
 };
 

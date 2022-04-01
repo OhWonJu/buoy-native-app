@@ -4,6 +4,7 @@ const BORDER_RADIUS = "4px";
 export const lightTheme = {
   bgColor: "#E6E7EB",
   mainColor: "#FBFBFB",
+  mainColor30: lightTheme.mainColor + 30,
   subColor: "#262626",
   idnColor: "#4F77A3",
   idnShadow: "#273b51",

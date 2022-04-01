@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text } from "react-native";
-import Animated, {
-  interpolateColors,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
-import {
-  createDrawerNavigator,
-  useDrawerStatus,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import StackNavFactory from "./StackNavFactory";
 import DrawerBar from "../components/DrawerBar";
 
-const Drawer = createDrawerNavigator();
-
 function DrawHome({ navigation, route }) {
   return <StackNavFactory screenName={"Home"} />;
 }
+function DrawGroupList({ navigation, route }) {
+  return <StackNavFactory screenName={"GroupList"} />;
+}
+
+const Drawer = createDrawerNavigator();
 
 export default () => {
   return (
@@ -26,12 +21,12 @@ export default () => {
       drawerContent={(props) => {
         return <DrawerBar {...props} />;
       }}
+      defaultStatus="closed"
       screenOptions={{
         headerShown: false,
         // swipeEnabled: false,
         drawerType: "slide",
         drawerStyle: {
-          backgroundColor: {},
           width: "85%",
         },
       }}
@@ -42,11 +37,11 @@ export default () => {
         component={DrawHome}
       />
 
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="DrawGroupList"
         options={{ drawerLabel: ({ focus, color }) => <Text>구역목록</Text> }}
         component={DrawGroupList}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 };

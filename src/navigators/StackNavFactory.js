@@ -5,6 +5,15 @@ import { verticallTransition, horizontalTransition } from "./NavigationOptions";
 import Home from "../screens/HomeScreens/index";
 import GroupList from "../screens/GroupListScreens/index";
 import GroupManage from "../screens/GroupManageScreens/index";
+import GroupDetail from "../screens/GroupDetailScreens/index";
+
+import { MockData } from "../../MockData";
+
+const data = MockData;
+
+const GROUP = ({ navigation, route }) => (
+  <GroupDetail navigation={navigation} route={route} />
+);
 
 const Stacks = createStackNavigator();
 
@@ -31,6 +40,9 @@ export default ({ screenName }) => {
           gestureEnabled: false,
         }}
       />
+      {data.map((data, index) => (
+        <Stacks.Screen key={index} name={data.id} component={GROUP} />
+      ))}
     </Stacks.Navigator>
   );
 };

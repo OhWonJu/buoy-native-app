@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import { NavigationActions } from "react-navigation";
+import { TouchableOpacity, FlatList } from "react-native";
 import { useDrawerProgress } from "@react-navigation/drawer";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import styled from "styled-components/native";
 import { ThemeContext } from "styled-components";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-import styled from "styled-components/native";
 import { MockData } from "../../MockData";
 import constants from "../../constants";
 
@@ -18,24 +18,25 @@ const Container = styled(Animated.View)`
 `;
 
 const DrawerBox = styled.View`
+  margin-top: ${constants.StatusBarHeight}px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   background-color: rgba(255, 255, 255, 0.2);
   flex: 1;
   padding: 20px;
-  padding-top: ${constants.StatusBarHeight}px;
+  padding-top: 0px;
 `;
 
 const Top = styled.View`
-  flex: 1;
+  /* flex: 1; */
+  height: 7%;
   align-items: flex-end;
 `;
 const Mid = styled.View`
-  flex: 8;
-  /* background-color: green; */
+  flex: 1;
 `;
 const Bottom = styled.View`
-  flex: 1;
+  height: 65px;
   justify-content: center;
   align-items: center;
 `;
@@ -43,7 +44,8 @@ const Bottom = styled.View`
 const OptionBtn = styled.TouchableOpacity`
   justify-content: flex-end;
   padding: 5px 10px 5px 10px;
-  margin: 12.5px 0px 0px 10px;
+  margin: 6.5px 0px 0px 10px;
+  /* background-color: blue; */
 `;
 
 const TitleBox = styled.View`
@@ -62,8 +64,8 @@ const BtnBox = styled.View`
 const Button = styled.TouchableOpacity`
   /* background-color: red; */
   height: 40px;
-  margin: 0px 10px 0px 10px;
-  border-radius: 15px;
+  margin: 0px 12px 0px 12px;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.mainColor + 20};
@@ -79,7 +81,7 @@ const ListBox = styled.View`
 
 const ItemBox = styled.TouchableOpacity`
   padding: 20px;
-  margin: 8px 16px 8px 16px;
+  margin: 8px 12px 8px 12px;
   background-color: ${(props) => props.theme.mainColor + 20};
   border-radius: 15px;
   flex-direction: row;
@@ -114,19 +116,22 @@ const InfoSubText = styled.Text`
 
 const data = MockData;
 
-const Item = (item) => {
-  const { id, name } = item.item;
+const Item = ({ item, navigation }) => {
+  const { id, name, location, temperature, capacity } = item;
   return (
-    <ItemBox>
+    <ItemBox onPress={() => navigation.navigate(id)}>
       <ItemName>{name}</ItemName>
       <InfoBox>
         <InfoWrapper>
+          <InfoSubText>{location}</InfoSubText>
+        </InfoWrapper>
+        <InfoWrapper>
           <InfoMainText>수온</InfoMainText>
-          <InfoSubText>15℃</InfoSubText>
+          <InfoSubText>{temperature}º</InfoSubText>
         </InfoWrapper>
         <InfoWrapper>
           <InfoMainText>수용량</InfoMainText>
-          <InfoSubText>15%</InfoSubText>
+          <InfoSubText>{capacity}%</InfoSubText>
         </InfoWrapper>
         <InfoWrapper></InfoWrapper>
       </InfoBox>
@@ -136,6 +141,7 @@ const Item = (item) => {
 
 export default DrawerBar = (props) => {
   const themeContext = useContext(ThemeContext);
+  const navigation = useNavigation();
 
   const progress = useDrawerProgress();
   const color = useAnimatedStyle(() => {
@@ -149,7 +155,12 @@ export default DrawerBar = (props) => {
     };
   });
 
-  const renderItem = ({ item }) => <Item item={item} />;
+  const toggleBtn = [
+    { nav: "DrawGroupList", name: "구역 관리" },
+    { nav: "DrawHome", name: "종합 정보" },
+  ];
+
+  const renderItem = ({ item }) => <Item item={item} navigation={navigation} />;
 
   return (
     <Container style={color}>
@@ -176,8 +187,12 @@ export default DrawerBar = (props) => {
             />
           </ListBox>
           <BtnBox style={{ paddingTop: 20 }}>
-            <Button>
-              <TitleText>구역 관리</TitleText>
+            <Button
+              onPress={() =>
+                navigation.navigate(toggleBtn[props.state.index].nav)
+              }
+            >
+              <TitleText>{toggleBtn[props.state.index].name}</TitleText>
             </Button>
           </BtnBox>
         </Mid>

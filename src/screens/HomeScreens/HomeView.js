@@ -1,46 +1,155 @@
 import React, { useContext } from "react";
-import { View, Text, StatusBar, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import styled from "styled-components/native";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import styled, { ThemeContext } from "styled-components/native";
+import { Entypo } from "@expo/vector-icons";
 
-import CommonHeader from "../../components/CommonHeader";
-// import Container from "../../components/Container";
-import HomeTopTabNav from "../../navigators/HomeTopTabNav";
-import { ThemeContext } from "styled-components";
-import constants from "../../../constants";
+import CommonContainer from "../../components/CommonContainer";
+import { ClearDay } from "../../../styles/Icons";
+import Waves from "../../components/Wave/Waves";
 
-const Container = styled.View`
-  flex: 1;
-  background-color: ${(props) => props.theme.idnColor};
-  padding: 10px 15px 5px 15px;
+const WeatherBox = styled.View`
+  /* background-color: ${(props) => props.theme.mainColor + 20}; */
+  border-radius: 15px;
+  margin-bottom: 30px;
+  padding: 10px;
+  height: 170px;
+  flex-direction: row;
+  justify-content: space-between;
 `;
-
-const Header = styled.View`
-  height: 8%;
-  margin-top: 10px;
-  padding-left: 10px;
+const WeatherContext = styled.View`
+  flex: 1;
   /* background-color: red; */
   justify-content: center;
+  align-items: center;
+`;
+const WeatherIconWrapper = styled.View`
+  flex: 1;
+  /* background-color: blue;   */
+  justify-content: center;
+  align-items: center;
 `;
 
-export default HomeView = ({ headerHeight, setHeaderHeight }) => {
+const OceanInfoBox = styled.View`
+  margin-bottom: 15px;
+  height: 280px;
+  flex-direction: row;
+`;
+const OceanLeft = styled.View`
+  background-color: ${(props) => props.theme.mainColor + 30};
+  border-width: 1px;
+  border-radius: 15px;
+  border-color: ${(props) => props.theme.mainColor + 40};
+  flex: 1;
+  margin-right: 10px;
+`;
+const OceanRightTop = styled.View`
+  background-color: ${(props) => props.theme.mainColor + 30};
+  border-width: 1px;
+  border-radius: 15px;
+  border-color: ${(props) => props.theme.mainColor + 40};
+  flex: 2;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+const OceanRightBtm = styled.View`
+  background-color: ${(props) => props.theme.mainColor + 30};
+  border-width: 1px;
+  border-radius: 15px;
+  border-color: ${(props) => props.theme.mainColor + 40};
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const BouyInfoBox = styled.View`
+  background-color: ${(props) => props.theme.mainColor + 30};
+  border-width: 1px;
+  border-radius: 15px;
+  border-color: ${(props) => props.theme.mainColor + 40};
+  border-radius: 15px;
+  padding: 10px;
+  height: 1000px;
+`;
+
+const Text = styled.Text`
+  color: ${(props) => props.theme.mainColor};
+`;
+
+const MainText = styled.Text`
+  color: ${(props) => props.theme.mainColor};
+  font-size: 28px;
+  font-weight: bold;
+`;
+const SubText = styled.Text`
+  color: ${(props) => props.theme.mainColor};
+  font-size: 23px;
+  font-weight: bold;
+`;
+
+const RowBox = styled.View`
+  flex-direction: row;
+`;
+
+export default HomeView = () => {
   const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
 
   return (
-    <>
-      <Container>
-        <Header>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <SimpleLineIcons
-              name="menu"
-              size={20}
-              color={themeContext.mainColor}
-            />
-          </TouchableOpacity>
-        </Header>
-      </Container>
-    </>
+    <CommonContainer>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <WeatherBox>
+          <WeatherContext>
+            <Text style={{ fontSize: 75 }}>10º</Text>
+            <RowBox>
+              <Text style={{ fontSize: 25, textAlign: "center" }}>거제시</Text>
+              {/* <Entypo
+                name="location-pin"
+                size={25}
+                color={themeContext.mainColor}
+                style={{ top: 3 }}
+              /> */}
+            </RowBox>
+          </WeatherContext>
+          <WeatherIconWrapper>
+            <ClearDay />
+          </WeatherIconWrapper>
+        </WeatherBox>
+        <OceanInfoBox>
+          <OceanLeft>
+            <Waves />
+            <MainText
+              style={{
+                position: "absolute",
+                left: "10%",
+                top: "8%",
+              }}
+            >
+              파고
+            </MainText>
+            <SubText
+              style={{
+                position: "absolute",
+                left: "70%",
+                top: "83%",
+              }}
+            >
+              2m
+            </SubText>
+          </OceanLeft>
+          <View style={{ flex: 1 }}>
+            <OceanRightTop>
+              <MainText>수온</MainText>
+              <SubText>3º</SubText>
+            </OceanRightTop>
+            <OceanRightBtm>
+              <SubText>추가 정보</SubText>
+              <SubText>-</SubText>
+            </OceanRightBtm>
+          </View>
+        </OceanInfoBox>
+        <BouyInfoBox></BouyInfoBox>
+      </ScrollView>
+    </CommonContainer>
   );
 };
