@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styled, { ThemeContext } from "styled-components/native";
-import { Entypo } from "@expo/vector-icons";
 
 import CommonContainer from "../../components/CommonContainer";
 import { ClearDay } from "../../../styles/Icons";
 import Waves from "../../components/Wave/Waves";
+import TemperaturePage from "../../components/Home/TemperaturePage";
+import Carousel from "../../components/Carousel";
 
 const WeatherBox = styled.View`
   /* background-color: ${(props) => props.theme.mainColor + 20}; */
@@ -39,7 +40,7 @@ const OceanLeft = styled.View`
   background-color: ${(props) => props.theme.mainColor + 30};
   border-width: 1px;
   border-radius: 15px;
-  border-color: ${(props) => props.theme.mainColor + 40};
+  border-color: ${(props) => props.theme.mainColor + 50};
   flex: 1;
   margin-right: 10px;
 `;
@@ -47,7 +48,7 @@ const OceanRightTop = styled.View`
   background-color: ${(props) => props.theme.mainColor + 30};
   border-width: 1px;
   border-radius: 15px;
-  border-color: ${(props) => props.theme.mainColor + 40};
+  border-color: ${(props) => props.theme.mainColor + 50};
   flex: 2;
   margin-bottom: 10px;
   justify-content: center;
@@ -57,7 +58,7 @@ const OceanRightBtm = styled.View`
   background-color: ${(props) => props.theme.mainColor + 30};
   border-width: 1px;
   border-radius: 15px;
-  border-color: ${(props) => props.theme.mainColor + 40};
+  border-color: ${(props) => props.theme.mainColor + 50};
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -66,7 +67,7 @@ const BouyInfoBox = styled.View`
   background-color: ${(props) => props.theme.mainColor + 30};
   border-width: 1px;
   border-radius: 15px;
-  border-color: ${(props) => props.theme.mainColor + 40};
+  border-color: ${(props) => props.theme.mainColor + 50};
   border-radius: 15px;
   padding: 10px;
   height: 1000px;
@@ -94,6 +95,8 @@ const RowBox = styled.View`
 export default HomeView = () => {
   const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
+
+  const [width, setWidth] = useState(0);
 
   return (
     <CommonContainer>
@@ -138,10 +141,21 @@ export default HomeView = () => {
             </SubText>
           </OceanLeft>
           <View style={{ flex: 1 }}>
-            <OceanRightTop>
-              <MainText>수온</MainText>
-              <SubText>3º</SubText>
+            {/* 캐러셀 박스 */}
+            <OceanRightTop
+              onLayout={(e) => {
+                setWidth(e.nativeEvent.layout.width);
+              }}
+            >
+              <Carousel
+                data={[
+                  { temperature: 12.2, type: "water" },
+                  { temperature: 15.3, type: "atmo" },
+                ]}
+                pageWidth={width}
+              />
             </OceanRightTop>
+            {/* ------------ */}
             <OceanRightBtm>
               <SubText>추가 정보</SubText>
               <SubText>-</SubText>

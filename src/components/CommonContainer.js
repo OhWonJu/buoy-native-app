@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import styled, { ThemeContext } from "styled-components/native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
+import constants from "../../constants";
+
 const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.idnColor};
@@ -11,8 +13,8 @@ const Container = styled.View`
 `;
 
 const Header = styled.View`
-  height: 8%;
-  margin-top: 10px;
+  margin-top: ${constants.StatusBarHeight}px;
+  padding: 5px;
   padding-left: 10px;
   justify-content: center;
 `;

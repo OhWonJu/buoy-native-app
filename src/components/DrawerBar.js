@@ -44,7 +44,7 @@ const Bottom = styled.View`
 const OptionBtn = styled.TouchableOpacity`
   justify-content: flex-end;
   padding: 5px 10px 5px 10px;
-  margin: 6.5px 0px 0px 10px;
+  margin: 10px 0px 0px 10px;
   /* background-color: blue; */
 `;
 
