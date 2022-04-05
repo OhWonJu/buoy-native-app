@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 
-import constants from "../../constants";
-import TemperaturePage from "./Home/TemperaturePage";
-
 const Container = styled.View`
   flex: 1;
   /* justify-content: center; */
@@ -25,12 +22,18 @@ const IndicatorWrapper = styled.View`
   top: 92%;
 `;
 
-export default Carousel = ({ data, pageWidth, gap = 0, offset = 0 }) => {
+export default Carousel = ({
+  data,
+  pageWidth,
+  gap = 0,
+  offset = 0,
+  renderItem,
+}) => {
   const [page, setPage] = useState(0);
 
-  const renderItem = ({ item }) => {
-    return <TemperaturePage width={pageWidth} {...item} />;
-  };
+  // const renderItem = ({ item }) => {
+  //   return <TemperaturePage width={pageWidth} {...item} />;
+  // };
 
   const onScroll = (event) => {
     const newPage = Math.round(

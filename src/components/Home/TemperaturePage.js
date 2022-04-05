@@ -13,11 +13,12 @@ const MainWrapper = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  top: -4%;
 `;
 const SubWrapper = styled.View`
   padding-bottom: 10px;
   position: absolute;
-  top: 76%;
+  top: 74%;
 `;
 
 const MainText = styled.Text`

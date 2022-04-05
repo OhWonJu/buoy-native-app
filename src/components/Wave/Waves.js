@@ -14,7 +14,7 @@ const Container = styled.View`
   border-radius: 15px;
 `;
 
-export default Waves = () => {
+export default Waves = ({ wavy }) => {
   const data = ["#3163e1", "#5e85e8", "#8aa7ee"];
 
   return (
@@ -32,7 +32,7 @@ export default Waves = () => {
     >
       <Svg width="100%" height="100%" viewBox="0 0 1 1" style={{ top: "18%" }}>
         {data.map((d, i) => (
-          <Wave key={i} index={i} color={d} wavy={0.65} />
+          <Wave key={i} totalWave={data.length} index={i} color={d} wavy={2} />
         ))}
       </Svg>
     </MaskedView>

@@ -5,8 +5,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import styled from "styled-components/native";
-import { ThemeContext } from "styled-components";
+import styled, { ThemeContext } from "styled-components/native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -148,7 +147,7 @@ export default DrawerBar = (props) => {
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
-      ["#4F77A3", "#273b51"]
+      [themeContext.idnColor, themeContext.idnShadow]
     );
     return {
       backgroundColor,
