@@ -12,6 +12,8 @@ import UtilsInfoPage from "../../components/Home/UtilsInfoPage";
 import Carousel from "../../components/Carousel";
 import constants from "../../../constants";
 import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import DonutChart from "../../components/DonutChart";
+import { MockData } from "../../../MockData";
 
 const WeatherBox = styled.View`
   /* background-color: ${(props) => props.theme.mainColor + 20}; */
@@ -112,6 +114,11 @@ export default HomeView = () => {
   const [rBwidth, rBsetWidth] = useState(0);
   const [circleLen, setCircleLen] = useState(0);
 
+  const data = MockData;
+  let perc = 0;
+  data.forEach((d) => (perc += d.capacity * 0.01));
+  perc = (perc / data.length) * 100;
+
   return (
     <CommonContainer style={{ paddingBottom: 0 }}>
       <WeatherBox>
@@ -211,32 +218,21 @@ export default HomeView = () => {
             }}
           >
             <SubText>수용량</SubText>
-            <MainText style={{ fontSize: 40 }}>20%</MainText>
           </View>
           <View
             style={{ width: "70%" }}
             onLayout={(e) => {
-              setCircleLen(parseInt(e.nativeEvent.layout.height * 2));
+              setCircleLen(parseInt(e.nativeEvent.layout.height));
             }}
           >
-            <Svg>
-              <Circle
-                cx={"50%"}
-                cy={"50%"}
-                r={circleLen / (2 * Math.PI)}
-                stroke={themeContext.mainColor + 60}
-                strokeWidth={13}
-              />
-              <Circle
-                cx={"50%"}
-                cy={"50%"}
-                r={circleLen / (2 * Math.PI)}
-                stroke={themeContext.blueColor}
-                strokeWidth={13}
-                strokeDasharray={circleLen}
-                strokeDashoffset={circleLen * (1 - 0.2)}
-              />
-            </Svg>
+            <DonutChart
+              percentage={perc}
+              radius={circleLen / 2}
+              duration={800}
+              color={themeContext.blueColor}
+              delay={300}
+              textColor={themeContext.mainColor}
+            />
           </View>
         </RowBox>
         {/* -------- */}
