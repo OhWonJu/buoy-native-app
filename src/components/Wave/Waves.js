@@ -32,7 +32,13 @@ export default Waves = ({ wavy }) => {
     >
       <Svg width="100%" height="100%" viewBox="0 0 1 1" style={{ top: "18%" }}>
         {data.map((d, i) => (
-          <Wave key={i} totalWave={data.length} index={i} color={d} wavy={2} />
+          <Wave
+            key={i}
+            totalWave={data.length}
+            index={i}
+            color={d}
+            wavy={wavy}
+          />
         ))}
       </Svg>
     </MaskedView>

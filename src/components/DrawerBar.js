@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { TouchableOpacity, FlatList } from "react-native";
-import { useDrawerProgress } from "@react-navigation/drawer";
+import { useDrawerProgress, useDrawerStatus } from "@react-navigation/drawer";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import styled, { ThemeContext } from "styled-components/native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 import { MockData } from "../../MockData";
 import constants from "../../constants";
@@ -114,11 +113,18 @@ const InfoSubText = styled.Text`
 `;
 
 const data = MockData;
-
-const Item = ({ item, navigation }) => {
+//                             setSwipealbe같은건,,redux로 관리하는게 안전쓰..
+const Item = ({ item, navigation, disable }) => {
   const { id, name, location, temperature, capacity } = item;
   return (
-    <ItemBox onPress={() => navigation.navigate(id)}>
+    <ItemBox
+      disabled={disable}
+      onPress={() => {
+        navigation.navigate(id);
+        navigation.closeDrawer();
+        navigation.closeDrawer();
+      }}
+    >
       <ItemName>{name}</ItemName>
       <InfoBox>
         <InfoWrapper>
@@ -138,10 +144,25 @@ const Item = ({ item, navigation }) => {
   );
 };
 
-export default DrawerBar = (props) => {
+export default DrawerBar = ({ state, navigation }) => {
   const themeContext = useContext(ThemeContext);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+  const [index, setIndex] = useState(0);
+  const [disable, setDisable] = useState(true);
 
+  const isDrawerOpen = useDrawerStatus() === "open";
+
+  // Drawer가 제대로 안 닫히는 이유는. Drawer가 다 열리기전에 이벤트가 발생했기 때문.
+  // Drawer가 다 열릴 때 까지 터치 이벤트를 disable 하면된다.
+  useEffect(() => {
+    if (isDrawerOpen) {
+      setDisable(false);
+    } else {
+      setDisable(true);
+    }
+  }, [isDrawerOpen]);
+
+  // 드로어 백그라운드 색 관련
   const progress = useDrawerProgress();
   const color = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
@@ -153,19 +174,24 @@ export default DrawerBar = (props) => {
       backgroundColor,
     };
   });
+  // -------------------------------------------------
 
+  // 드로어 뷰 간 이동을 위한 토글
   const toggleBtn = [
-    { nav: "DrawGroupList", name: "구역 관리" },
-    { nav: "DrawHome", name: "종합 정보" },
+    { nav: "GroupList", name: "구역 관리" },
+    { nav: "Home", name: "종합 정보" },
   ];
+  // ------------------------------------------------
 
-  const renderItem = ({ item }) => <Item item={item} navigation={navigation} />;
+  const renderItem = ({ item }) => (
+    <Item item={item} navigation={navigation} disable={disable} />
+  );
 
   return (
     <Container style={color}>
       <DrawerBox>
         <Top>
-          <OptionBtn>
+          <OptionBtn disabled={disable}>
             <FontAwesome name="gear" size={24} color={themeContext.mainColor} />
           </OptionBtn>
         </Top>
@@ -187,16 +213,20 @@ export default DrawerBar = (props) => {
           </ListBox>
           <BtnBox style={{ paddingTop: 20 }}>
             <Button
-              onPress={() =>
-                navigation.navigate(toggleBtn[props.state.index].nav)
-              }
+              disabled={disable}
+              onPress={() => {
+                navigation.navigate(toggleBtn[index].nav);
+                setIndex((index + 1) % toggleBtn.length);
+                navigation.closeDrawer();
+                navigation.closeDrawer();
+              }}
             >
-              <TitleText>{toggleBtn[props.state.index].name}</TitleText>
+              <TitleText>{toggleBtn[index].name}</TitleText>
             </Button>
           </BtnBox>
         </Mid>
         <Bottom>
-          <TouchableOpacity>
+          <TouchableOpacity disabled={disable}>
             <TitleText style={{ padding: 20 }}>로그아웃</TitleText>
           </TouchableOpacity>
         </Bottom>

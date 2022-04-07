@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import StackNavFactory from "./StackNavFactory";
 import DrawerBar from "../components/DrawerBar";
 
-function DrawHome({ navigation, route }) {
-  return <StackNavFactory screenName={"Home"} />;
-}
-function DrawGroupList({ navigation, route }) {
-  return <StackNavFactory screenName={"GroupList"} />;
-}
+const DrawHome = ({ navigation, route }) => {
+  return (
+    <StackNavFactory
+      navigation={navigation}
+      route={route}
+      screenName={"Home"}
+    />
+  );
+};
+const DrawGroupList = ({ navigation, route }) => {
+  return (
+    <StackNavFactory
+      navigation={navigation}
+      route={route}
+      screenName={"GroupList"}
+    />
+  );
+};
 
 const Drawer = createDrawerNavigator();
 
@@ -31,17 +43,13 @@ export default () => {
         },
       }}
     >
-      <Drawer.Screen
-        name="DrawHome"
-        options={{ drawerLabel: ({ focus, color }) => <Text>대시보드</Text> }}
-        component={DrawHome}
-      />
-
-      <Drawer.Screen
-        name="DrawGroupList"
-        options={{ drawerLabel: ({ focus, color }) => <Text>구역목록</Text> }}
-        component={DrawGroupList}
-      />
+      <Drawer.Screen name="DrawHome" component={DrawHome} />
+      {/* <Drawer.Screen name="DrawGroupList" component={DrawGroupList} /> */}
     </Drawer.Navigator>
   );
 };
+
+// Drawer에서 nesting Stack할 때 탭처럼 동일 nesting Factory를 쓰면 꼬이는 것 같다..
+// 왜 인지는모르겠지만...각 Drawer Screen 마다 다른 nesting stack을 쓰는게 나은듯 하다..
+// stack Factory의 screenName Props가 제대로 갱신 안됨
+// 아마 각 Drawer를 한번씩 랜더링하면 그대로 남아있어서 그런듯...

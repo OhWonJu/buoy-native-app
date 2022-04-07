@@ -17,19 +17,22 @@ const GROUP = ({ navigation, route }) => (
 
 const Stacks = createStackNavigator();
 
-export default ({ screenName }) => {
+export default ({ navigation, route, screenName }) => {
   return (
     <Stacks.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      {screenName === "Home" ? (
+      {/* {screenName === "Home" ? (
         <Stacks.Screen name={"Home"} component={Home} />
-      ) : null}
-      {screenName === "GroupList" ? (
+      ) : null} */}
+      {/* {screenName === "GroupList" ? (
         <Stacks.Screen name={"GroupList"} component={GroupList} />
-      ) : null}
+      ) : null} */}
+
+      <Stacks.Screen name={"Home"} component={Home} />
+      <Stacks.Screen name={"GroupList"} component={GroupList} />
       <Stacks.Screen
         name={"GroupManage"}
         component={GroupManage}

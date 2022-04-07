@@ -22,7 +22,10 @@ export default Wave = ({ totalWave, index, color, wavy }) => {
     const pulse = withTiming(1, timingOptions);
     const repeated = withRepeat(pulse, -1, true);
     progress1.value = withDelay(index * (duration / totalWave), repeated);
-    progress2.value = withDelay(index * (2 * (duration / totalWave)), repeated);
+    progress2.value = withDelay(
+      index * (duration / totalWave) + duration / 2,
+      repeated
+    );
   }, []);
 
   // c -> y -> 0.5 -> 0 -> 1
