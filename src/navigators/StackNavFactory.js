@@ -11,7 +11,7 @@ import { MockData } from "../../MockData";
 
 const data = MockData;
 
-const GROUP = ({ navigation, route }) => (
+const GROUP_DETAIL = ({ navigation, route }) => (
   <GroupDetail navigation={navigation} route={route} />
 );
 
@@ -44,7 +44,7 @@ export default ({ navigation, route, screenName }) => {
         }}
       />
       {data.map((data, index) => (
-        <Stacks.Screen key={index} name={data.id} component={GROUP} />
+        <Stacks.Screen key={index} name={data.id} component={GROUP_DETAIL} />
       ))}
     </Stacks.Navigator>
   );

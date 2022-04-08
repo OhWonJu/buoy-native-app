@@ -4,14 +4,15 @@ import styled from "styled-components/native";
 import { MockData } from "../../../MockData";
 
 import GroupScrollView from "../../components/Group/GroupScrollView";
-import GroupNoti from "../../components/Group/GroupNoti";
+import GroupInfo from "../../components/Group/GroupInfo";
 import GroupMap from "../../components/Group/GroupMap";
+import Header from "../../components/Header";
 
-export default GroupDetailView = ({ navigation, route }) => {
-  const data = MockData.find((data) => data.id === route.name);
+export default GroupDetailView = ({ navigation, route, data }) => {
   return (
     <ScrollView>
-      <GroupNoti data={data} />
+      <Header title={data.name} />
+      <GroupInfo data={data} />
       <GroupMap />
     </ScrollView>
   );

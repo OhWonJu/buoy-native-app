@@ -229,8 +229,9 @@ export default HomeView = () => {
               percentage={perc}
               radius={circleLen / 2}
               duration={800}
-              color={themeContext.blueColor}
-              delay={300}
+              // color={themeContext.darkBlueColor}
+              color={"#3163e1"}
+              delay={1000}
               textColor={themeContext.mainColor}
             />
           </View>

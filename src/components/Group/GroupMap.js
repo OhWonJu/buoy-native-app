@@ -16,8 +16,8 @@ const Container = styled.View`
 export default GroupMap = ({ data = null }) => {
   return (
     // <Container>
-    // <WebView style={{ flex: 1 }} source={{ uri: "https://expo.dev" }} />
-    null
+    //   <WebView style={{ flex: 1 }} source={{ uri: "https://expo.dev" }} />
     // </Container>
+    null
   );
 };

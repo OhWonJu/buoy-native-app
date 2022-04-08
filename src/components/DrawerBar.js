@@ -18,7 +18,7 @@ const Container = styled(Animated.View)`
 const DrawerBox = styled.View`
   margin-top: ${constants.StatusBarHeight}px;
   border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  /* border-bottom-right-radius: 15px; */
   background-color: rgba(255, 255, 255, 0.2);
   flex: 1;
   padding: 20px;

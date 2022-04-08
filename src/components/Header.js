@@ -1,21 +1,23 @@
 import React, { useContext, useCallback } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import styled, { ThemeContext } from "styled-components";
-import { Ionicons } from "@expo/vector-icons";
+import styled, { ThemeContext } from "styled-components/native";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
-  flex-direction: row;
+  flex: 1;
   background-color: ${(props) => props.theme.idnColor};
-  height: 60px;
-  padding-top: 5px;
+  padding: 10px 15px 5px 15px;
+`;
+
+const Header = styled.View`
+  flex-direction: row;
+  padding: 5px;
+  padding-top: ${constants.StatusBarHeight}px;
   padding-left: 10px;
-  padding-right: 10px;
-  width: 100%;
   justify-content: center;
-  align-items: center;
 `;
 const Left = styled.View`
   flex: 2;
@@ -44,9 +46,9 @@ const Title = styled.Text`
   top: -1px;
 `;
 
-export default CommonHeader = ({
+export default ({
   title = "",
-  color = "#4F678C",
+  color = "#7FA7D3",
   setHeaderHeight = () => null,
 }) => {
   const themeContext = useContext(ThemeContext);
@@ -60,14 +62,21 @@ export default CommonHeader = ({
   const CONTAINER = ({ leftChildren = null, rightChildren = null }) => {
     return (
       <Container onLayout={headerOnLayout}>
-        <Left>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Ionicons name="menu" size={38} color={themeContext.mainColor} />
-          </TouchableOpacity>
-          <Title>{title}</Title>
-        </Left>
-        <Center></Center>
-        <Right></Right>
+        <Header>
+          <Left>
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <SimpleLineIcons
+                name="menu"
+                size={20}
+                color={themeContext.mainColor}
+                style={{ paddingRight: 15 }}
+              />
+            </TouchableOpacity>
+            <Title>{title}</Title>
+          </Left>
+          <Center></Center>
+          <Right></Right>
+        </Header>
       </Container>
     );
   };

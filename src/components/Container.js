@@ -4,8 +4,8 @@ import styled from "styled-components/native";
 
 const Container = styled.TouchableOpacity`
   flex: 1;
-  background-color: ${(props) => props.theme.bgColor};
-  padding: 5px 10px 5px 10px;
+  background-color: ${(props) => props.theme.mainColor};
+  padding: 10px 15px 5px 15px;
 `;
 
 export default ({ children, style }) => {
