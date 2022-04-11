@@ -1,20 +1,21 @@
+import React, { useContext } from "react";
 import { StyleSheet, Platform } from "react-native";
 
 export const shadows = StyleSheet.create({
   boxWrapper: {
-    borderRadius: 15,
+    backgroundColor: "#FBFBFB",
     ...Platform.select({
       ios: {
         shadowColor: "#000",
         shadowOffset: {
-          width: 3,
-          height: 3,
+          width: 0,
+          height: 10,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
       },
       android: {
-        elevation: 4,
+        elevation: 2,
       },
     }),
   },

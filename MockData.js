@@ -5,6 +5,8 @@ export const MockData = [
     location: "거제",
     temperature: 12.2,
     capacity: 15,
+    sBouy: 100,
+    nBouy: 500,
   },
   {
     id: "g2",
@@ -12,6 +14,8 @@ export const MockData = [
     location: "거제",
     temperature: 11.6,
     capacity: 16,
+    sBouy: 80,
+    nBouy: 400,
   },
   {
     id: "g3",
@@ -19,6 +23,8 @@ export const MockData = [
     location: "거제",
     temperature: 12.1,
     capacity: 20,
+    sBouy: 120,
+    nBouy: 600,
   },
   {
     id: "g4",
@@ -26,6 +32,8 @@ export const MockData = [
     location: "통영",
     temperature: 13.8,
     capacity: 42,
+    sBouy: 70,
+    nBouy: 600,
   },
   {
     id: "g5",
@@ -33,6 +41,8 @@ export const MockData = [
     location: "통영",
     temperature: 13.5,
     capacity: 45,
+    sBouy: 20,
+    nBouy: 100,
   },
   {
     id: "g6",
@@ -40,6 +50,8 @@ export const MockData = [
     location: "거제",
     temperature: 11.5,
     capacity: 10,
+    sBouy: 150,
+    nBouy: 600,
   },
   {
     id: "g7",
@@ -47,6 +59,8 @@ export const MockData = [
     location: "거제",
     temperature: 11.9,
     capacity: 17,
+    sBouy: 100,
+    nBouy: 500,
   },
   {
     id: "g8",
@@ -54,5 +68,7 @@ export const MockData = [
     location: "고성",
     temperature: 12.0,
     capacity: 9,
+    sBouy: 50,
+    nBouy: 300,
   },
 ];

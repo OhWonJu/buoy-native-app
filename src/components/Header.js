@@ -9,12 +9,12 @@ import { useNavigation } from "@react-navigation/native";
 const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.idnColor};
-  padding: 10px 15px 5px 15px;
+  padding: 10px 15px 10px 15px;
 `;
 
 const Header = styled.View`
   flex-direction: row;
-  padding: 5px;
+  /* padding: 5px; */
   padding-top: ${constants.StatusBarHeight}px;
   padding-left: 10px;
   justify-content: center;
@@ -49,6 +49,8 @@ const Title = styled.Text`
 export default ({
   title = "",
   color = "#7FA7D3",
+  leftChildren = null,
+  rightChildren = null,
   setHeaderHeight = () => null,
 }) => {
   const themeContext = useContext(ThemeContext);
@@ -59,7 +61,7 @@ export default ({
     setHeaderHeight(height - constants.StatusBarHeight);
   }, []);
 
-  const CONTAINER = ({ leftChildren = null, rightChildren = null }) => {
+  const CONTAINER = () => {
     return (
       <Container onLayout={headerOnLayout}>
         <Header>
@@ -73,9 +75,10 @@ export default ({
               />
             </TouchableOpacity>
             <Title>{title}</Title>
+            {leftChildren && { leftChildren }}
           </Left>
           <Center></Center>
-          <Right></Right>
+          <Right>{rightChildren}</Right>
         </Header>
       </Container>
     );

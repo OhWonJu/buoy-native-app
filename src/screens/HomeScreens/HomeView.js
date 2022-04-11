@@ -103,7 +103,7 @@ const TotalTitle = styled.Text`
 const TotalUnit = styled.Text`
   font-size: 13px;
   font-weight: normal;
-  color: ${(props) => props.theme.lightUtilColor};
+  color: ${(props) => props.theme.lightUtilColor + 90};
 `;
 
 export default HomeView = () => {
