@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import {
   View,
   StyleSheet,
@@ -29,18 +35,20 @@ const data = [
   {
     key: 1,
     title: "수용량 예측",
+    subContext: "일주일간 수용량 변화 및 향후 N일 간의 변화 예측",
     ref: React.createRef(),
   },
   {
     key: 2,
     title: "성장 예측",
+    subContext: "일주일간 양식 성장 변화 및 향후 N일간의 변화 예측",
     ref: React.createRef(),
   },
 ];
 
 const Tab = React.forwardRef(({ item, onItemPress }, ref) => {
   return (
-    <TouchableOpacity onPress={onItemPress}>
+    <TouchableOpacity onPress={onItemPress} activeOpacity={1}>
       <View ref={ref}>
         <TabText size={32 / data.length}>{item.title}</TabText>
       </View>
@@ -128,6 +136,8 @@ const Tabs = ({ scrollX, data, onItemPress }) => {
 };
 
 export default GroupGraphTab = ({ item }) => {
+  const themeContext = useContext(ThemeContext);
+
   const GRAPH = ({ item }) => <GroupGraph item={item} />;
 
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -140,7 +150,7 @@ export default GroupGraphTab = ({ item }) => {
   });
 
   return (
-    <View>
+    <View style={{ backgroundColor: themeContext.mainColor }}>
       <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress} />
       <AnimatedFlatList
         ref={ref}

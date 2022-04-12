@@ -122,7 +122,6 @@ const Item = ({ item, navigation, disable }) => {
       onPress={() => {
         navigation.navigate(id);
         navigation.closeDrawer();
-        navigation.closeDrawer();
       }}
     >
       <ItemName>{name}</ItemName>

@@ -9,13 +9,13 @@ export const shadows = StyleSheet.create({
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 10,
+          height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3,
       },
       android: {
-        elevation: 2,
+        elevation: 1,
       },
     }),
   },

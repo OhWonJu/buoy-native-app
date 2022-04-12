@@ -44,6 +44,7 @@ const ModalContextText = styled.Text`
   padding: 5px 0px 5px 0px;
   color: ${(props) =>
     props.focused ? props.theme.idnColor : props.theme.subColor};
+  font-weight: ${(props) => (props.focused ? "bold" : "normal")};
 `;
 
 const ModalButtonBox = styled.TouchableOpacity`
@@ -55,10 +56,11 @@ const ModalButtonBox = styled.TouchableOpacity`
   align-items: center;
   border-style: solid;
   border-top-color: ${(props) => props.theme.lightUtilColor};
-  border-top-width: 1.5px;
+  border-top-width: 1px;
 `;
 const ModalButtonText = styled.Text`
   color: ${(props) => props.theme.subColor};
+  font-weight: bold;
 `;
 
 export default TypeModal = ({

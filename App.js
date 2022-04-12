@@ -11,7 +11,8 @@ export default function App() {
   const [isSignIn, setSignIn] = useState(true);
 
   let colorScheme = useColorScheme();
-  let Theme = colorScheme === "light" ? lightTheme : darkTheme;
+  // let Theme = colorScheme === "light" ? lightTheme : darkTheme;
+  let Theme = colorScheme === "light" ? lightTheme : lightTheme;
 
   return (
     <>

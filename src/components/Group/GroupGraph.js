@@ -1,19 +1,323 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useEffect, useRef, useState, useContext } from "react";
+// import * as React from 'react'
+import {
+  PanResponder,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { AreaChart, XAxis, YAxis } from "react-native-svg-charts";
+import {
+  Circle,
+  Defs,
+  G,
+  Line,
+  LinearGradient,
+  Path,
+  Rect,
+  Stop,
+  ClipPath,
+  Text as SvgText,
+} from "react-native-svg";
+import * as shape from "d3-shape";
+import { ThemeContext } from "styled-components/native";
+
 import constants from "../../../constants";
 
-export default GroupGraph = ({ item }) => {
+export default InteractiveChart;
+
+function InteractiveChart({ item, color = "#3897f0" }) {
+  const themeContext = useContext(ThemeContext);
+
+  const indexToClipFrom = 7;
+
+  const apx = (size = 0) => {
+    let width = Dimensions.get("window").width;
+    return (width / 750) * size;
+  };
+
+  const [dateList, setDateList] = useState([
+    "04-10",
+    "04-11",
+    "04-12",
+    "04-13",
+    "04-14",
+    "04-15",
+    "04-16",
+    "04-17",
+    "04-18",
+    "04-19",
+  ]);
+  const [priceList, setPriceList] = useState([
+    1.0, 2.0, 3.0, 4.0, 5.0, 3.0, 2.5, 2.5, 3.0, 4.0,
+  ]);
+  const size = useRef(dateList.length);
+
+  const [positionX, setPositionX] = useState(-1); // The currently selected X coordinate position
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+
+      onPanResponderGrant: (evt, gestureState) => {
+        updatePosition(evt.nativeEvent.locationX);
+        return true;
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        updatePosition(evt.nativeEvent.locationX);
+        return true;
+      },
+      onPanResponderRelease: () => {
+        setPositionX(-1);
+      },
+    })
+  );
+
+  const updatePosition = (x) => {
+    const YAxisWidth = apx(130);
+    const x0 = apx(0); // x0 position
+    const chartWidth = apx(750) - YAxisWidth - x0;
+    const xN = x0 + chartWidth; //xN position
+    const xDistance = chartWidth / size.current; // The width of each coordinate point
+    if (x <= x0) {
+      x = x0;
+    }
+    if (x >= xN) {
+      x = xN;
+    }
+
+    // console.log((x - x0) )
+
+    // The selected coordinate x :
+    // (x - x0)/ xDistance = value
+    let value = ((x - x0) / xDistance).toFixed(0);
+    if (value >= size.current - 1) {
+      value = size.current - 1; // Out of chart range, automatic correction
+    }
+
+    setPositionX(Number(value));
+  };
+
+  const CustomGrid = ({ x, y, ticks }) => (
+    <G>
+      {
+        // Horizontal grid
+        ticks.map((tick) => (
+          <Line
+            key={tick}
+            x1="0%"
+            x2="100%"
+            y1={y(tick)}
+            y2={y(tick)}
+            stroke="#EEF3F6"
+          />
+        ))
+      }
+      {
+        // Vertical grid
+        priceList.map((_, index) => (
+          <Line
+            key={index.toString()}
+            y1="0%"
+            y2="100%"
+            x1={x(index)}
+            x2={x(index)}
+            stroke="#EEF3F6"
+          />
+        ))
+      }
+    </G>
+  );
+
+  const CustomLine = ({ line }) => (
+    <Path
+      key="line"
+      d={line}
+      stroke="#3897f0"
+      strokeWidth={apx(6)}
+      fill="none"
+      clipPath={"url(#clip-path-1)"}
+    />
+  );
+
+  const Clips = ({ x, width }) => (
+    <Defs key={"clips"}>
+      <ClipPath id="clip-path-1">
+        <Rect x={"0"} y={"0"} width={x(indexToClipFrom)} height={"100%"} />
+      </ClipPath>
+      <ClipPath id={"clip-path-2"}>
+        <Rect
+          x={x(indexToClipFrom)}
+          y={"0"}
+          width={width - x(indexToClipFrom)}
+          height={"100%"}
+        />
+      </ClipPath>
+    </Defs>
+  );
+
+  const DashedLine = ({ line }) => (
+    <Path
+      key={"line-1"}
+      d={line}
+      stroke={"#3897f0"}
+      strokeWidth={apx(6)}
+      fill={"none"}
+      strokeDasharray={[4, 4]}
+      clipPath={"url(#clip-path-2)"}
+    />
+  );
+
+  const CustomGradient = () => (
+    <Defs key="gradient">
+      <LinearGradient id="gradient" x1="0" y="0%" x2="0%" y2="100%">
+        {/* <Stop offset="0%" stopColor="rgb(134, 65, 244)" /> */}
+        {/* <Stop offset="100%" stopColor="rgb(66, 194, 244)" /> */}
+        <Stop offset="0%" stopColor="#3897f0" stopOpacity={0.25} />
+        <Stop offset="100%" stopColor="#3897f0" stopOpacity={0} />
+      </LinearGradient>
+    </Defs>
+  );
+
+  const Tooltip = ({ x, y, ticks }) => {
+    if (positionX < 0) {
+      return null;
+    }
+
+    const date = dateList[positionX];
+
+    return (
+      <G x={x(positionX)} key="tooltip">
+        <G
+          x={positionX > size.current / 2 ? -apx(300 + 10) : apx(10)}
+          y={y(priceList[positionX]) - apx(10)}
+        >
+          <Rect
+            y={-apx(24 + 24 + 20) / 2}
+            rx={apx(12)} // borderRadius
+            ry={apx(12)} // borderRadius
+            width={apx(300)}
+            height={apx(96)}
+            stroke="#3897f0"
+            fill="rgba(255, 255, 255, 0.8)"
+          />
+
+          <SvgText x={apx(20)} fill="#617485" opacity={0.65} fontSize={apx(24)}>
+            {date}
+          </SvgText>
+          <SvgText
+            x={apx(20)}
+            y={apx(24 + 20)}
+            fontSize={apx(24)}
+            fontWeight="bold"
+            fill="#3897f0"
+          >
+            {priceList[positionX]}
+          </SvgText>
+        </G>
+
+        <G x={x}>
+          <Line
+            y1={ticks[0]}
+            y2={ticks[Number(ticks.length)]}
+            stroke="#3897f0"
+            strokeWidth={apx(4)}
+            strokeDasharray={[6, 3]}
+          />
+
+          <Circle
+            cy={y(priceList[positionX])}
+            r={apx(20 / 2)}
+            stroke="#fff"
+            strokeWidth={apx(2)}
+            fill="#3897f0"
+          />
+        </G>
+      </G>
+    );
+  };
+
+  const verticalContentInset = { top: apx(40), bottom: apx(40) };
+
   return (
     <View
       style={{
-        height: 200,
-        width: constants.screenW,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#fff",
+        alignItems: "stretch",
       }}
     >
-      <Text>{item.title}</Text>
+      <Text
+        style={{
+          paddingTop: 10,
+          color: "#617485",
+          fontSize: 10,
+          textAlign: "center",
+        }}
+      >
+        {item.subContext}
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          width: apx(750),
+          height: apx(570),
+          alignSelf: "stretch",
+          paddingTop: 15,
+          paddingLeft: 15,
+          paddingRight: 5,
+        }}
+      >
+        <View style={{ flex: 1 }} {...panResponder.current.panHandlers}>
+          <AreaChart
+            style={{ flex: 1 }}
+            data={priceList}
+            // curve={shape.curveNatural}
+            curve={shape.curveMonotoneX}
+            contentInset={{ ...verticalContentInset }}
+            svg={{ fill: "url(#gradient)" }}
+          >
+            <CustomLine />
+            <CustomGrid />
+            <Clips />
+            <DashedLine />
+            <CustomGradient />
+            <Tooltip />
+          </AreaChart>
+        </View>
+
+        <YAxis
+          style={{ width: apx(60) }}
+          data={priceList}
+          contentInset={verticalContentInset}
+          svg={{ fontSize: apx(20), fill: "#617485" }}
+        />
+      </View>
+      <XAxis
+        style={{
+          alignSelf: "stretch",
+          // marginTop: apx(57),
+          width: apx(750),
+          height: apx(60),
+        }}
+        numberOfTicks={10}
+        data={priceList}
+        formatLabel={(value, index) => dateList[value]}
+        contentInset={{
+          left: apx(36),
+          right: apx(70),
+        }}
+        svg={{
+          fontSize: apx(20),
+          fill: "#617485",
+          y: apx(20),
+          // originY: 30,
+        }}
+      />
     </View>
   );
-};
+}

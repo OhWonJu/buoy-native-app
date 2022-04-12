@@ -9,7 +9,7 @@ export const lightTheme = {
   idnShadow: "#40546C",
   utilColor: "#AFAFAF",
   darkUtilColor: "#999999",
-  lightUtilColor: "#C3C3C3",
+  lightUtilColor: "#DFDFDF",
   redColor: "#eb2f06",
   orangeColor: "#E87C40",
   blueColor: "#3897f0",
