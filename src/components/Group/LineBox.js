@@ -30,6 +30,7 @@ import {
 import styled from "styled-components/native";
 import RowBox from "../RowBox";
 import constants from "../../../constants";
+import Action from "./Action";
 
 const Container = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.mainColor};
@@ -76,8 +77,18 @@ const UnitText = styled.Text`
   font-size: 10px;
 `;
 
-const HEIGHT = 60;
+const HEIGHT = 65;
 const snapPoints = [-constants.windowW, -100, 0];
+const styles = StyleSheet.create({
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#E1E2E3",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+});
 
 export default LineBox = ({ item, onSwipe }) => {
   const { gestureHandler, translation, velocity, state } =
@@ -116,14 +127,19 @@ export default LineBox = ({ item, onSwipe }) => {
   );
 
   return (
-    <Animated.View style={{ paddingBottom: 10 }}>
+    <Animated.View>
+      <View style={styles.background}>
+        <TouchableWithoutFeedback onPress={() => shouldRemove.setValue(1)}>
+          <Action x={abs(translateX)} {...{ deleteOpacity }} height={HEIGHT} />
+        </TouchableWithoutFeedback>
+      </View>
       <PanGestureHandler
         failOffsetY={[-5, 5]}
         activeOffsetX={[-5, 5]}
         {...gestureHandler}
       >
         <Animated.View style={{ height, transform: [{ translateX }] }}>
-          <Container style={{ height: "100%", paddingBottom: 5 }}>
+          <Container style={{ height: "100%" }} activeOpacity={1}>
             <LineName numberOfLines={1}>Line {item.name}</LineName>
             <InfoBox>
               <InfoWrapper>
