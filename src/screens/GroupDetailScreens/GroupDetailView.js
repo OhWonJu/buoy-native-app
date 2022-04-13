@@ -12,6 +12,7 @@ import Header from "../../components/Header";
 import TypeModal from "../../components/Group/TypeModal";
 import GroupGraphTab from "../../components/Group/GroupGraphTab";
 import ColBox from "../../components/ColBox";
+import SwipeWrapper from "../../components/SwipeWrapper/SwipeWrapper";
 import LineBox from "../../components/Group/LineBox";
 
 const RowBox = styled.View`
@@ -146,15 +147,16 @@ export default GroupDetailView = ({ navigation, route, data }) => {
           }}
         >
           {items.map((item, index) => (
-            <LineBox
+            <SwipeWrapper
               key={item.id}
-              item={item}
               onSwipe={() => {
                 const newItems = [...items];
                 newItems.splice(newItems.indexOf(item), 1);
                 setItems(newItems);
               }}
-            />
+            >
+              <LineBox item={item} />
+            </SwipeWrapper>
           ))}
         </View>
       </ScrollView>
