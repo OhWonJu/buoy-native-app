@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Animated, {
   abs,
   add,
@@ -7,7 +7,6 @@ import Animated, {
   clockRunning,
   cond,
   eq,
-  min,
   not,
   set,
   useCode,
@@ -27,7 +26,6 @@ import {
   clamp,
   snapPoint,
 } from "react-native-redash/lib/module/v1";
-import constants from "../../../constants";
 import Action from "./Action";
 
 // const HEIGHT = 65;

@@ -56,45 +56,6 @@ export default DonutChart = ({
     };
   });
 
-  //   const animation = (toValue) => {
-  //     return Animated.timing(animated, {
-  //       delay,
-  //       toValue,
-  //       duration,
-  //       useNativeDriver: true,
-  //       easing: Easing.out(Easing.ease),
-  //     }).start();
-  //   };
-
-  //   useEffect(() => {
-  //     animation(percentage);
-  //     animated.addListener(
-  //       (v) => {
-  //         console.log(v);
-  //         const maxPerc = (100 * v.value) / max;
-  //         const strokeDashoffset =
-  //           circumference - (circumference * maxPerc) / 100;
-
-  //         if (inputRef?.current) {
-  //           inputRef.current.setNativeProps({
-  //             text: `${Math.round(v.value)}`,
-  //           });
-  //         }
-
-  //         if (circleRef?.current) {
-  //           circleRef.current.setNativeProps({
-  //             strokeDashoffset,
-  //           });
-  //         }
-  //       },
-  //       [max, percentage]
-  //     );
-
-  //     return () => {
-  //       animated.removeAllListeners();
-  //     };
-  //   }, [max, percentage]);
-
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <Svg

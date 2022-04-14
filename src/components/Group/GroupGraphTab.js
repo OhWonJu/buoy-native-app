@@ -150,7 +150,10 @@ export default GroupGraphTab = ({ item }) => {
   });
 
   return (
-    <View style={{ backgroundColor: themeContext.mainColor }}>
+    <View
+      style={{ backgroundColor: themeContext.mainColor }}
+      pointerEvents="box-none"
+    >
       <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress} />
       <AnimatedFlatList
         ref={ref}

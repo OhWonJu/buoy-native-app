@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 
 import DonutChart from "../DonutChart";
@@ -41,7 +41,10 @@ export default GroupInfo = ({ data = null }) => {
   const [circleLen, setCircleLen] = useState(0);
 
   return (
-    <Container style={{ backgroundColor: themeContext.idnColor }}>
+    <Container
+      style={{ backgroundColor: themeContext.idnColor }}
+      pointerEvents="none"
+    >
       {/* 수용량 그래프 뷰 */}
       <CapacityView>
         <RowBox

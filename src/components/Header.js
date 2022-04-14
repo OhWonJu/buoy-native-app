@@ -63,7 +63,7 @@ export default ({
 
   const CONTAINER = () => {
     return (
-      <Container onLayout={headerOnLayout}>
+      <Container onLayout={headerOnLayout} pointerEvents="box-none">
         <Header>
           <Left>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>

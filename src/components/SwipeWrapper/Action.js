@@ -9,9 +9,6 @@ import Animated, {
   add,
   lessThan,
   multiply,
-  useDerivedValue,
-  useSharedValue,
-  useAnimatedStyle,
 } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
@@ -19,6 +16,8 @@ const styles = StyleSheet.create({
     color: "white",
     // fontFamily: "UberMoveMedium",
     fontSize: 14,
+    fontWeight: "bold",
+    letterSpacing: 1.8,
   },
 });
 
