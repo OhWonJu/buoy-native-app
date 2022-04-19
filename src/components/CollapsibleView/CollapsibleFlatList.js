@@ -33,19 +33,3 @@ export default CollapsibleFlatList = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-  },
-  itemContainer: {
-    width: "100%",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  itemText: {
-    fontSize: 25,
-    color: "#FFD800",
-  },
-});

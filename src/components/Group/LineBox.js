@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import RowBox from "../RowBox";
 import constants from "../../../constants";
+import { getAperB } from "../../../commonFuncs";
 
 const Container = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.mainColor};
@@ -53,18 +54,24 @@ export default LineBox = ({ item }) => {
         <InfoWrapper>
           <InfoSubText>스마트부표</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <InfoMainText>10</InfoMainText>
-            <UnitText>/10</UnitText>
+            <InfoMainText
+              style={{ color: getAperB(item.totalBouy, item.activeBouy) }}
+            >
+              {item.activeBouy}
+            </InfoMainText>
+            <UnitText>/{item.totalBouy}</UnitText>
           </RowBox>
         </InfoWrapper>
         <InfoWrapper>
           <InfoSubText>일반부표</InfoSubText>
-          <InfoMainText>50</InfoMainText>
+          <InfoMainText>{item.normalBouy}</InfoMainText>
         </InfoWrapper>
         <InfoWrapper>
           <InfoSubText>수용률</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <InfoMainText>--</InfoMainText>
+            <InfoMainText style={{ color: getAperB(1, 1 - item.capacity) }}>
+              {(item.capacity * 100).toFixed(0)}
+            </InfoMainText>
             <UnitText>%</UnitText>
           </RowBox>
         </InfoWrapper>

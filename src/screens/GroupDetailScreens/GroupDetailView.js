@@ -1,12 +1,5 @@
 import React, { useState, useContext, useCallback, useRef } from "react";
-import {
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  Animated,
-  FlatList,
-  Text,
-} from "react-native";
+import { View, TouchableOpacity, SafeAreaView, Animated } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 
 import constants from "../../../constants";
@@ -21,20 +14,20 @@ import LineBox from "../../components/Group/LineBox";
 import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
 import CollapsibleFlatList from "../../components/CollapsibleView/CollapsibleFlatList";
 
+const LINEHEADER_HEIGHT = 45 + constants.StatusBarHeight;
+
 const RowBox = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 const LineHeader = styled(Animated.View)`
-  height: 60px;
+  height: ${LINEHEADER_HEIGHT}px;
   padding: 0px 15px 10px 15px;
   background-color: ${(props) => props.theme.mainColor};
   flex-direction: row;
   align-items: flex-end;
   z-index: 1;
-  /* border-bottom-color: ${(props) => props.theme.lightUtilColor};
-  border-bottom-width: 1px; */
 `;
 
 const EditText = styled.Text`
@@ -49,20 +42,118 @@ const Title = styled.Text`
 `;
 
 const Lines = [
-  { id: 1, name: 1 },
-  { id: 2, name: 2 },
-  { id: 3, name: 3 },
-  { id: 4, name: 4 },
-  { id: 5, name: 5 },
-  { id: 6, name: 6 },
-  { id: 7, name: 7 },
-  { id: 8, name: 8 },
-  { id: 9, name: 9 },
-  { id: 10, name: 10 },
-  { id: 11, name: 11 },
-  { id: 12, name: 12 },
-  { id: 13, name: 13 },
-  { id: 14, name: 14 },
+  {
+    id: 1,
+    name: 1,
+    totalBouy: 10,
+    activeBouy: 10,
+    normalBouy: 50,
+    capacity: 0.1,
+  },
+  {
+    id: 2,
+    name: 2,
+    totalBouy: 10,
+    activeBouy: 8,
+    normalBouy: 50,
+    capacity: 0.2,
+  },
+  {
+    id: 3,
+    name: 3,
+    totalBouy: 10,
+    activeBouy: 5,
+    normalBouy: 50,
+    capacity: 0.15,
+  },
+  {
+    id: 4,
+    name: 4,
+    totalBouy: 10,
+    activeBouy: 2,
+    normalBouy: 50,
+    capacity: 0.3,
+  },
+  {
+    id: 5,
+    name: 5,
+    totalBouy: 10,
+    activeBouy: 5,
+    normalBouy: 50,
+    capacity: 0.21,
+  },
+  {
+    id: 6,
+    name: 6,
+    totalBouy: 10,
+    activeBouy: 9,
+    normalBouy: 50,
+    capacity: 0.7,
+  },
+  {
+    id: 7,
+    name: 7,
+    totalBouy: 10,
+    activeBouy: 10,
+    normalBouy: 50,
+    capacity: 0.87,
+  },
+  {
+    id: 8,
+    name: 8,
+    totalBouy: 10,
+    activeBouy: 1,
+    normalBouy: 50,
+    capacity: 0.9,
+  },
+  {
+    id: 9,
+    name: 9,
+    totalBouy: 10,
+    activeBouy: 0,
+    normalBouy: 50,
+    capacity: 1.0,
+  },
+  {
+    id: 10,
+    name: 10,
+    totalBouy: 10,
+    activeBouy: 5,
+    normalBouy: 50,
+    capacity: 0.12,
+  },
+  {
+    id: 11,
+    name: 11,
+    totalBouy: 10,
+    activeBouy: 5,
+    normalBouy: 50,
+    capacity: 0.15,
+  },
+  {
+    id: 12,
+    name: 12,
+    totalBouy: 10,
+    activeBouy: 7,
+    normalBouy: 50,
+    capacity: 0.56,
+  },
+  {
+    id: 13,
+    name: 13,
+    totalBouy: 10,
+    activeBouy: 9,
+    normalBouy: 50,
+    capacity: 0.41,
+  },
+  {
+    id: 14,
+    name: 14,
+    totalBouy: 10,
+    activeBouy: 10,
+    normalBouy: 50,
+    capacity: 0.43,
+  },
 ];
 
 export default GroupDetailView = ({ navigation, route, data }) => {
@@ -116,15 +207,6 @@ export default GroupDetailView = ({ navigation, route, data }) => {
 
   return (
     <>
-      {
-        <TypeModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          typeModeIndex={typeModeIndex}
-          setTypeModeIndex={setTypeModeIndex}
-          typeModeText={typeModeText}
-        />
-      }
       <SafeAreaView style={{ backgroundColor: themeContext.mainColor }}>
         {headerHeight > 0 && (
           <>
@@ -168,7 +250,10 @@ export default GroupDetailView = ({ navigation, route, data }) => {
               scrollY={scrollY}
               data={items}
               renderItem={RENDERITEM}
-              contentContainerStyle={{ paddingHorizontal: 15 }}
+              contentContainerStyle={{
+                paddingHorizontal: 15,
+                paddingBottom: LINEHEADER_HEIGHT,
+              }}
             />
           </>
         )}
@@ -198,6 +283,15 @@ export default GroupDetailView = ({ navigation, route, data }) => {
           <GroupMap />
         </CollapsibleHeader>
       </SafeAreaView>
+      {
+        <TypeModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          typeModeIndex={typeModeIndex}
+          setTypeModeIndex={setTypeModeIndex}
+          typeModeText={typeModeText}
+        />
+      }
     </>
   );
 };

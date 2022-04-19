@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Modal, Text, TouchableOpacity } from "react-native";
+import { Modal, TouchableOpacity } from "react-native";
 import Animated, {
   Extrapolate,
   interpolate,
@@ -47,7 +47,7 @@ const ModalContextText = styled.Text`
   font-weight: ${(props) => (props.focused ? "bold" : "normal")};
 `;
 
-const ModalButtonBox = styled.TouchableOpacity`
+const ModalButtonBox = styled.View`
   height: 15%;
   width: 100%;
   padding: 10px;
@@ -123,13 +123,20 @@ export default TypeModal = ({
                 </TouchableOpacity>
               ))}
             </ModalContextBox>
-            <ModalButtonBox
-              onPress={() => {
-                setModalVisible(false);
-                cancel();
-              }}
-            >
-              <ModalButtonText>취소</ModalButtonText>
+            <ModalButtonBox>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={() => {
+                  setModalVisible(false);
+                  cancel();
+                }}
+              >
+                <ModalButtonText>취소</ModalButtonText>
+              </TouchableOpacity>
             </ModalButtonBox>
           </ModalView>
         </Container>
