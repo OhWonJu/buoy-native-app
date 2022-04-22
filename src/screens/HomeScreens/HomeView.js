@@ -106,13 +106,20 @@ const TotalUnit = styled.Text`
   color: ${(props) => props.theme.lightUtilColor + 90};
 `;
 
-export default HomeView = () => {
+export default HomeView = ({
+  meteoVal,
+  obsData,
+  tidal,
+  waveHight,
+  rTwidth,
+  rTsetWidth,
+  rBwidth,
+  rBsetWidth,
+  circleLen,
+  setCircleLen,
+}) => {
   const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
-
-  const [rTwidth, rTsetWidth] = useState(0);
-  const [rBwidth, rBsetWidth] = useState(0);
-  const [circleLen, setCircleLen] = useState(0);
 
   const data = MockData;
   let perc = 0;
@@ -123,9 +130,11 @@ export default HomeView = () => {
     <CommonContainer style={{ paddingBottom: 0 }}>
       <WeatherBox>
         <WeatherContext>
-          <Text style={{ fontSize: 75 }}>10º</Text>
+          <Text style={{ fontSize: 75 }}>{meteoVal.data.temperature}º</Text>
           <RowBox>
-            <Text style={{ fontSize: 25, textAlign: "center" }}>거제시</Text>
+            <Text style={{ fontSize: 25, textAlign: "center" }}>
+              {meteoVal.region}
+            </Text>
           </RowBox>
         </WeatherContext>
         <WeatherIconWrapper>
@@ -134,7 +143,7 @@ export default HomeView = () => {
       </WeatherBox>
       <OceanInfoBox>
         <OceanLeft>
-          <Waves wavy={2} />
+          <Waves wavy={parseFloat(waveHight.wave_height).toFixed(1)} />
           <MainText
             style={{
               position: "absolute",
@@ -144,16 +153,18 @@ export default HomeView = () => {
           >
             파고
           </MainText>
-          <SubText
-            style={{
-              fontSize: 30,
-              position: "absolute",
-              left: "68%",
-              top: "83%",
-            }}
-          >
-            2m
-          </SubText>
+          <View style={{ top: "-20%", alignItems: "flex-end" }}>
+            <SubText
+              style={{
+                paddingRight: 15,
+                fontSize: 30,
+                position: "absolute",
+                // left: "50%",
+              }}
+            >
+              {parseFloat(waveHight.wave_height).toFixed(1)}m
+            </SubText>
+          </View>
         </OceanLeft>
         <View style={{ flex: 1 }}>
           {/* 캐러셀 박스 */}
@@ -164,8 +175,11 @@ export default HomeView = () => {
           >
             <Carousel
               data={[
-                { temperature: 12.2, type: "water" },
-                { temperature: 15.3, type: "atmo" },
+                {
+                  temperature: meteoVal.water_temp,
+                  type: "water",
+                },
+                { temperature: meteoVal.data.temperature, type: "atmo" },
               ]}
               pageWidth={rTwidth}
               renderItem={({ item }) => (
@@ -186,16 +200,20 @@ export default HomeView = () => {
               snapToInterval={rBwidth}
               pagingEnabled={true}
             >
-              <UtilsInfoPage width={rBwidth} title={"염도"} context={"3.2%"} />
+              <UtilsInfoPage
+                width={rBwidth}
+                title={"염도"}
+                context={`${parseFloat(obsData.Salinity).toFixed(1)}psu`}
+              />
               <UtilsInfoPage
                 width={rBwidth}
                 title={"풍속"}
-                context={"3.5cm/s"}
+                context={`${parseFloat(obsData.wind_speed).toFixed(1)}m/s`}
               />
               <UtilsInfoPage
                 width={rBwidth}
                 title={"조류 속도"}
-                context={"3.2cm/s"}
+                context={`${parseFloat(tidal.current_speed).toFixed(1)}cm/s`}
               />
             </ScrollView>
           </OceanRightBtm>

@@ -46,31 +46,32 @@ const UnitText = styled.Text`
   font-size: 10px;
 `;
 
-export default LineBox = ({ item }) => {
+export default LineBox = ({ _buoy_list, _line_info }) => {
   return (
     <Container style={{ height: "100%" }} activeOpacity={1}>
-      <LineName numberOfLines={1}>Line {item.name}</LineName>
+      <LineName numberOfLines={1}>Line {_line_info.line}</LineName>
       <InfoBox>
         <InfoWrapper>
           <InfoSubText>스마트부표</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
             <InfoMainText
-              style={{ color: getAperB(item.totalBouy, item.activeBouy) }}
+              style={{ color: getAperB(_buoy_list.length, _buoy_list.length) }}
             >
-              {item.activeBouy}
+              {_buoy_list.length}
             </InfoMainText>
-            <UnitText>/{item.totalBouy}</UnitText>
+            <UnitText>/{_buoy_list.length}</UnitText>
           </RowBox>
         </InfoWrapper>
         <InfoWrapper>
           <InfoSubText>일반부표</InfoSubText>
-          <InfoMainText>{item.normalBouy}</InfoMainText>
+          <InfoMainText>--</InfoMainText>
         </InfoWrapper>
         <InfoWrapper>
           <InfoSubText>수용률</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <InfoMainText style={{ color: getAperB(1, 1 - item.capacity) }}>
-              {(item.capacity * 100).toFixed(0)}
+            {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
+            <InfoMainText style={{ color: getAperB(100, _line_info.weight) }}>
+              {_line_info.weight.toFixed(1)}
             </InfoMainText>
             <UnitText>%</UnitText>
           </RowBox>

@@ -26,12 +26,12 @@ const DrawGroupList = ({ navigation, route }) => {
 
 const Drawer = createDrawerNavigator();
 
-export default () => {
+export default ({ groupData }) => {
   return (
     <Drawer.Navigator
       initialRouteName="DrawHome"
       drawerContent={(props) => {
-        return <DrawerBar {...props} />;
+        return <DrawerBar {...props} groupData={groupData} />;
       }}
       defaultStatus="closed"
       screenOptions={{
@@ -43,8 +43,11 @@ export default () => {
         },
       }}
     >
-      <Drawer.Screen name="DrawHome" component={DrawHome} />
+      {/* <Drawer.Screen name="DrawHome" component={DrawHome} /> */}
       {/* <Drawer.Screen name="DrawGroupList" component={DrawGroupList} /> */}
+      <Drawer.Screen name={"DrawHome"}>
+        {() => <StackNavFactory groupData={groupData} />}
+      </Drawer.Screen>
     </Drawer.Navigator>
   );
 };

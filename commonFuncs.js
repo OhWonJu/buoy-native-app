@@ -9,13 +9,16 @@ function commonRule(dom, sub) {
 }
 
 export function getQuartile(dom, sub, rule) {
+  let quartile = ["Q1", "Q2", "Q3", "Q4"];
+
   if (rule(dom, sub) === "Q1") {
     return "#eb2f06";
   } else if (rule(dom, sub) === "Q2") {
     return "#E87C40";
   } else if (rule(dom, sub) === "Q3") {
-    return "#9EEF14";
+    return "#5FBF1F";
   }
+  0;
   return "#3897f0";
 }
 

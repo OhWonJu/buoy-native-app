@@ -8,7 +8,7 @@ import Animated, {
 import styled, { ThemeContext } from "styled-components/native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 
-import { MockData } from "../../MockData";
+import { _GET } from "../../commonRestAPIModel";
 import constants from "../../constants";
 
 const Container = styled(Animated.View)`
@@ -112,15 +112,20 @@ const InfoSubText = styled.Text`
   font-size: 11px;
 `;
 
-const data = MockData;
 //                             setSwipealbe같은건,,redux로 관리하는게 안전쓰..
 const Item = ({ item, navigation, disable }) => {
-  const { id, name, location, temperature, capacity } = item;
+  const {
+    group_id: id,
+    group_name: name,
+    region: location,
+    group_water_temp: temperature,
+    group_weight: capacity,
+  } = item;
   return (
     <ItemBox
       disabled={disable}
       onPress={() => {
-        navigation.navigate(id);
+        navigation.navigate(String(id), { groupInfo: item });
         navigation.closeDrawer();
       }}
     >
@@ -131,11 +136,11 @@ const Item = ({ item, navigation, disable }) => {
         </InfoWrapper>
         <InfoWrapper>
           <InfoMainText>수온</InfoMainText>
-          <InfoSubText>{temperature}º</InfoSubText>
+          <InfoSubText>{temperature.toFixed(1)}º</InfoSubText>
         </InfoWrapper>
         <InfoWrapper>
-          <InfoMainText>수용량</InfoMainText>
-          <InfoSubText>{capacity}%</InfoSubText>
+          <InfoMainText>무게</InfoMainText>
+          <InfoSubText>{capacity.toFixed(0)}kg</InfoSubText>
         </InfoWrapper>
         <InfoWrapper></InfoWrapper>
       </InfoBox>
@@ -143,9 +148,8 @@ const Item = ({ item, navigation, disable }) => {
   );
 };
 
-export default DrawerBar = ({ state, navigation }) => {
+export default DrawerBar = ({ state, navigation, groupData }) => {
   const themeContext = useContext(ThemeContext);
-  // const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [disable, setDisable] = useState(true);
 
@@ -205,9 +209,9 @@ export default DrawerBar = ({ state, navigation }) => {
           </TitleBox>
           <ListBox>
             <FlatList
-              data={data}
+              data={groupData}
               renderItem={renderItem}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.group_id}
             />
           </ListBox>
           <BtnBox style={{ paddingTop: 20 }}>

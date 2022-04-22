@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import Animated, {
   abs,
   add,
@@ -81,7 +81,21 @@ export default SwipeWrapper = ({ onSwipe, children, HEIGHT = 65 }) => {
   return (
     <Animated.View>
       <View style={styles.background}>
-        <TouchableWithoutFeedback onPress={() => shouldRemove.setValue(1)}>
+        <TouchableWithoutFeedback
+          onPress={() =>
+            Alert.alert(
+              "삭제하시겠습니까?",
+              "삭제하면 해당 항목의 모든 정보를 잃게 됩니다.",
+              [
+                {
+                  text: "취소",
+                  style: "cancel",
+                },
+                { text: "확인", onPress: () => shouldRemove.setValue(1) },
+              ]
+            )
+          }
+        >
           <Action x={abs(translateX)} {...{ deleteOpacity }} height={HEIGHT} />
         </TouchableWithoutFeedback>
       </View>

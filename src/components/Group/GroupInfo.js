@@ -70,7 +70,7 @@ export default GroupInfo = ({ data = null }) => {
             }}
           >
             <DonutChart
-              percentage={data.capacity}
+              percentage={data.group_weight.toFixed(1)}
               radius={circleLen / 2}
               duration={500}
               // color={themeContext.darkBlueColor}
@@ -86,28 +86,28 @@ export default GroupInfo = ({ data = null }) => {
         <ColBox>
           <SubText>수온</SubText>
           <RowBox>
-            <MainText>{data.temperature}</MainText>
+            <MainText>{data.group_water_temp.toFixed(1)}</MainText>
             <UnitText>º</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>염도</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>NaN</MainText>
-            <UnitText>%</UnitText>
+            <MainText>{data.group_salinity.toFixed(1)}</MainText>
+            <UnitText>psu</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>스마트부표</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>{data.sBouy}</MainText>
-            <UnitText>/{data.sBouy}</UnitText>
+            <MainText>{data.smart_buoy}</MainText>
+            <UnitText>/{data.smart_buoy}</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>일반부표</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>{data.nBouy}</MainText>
+            <MainText>{data.plain_buoy}</MainText>
             <UnitText>개</UnitText>
           </RowBox>
         </ColBox>
