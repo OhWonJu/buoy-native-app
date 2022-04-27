@@ -18,7 +18,6 @@ export function getQuartile(dom, sub, rule) {
   } else if (rule(dom, sub) === "Q3") {
     return "#5FBF1F";
   }
-  0;
   return "#3897f0";
 }
 

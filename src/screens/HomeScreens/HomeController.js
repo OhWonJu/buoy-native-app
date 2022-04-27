@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
 import { getCoordinate } from "../../../store/coordinateReducer";
-import { _GET } from "../../../commonRestAPIModel";
+import { _GET, _REFECTH } from "../../../commonRestAPIModel";
 
 import HomeView from "./HomeView";
 
 export default HomeController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const [rTwidth, rTsetWidth] = useState(0);
   const [rBwidth, rBsetWidth] = useState(0);
@@ -24,6 +26,15 @@ export default HomeController = ({ navigation, route }) => {
     );
   }, [latitude, longitude]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    _REFECTH(
+      `http://192.168.0.20:3124/main/data?latitude=${latitude}&longitude=${longitude}`,
+      setData
+    );
+    setRefreshing(false);
+  }, []);
+
   if (isLoading) {
     return null;
   }
@@ -33,6 +44,8 @@ export default HomeController = ({ navigation, route }) => {
       meteoVal={data.meteo_val}
       obsData={data.obs_data}
       tidal={data.tidal}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
       waveHight={data.wave_hight}
       rTwidth={rTwidth}
       rTsetWidth={rTsetWidth}

@@ -83,17 +83,16 @@ export default SwipeWrapper = ({ onSwipe, children, HEIGHT = 65 }) => {
       <View style={styles.background}>
         <TouchableWithoutFeedback
           onPress={() =>
-            Alert.alert(
-              "삭제하시겠습니까?",
-              "삭제하면 해당 항목의 모든 정보를 잃게 됩니다.",
-              [
-                {
-                  text: "취소",
-                  style: "cancel",
+            Alert.alert("", "해당 그룹에서 해제 하시겠습니까?", [
+              {
+                text: "취소",
+                style: "cancel",
+                onPress: () => {
+                  translateX.setValue(0);
                 },
-                { text: "확인", onPress: () => shouldRemove.setValue(1) },
-              ]
-            )
+              },
+              { text: "확인", onPress: () => shouldRemove.setValue(1) },
+            ])
           }
         >
           <Action x={abs(translateX)} {...{ deleteOpacity }} height={HEIGHT} />

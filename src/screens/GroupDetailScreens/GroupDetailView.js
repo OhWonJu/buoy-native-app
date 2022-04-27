@@ -10,7 +10,7 @@ import TypeModal from "../../components/Group/TypeModal";
 import GroupGraphTab from "../../components/Group/GroupGraphTab";
 import ColBox from "../../components/ColBox";
 import SwipeWrapper from "../../components/SwipeWrapper/SwipeWrapper";
-import LineBox from "../../components/Group/LineBox";
+import BouyCard from "../../components/Group/BouyCard";
 import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
 import CollapsibleFlatList from "../../components/CollapsibleView/CollapsibleFlatList";
 
@@ -46,14 +46,15 @@ export default GroupDetailView = ({
   route,
   headerHeight,
   setHeaderHeight,
-  modalVisible,
-  setModalVisible,
+  typeModalVisible,
+  setTypeModalVisible,
   typeModeIndex,
   setTypeModeIndex,
   typeModeText,
-  data,
-  setData,
+  bouyData,
+  setBouyData,
   groupInfo,
+  setGroupInfo,
 }) => {
   const themeContext = useContext(ThemeContext);
 
@@ -77,15 +78,17 @@ export default GroupDetailView = ({
   const RENDERITEM = ({ item }) => {
     return (
       <SwipeWrapper
-        key={item._line_info.line}
+        key={item.model}
         onSwipe={() => {
-          const newData = [...data];
+          const newData = [...bouyData];
           newData.splice(newData.indexOf(item), 1);
-          setData(newData);
+          setBouyData(newData);
         }}
         HEIGHT={70}
       >
-        <LineBox {...item} />
+        <TouchableOpacity onPress={() => null}>
+          <BouyCard {...item} />
+        </TouchableOpacity>
       </SwipeWrapper>
     );
   };
@@ -107,7 +110,7 @@ export default GroupDetailView = ({
                     alignItems: "flex-start",
                   }}
                 >
-                  <Title>라인 정보</Title>
+                  <Title>부이 정보</Title>
                 </ColBox>
                 <ColBox
                   style={{
@@ -124,7 +127,7 @@ export default GroupDetailView = ({
                         color: themeContext.idnColor,
                       }}
                     >
-                      라인 추가
+                      부이 추가
                     </EditText>
                   </TouchableOpacity>
                 </ColBox>
@@ -133,8 +136,10 @@ export default GroupDetailView = ({
             <CollapsibleFlatList
               headerHeight={headerHeight}
               scrollY={scrollY}
-              data={data}
+              data={bouyData}
               renderItem={RENDERITEM}
+              onEndReachedThreshold={0.1}
+              onEndReached={() => null}
               contentContainerStyle={{
                 paddingHorizontal: 15,
                 paddingBottom: LINEHEADER_HEIGHT,
@@ -155,7 +160,7 @@ export default GroupDetailView = ({
                 <EditText style={{ fontSize: 12, paddingRight: 10 }}>
                   {groupInfo.region}
                 </EditText>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <TouchableOpacity onPress={() => setTypeModalVisible(true)}>
                   <EditText style={{ fontWeight: "bold" }}>
                     {typeModeText[typeModeIndex]}
                   </EditText>
@@ -165,19 +170,17 @@ export default GroupDetailView = ({
           />
           <GroupInfo data={groupInfo} />
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
-          <GroupGraphTab item={data._history} />
+          <GroupGraphTab />
           <GroupMap />
         </CollapsibleHeader>
       </SafeAreaView>
-      {
-        <TypeModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          typeModeIndex={typeModeIndex}
-          setTypeModeIndex={setTypeModeIndex}
-          typeModeText={typeModeText}
-        />
-      }
+      <TypeModal
+        modalVisible={typeModalVisible}
+        setModalVisible={setTypeModalVisible}
+        typeModeIndex={typeModeIndex}
+        setTypeModeIndex={setTypeModeIndex}
+        typeModeText={typeModeText}
+      />
     </>
   );
 };

@@ -4,33 +4,29 @@ import { useIsFocused } from "@react-navigation/native";
 import GroupDetailView from "./GroupDetailView";
 import { _GET } from "../../../commonRestAPIModel";
 
-export default GroupDetailController = ({
-  navigation,
-  route,
-  id,
-  groupName,
-}) => {
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-
+export default GroupDetailController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [typeModeIndex, setTypeModeIndex] = useState(0); // recent || createFirst || editFirst || popularity ||
 
+  const [groupInfo, setGroupInfo] = useState(route.params.groupInfo);
+
+  const [bouyData, setBouyData] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    _GET(
+      `http://192.168.0.20:3124/detail/buoy/list?group=${route.params?.groupName}`,
+      setBouyData,
+      setLoading
+    );
+  }, []);
+
+  const [typeModalVisible, setTypeModalVisible] = useState(false);
+  const [typeModeIndex, setTypeModeIndex] = useState(0); // recent || createFirst || editFirst || popularity ||
   const typeModeText = [
     "일반 수하식",
     "연승 수하식",
     "땟목 수하식",
     "기타 수하식",
   ];
-
-  useEffect(() => {
-    _GET(
-      `http://192.168.0.20:3124/detail/group?group=${groupName}`,
-      setData,
-      setLoading
-    );
-  }, []);
 
   if (isLoading) {
     return null;
@@ -42,14 +38,15 @@ export default GroupDetailController = ({
       route={route}
       headerHeight={headerHeight}
       setHeaderHeight={setHeaderHeight}
-      modalVisible={modalVisible}
-      setModalVisible={setModalVisible}
+      typeModalVisible={typeModalVisible}
+      setTypeModalVisible={setTypeModalVisible}
       typeModeIndex={typeModeIndex}
       setTypeModeIndex={setTypeModeIndex}
       typeModeText={typeModeText}
-      data={data}
-      setData={setData}
-      groupInfo={route.params?.groupInfo}
+      bouyData={bouyData}
+      setBouyData={setBouyData}
+      groupInfo={groupInfo}
+      setGroupInfo={setGroupInfo}
     />
   );
 };

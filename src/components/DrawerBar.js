@@ -10,6 +10,7 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 
 import { _GET } from "../../commonRestAPIModel";
 import constants from "../../constants";
+import { useNavigation } from "@react-navigation/native";
 
 const Container = styled(Animated.View)`
   flex: 1;
@@ -113,7 +114,7 @@ const InfoSubText = styled.Text`
 `;
 
 //                             setSwipealbe같은건,,redux로 관리하는게 안전쓰..
-const Item = ({ item, navigation, disable }) => {
+const Item = ({ item, navigation, stackNav, disable }) => {
   const {
     group_id: id,
     group_name: name,
@@ -125,7 +126,12 @@ const Item = ({ item, navigation, disable }) => {
     <ItemBox
       disabled={disable}
       onPress={() => {
-        navigation.navigate(String(id), { groupInfo: item });
+        navigation.closeDrawer();
+        navigation.navigate(String(id), {
+          id: id,
+          groupName: name,
+          groupInfo: item,
+        });
         navigation.closeDrawer();
       }}
     >
@@ -152,6 +158,9 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
   const themeContext = useContext(ThemeContext);
   const [index, setIndex] = useState(0);
   const [disable, setDisable] = useState(true);
+
+  const stackNav = useNavigation();
+  console.log(stackNav);
 
   const isDrawerOpen = useDrawerStatus() === "open";
 
@@ -181,13 +190,18 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
 
   // 드로어 뷰 간 이동을 위한 토글
   const toggleBtn = [
-    { nav: "GroupList", name: "구역 관리" },
+    { nav: "BouyList", name: "부이 관리" },
     { nav: "Home", name: "종합 정보" },
   ];
   // ------------------------------------------------
 
   const renderItem = ({ item }) => (
-    <Item item={item} navigation={navigation} disable={disable} />
+    <Item
+      item={item}
+      navigation={navigation}
+      stackNav={stackNav}
+      disable={disable}
+    />
   );
 
   return (

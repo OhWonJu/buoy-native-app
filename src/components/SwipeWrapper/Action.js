@@ -66,7 +66,7 @@ const Action = ({ x, deleteOpacity, height }) => {
           opacity: multiply(textOpacity, deleteOpacity),
         }}
       >
-        <Text style={styles.remove}>삭제</Text>
+        <Text style={styles.remove}>해제</Text>
       </Animated.View>
     </Animated.View>
   );

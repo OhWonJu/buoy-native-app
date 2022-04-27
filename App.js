@@ -3,14 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import * as Location from "expo-location";
-import {
-  Provider as StoreProvider,
-  useDispatch,
-  useSelector,
-} from "react-redux";
+import { Provider as StoreProvider, useDispatch } from "react-redux";
 
 import store from "./store/store";
-import { setCoordinate, getCoordinate } from "./store/coordinateReducer";
+import { setCoordinate } from "./store/coordinateReducer";
 import { darkTheme, lightTheme } from "./styles/Theme";
 import SignOutNav from "./src/navigators/SignOutNav";
 import SignInNav from "./src/navigators/SignInNav";

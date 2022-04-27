@@ -9,6 +9,8 @@ export default CollapsibleFlatList = ({
   scrollY,
   data,
   renderItem,
+  onEndReachedThreshold,
+  onEndReached,
   contentContainerStyle,
 }) => {
   const keyExtractor = useCallback((item, index) => index.toString(), []);
@@ -29,6 +31,8 @@ export default CollapsibleFlatList = ({
         [{ nativeEvent: { contentOffset: { y: scrollY } } }],
         { useNativeDriver: true }
       )}
+      onEndReachedThreshold={onEndReachedThreshold}
+      onEndReached={onEndReached}
       bounces={false}
     />
   );

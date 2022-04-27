@@ -1,8 +1,9 @@
-import React from "react";
-import styled from "styled-components/native";
-import RowBox from "../RowBox";
-import constants from "../../../constants";
+import React, { useContext } from "react";
+import styled, { ThemeContext } from "styled-components/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import { getAperB } from "../../../commonFuncs";
+import RowBox from "../RowBox";
 
 const Container = styled.View`
   background-color: ${(props) => props.theme.mainColor};
@@ -13,7 +14,7 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const LineName = styled.Text`
+const BouyName = styled.Text`
   background-color: ${(props) => props.theme.utilColor + 35};
   padding: 3px 8px 3px 8px;
   border-radius: 8px;
@@ -23,7 +24,7 @@ const LineName = styled.Text`
 `;
 
 const InfoBox = styled.View`
-  width: 70%;
+  width: 60%;
   flex-direction: row;
   justify-content: space-around;
 `;
@@ -46,35 +47,56 @@ const UnitText = styled.Text`
   font-size: 10px;
 `;
 
-export default LineBox = ({ _buoy_list, _line_info }) => {
+export default BouyCard = ({
+  latitude,
+  longitude,
+  model,
+  model_idx,
+  salinity,
+  warn,
+  warn_detail,
+  water_temp,
+  height,
+  weight,
+}) => {
+  const themeContext = useContext(ThemeContext);
   return (
     <Container style={{ height: "100%" }}>
-      <LineName numberOfLines={1}>Line {_line_info.line}</LineName>
+      <BouyName numberOfLines={1}>{model}</BouyName>
       <InfoBox>
         <InfoWrapper>
-          <InfoSubText>스마트부표</InfoSubText>
+          <InfoSubText>침식</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <InfoMainText
-              style={{ color: getAperB(_buoy_list.length, _buoy_list.length) }}
-            >
-              {_buoy_list.length}
-            </InfoMainText>
-            <UnitText>/{_buoy_list.length}</UnitText>
-          </RowBox>
-        </InfoWrapper>
-        <InfoWrapper>
-          <InfoSubText>일반부표</InfoSubText>
-          <InfoMainText>--</InfoMainText>
-        </InfoWrapper>
-        <InfoWrapper>
-          <InfoSubText>수용률</InfoSubText>
-          <RowBox style={{ alignItems: "flex-end" }}>
-            {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
-            <InfoMainText style={{ color: getAperB(100, _line_info.weight) }}>
-              {_line_info.weight.toFixed(1)}
+            <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
+              {height.toFixed(1)}
             </InfoMainText>
             <UnitText>%</UnitText>
           </RowBox>
+        </InfoWrapper>
+        <InfoWrapper>
+          <InfoSubText>하중</InfoSubText>
+          <RowBox style={{ alignItems: "flex-end" }}>
+            {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
+            <InfoMainText style={{ color: getAperB(100, 100 - weight) }}>
+              {weight.toFixed(1)}
+            </InfoMainText>
+            <UnitText>kg</UnitText>
+          </RowBox>
+        </InfoWrapper>
+        <InfoWrapper>
+          {warn === 0 ? (
+            <MaterialCommunityIcons
+              name="alert-circle-outline"
+              size={24}
+              color={themeContext.lightUtilColor}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="alert-circle"
+              size={24}
+              color={themeContext.orangeColor}
+            />
+          )}
         </InfoWrapper>
       </InfoBox>
     </Container>

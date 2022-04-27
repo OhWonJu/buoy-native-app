@@ -3,13 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { verticallTransition, horizontalTransition } from "./NavigationOptions";
 import Home from "../screens/HomeScreens/index";
-import GroupList from "../screens/GroupListScreens/index";
-import GroupManage from "../screens/GroupManageScreens/index";
+import BouyList from "../screens/BouyListScreens/index";
 import GroupDetail from "../screens/GroupDetailScreens/index";
-
-const GROUP_DETAIL = ({ navigation, route, id }) => (
-  <GroupDetail navigation={navigation} route={route} id={id} />
-);
+import BouyDetail from "../screens/BouyDetailScreens/index";
 
 const Stacks = createStackNavigator();
 
@@ -22,10 +18,22 @@ export default ({ navigation, route, screenName, groupData }) => {
         }}
       >
         <Stacks.Screen name={"Home"} component={Home} />
-        <Stacks.Screen name={"GroupList"} component={GroupList} />
+        {groupData.map((data, index) => (
+          <Stacks.Screen key={index} name={String(data.group_id)}>
+            {({ navigation, route }) => (
+              <GroupDetail navigation={navigation} route={route} />
+            )}
+          </Stacks.Screen>
+        ))}
+        {/* <Stacks.Screen name={"GroupDetail"}>
+          {({ navigation, route }) => (
+            <GroupDetail navigation={navigation} route={route} />
+          )}
+        </Stacks.Screen> */}
+        <Stacks.Screen name={"BouyList"} component={BouyList} />
         <Stacks.Screen
-          name={"GroupManage"}
-          component={GroupManage}
+          name={"BouyDetail"}
+          component={BouyDetail}
           options={{
             presentation: "card",
             headerShown: false,
@@ -33,18 +41,6 @@ export default ({ navigation, route, screenName, groupData }) => {
             gestureEnabled: false,
           }}
         />
-        {groupData.map((data, index) => (
-          <Stacks.Screen key={index} name={String(data.group_id)}>
-            {({ navigation, route }) => (
-              <GroupDetail
-                navigation={navigation}
-                route={route}
-                id={data.group_id}
-                groupName={data.group_name}
-              />
-            )}
-          </Stacks.Screen>
-        ))}
       </Stacks.Navigator>
     );
   } else {

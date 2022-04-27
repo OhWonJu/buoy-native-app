@@ -5,13 +5,13 @@ import styled from "styled-components/native";
 import Header from "../../components/Header";
 import Container from "../../components/Container";
 
-export default GroupListView = () => {
+export default BouyListView = () => {
   return (
     <>
-      <Header title="구역목록" />
+      <Header title="부이목록" />
       <Container>
         <View>
-          <Text>구역목록</Text>
+          <Text>부이목록</Text>
         </View>
       </Container>
     </>
