@@ -52,9 +52,12 @@ export default GroupDetailView = ({
   setTypeModeIndex,
   typeModeText,
   bouyData,
-  setBouyData,
   groupInfo,
-  setGroupInfo,
+  onSwipe,
+  onEndReached,
+  refreshing,
+  onRefresh,
+  goToBouyDetail,
 }) => {
   const themeContext = useContext(ThemeContext);
 
@@ -77,16 +80,8 @@ export default GroupDetailView = ({
 
   const RENDERITEM = ({ item }) => {
     return (
-      <SwipeWrapper
-        key={item.model}
-        onSwipe={() => {
-          const newData = [...bouyData];
-          newData.splice(newData.indexOf(item), 1);
-          setBouyData(newData);
-        }}
-        HEIGHT={70}
-      >
-        <TouchableOpacity onPress={() => null}>
+      <SwipeWrapper key={item.model} onSwipe={() => onSwipe(item)} HEIGHT={65}>
+        <TouchableOpacity onPress={() => goToBouyDetail(item)}>
           <BouyCard {...item} />
         </TouchableOpacity>
       </SwipeWrapper>
@@ -139,7 +134,9 @@ export default GroupDetailView = ({
               data={bouyData}
               renderItem={RENDERITEM}
               onEndReachedThreshold={0.1}
-              onEndReached={() => null}
+              onEndReached={onEndReached}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
               contentContainerStyle={{
                 paddingHorizontal: 15,
                 paddingBottom: LINEHEADER_HEIGHT,
@@ -168,7 +165,7 @@ export default GroupDetailView = ({
               </RowBox>
             }
           />
-          <GroupInfo data={groupInfo} />
+          <GroupInfo bouyCount={bouyData.length} {...groupInfo} />
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
           <GroupGraphTab />
           <GroupMap />

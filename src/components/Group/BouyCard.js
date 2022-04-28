@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
+import { View } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Svg, Circle } from "react-native-svg";
 
 import { getAperB } from "../../../commonFuncs";
 import RowBox from "../RowBox";
@@ -10,12 +12,12 @@ const Container = styled.View`
   border-bottom-color: ${(props) => props.theme.lightUtilColor};
   border-bottom-width: 1px;
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 `;
 
 const BouyName = styled.Text`
-  background-color: ${(props) => props.theme.utilColor + 35};
+  background-color: ${(props) => props.theme.lightUtilColor + 80};
   padding: 3px 8px 3px 8px;
   border-radius: 8px;
   text-align: center;
@@ -24,14 +26,16 @@ const BouyName = styled.Text`
 `;
 
 const InfoBox = styled.View`
+  flex: 1;
   width: 60%;
+  /* flex: 2; */
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-end;
 `;
 const InfoWrapper = styled.View`
   justify-content: center;
   align-items: center;
-  padding: 0px 0px 0px 12px;
+  padding: 0px 10px 0px 15px;
 `;
 const InfoMainText = styled.Text`
   color: ${(props) => props.theme.subColor};
@@ -62,10 +66,22 @@ export default BouyCard = ({
   const themeContext = useContext(ThemeContext);
   return (
     <Container style={{ height: "100%" }}>
+      <View
+        style={{
+          height: "100%",
+          paddingHorizontal: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Svg height="8" width="8">
+          <Circle cx={4} cy={4} r={4} fill={"#3897f0"} />
+        </Svg>
+      </View>
       <BouyName numberOfLines={1}>{model}</BouyName>
       <InfoBox>
         <InfoWrapper>
-          <InfoSubText>침식</InfoSubText>
+          <InfoSubText>침수</InfoSubText>
           <RowBox style={{ alignItems: "flex-end" }}>
             <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
               {height.toFixed(1)}
@@ -87,13 +103,13 @@ export default BouyCard = ({
           {warn === 0 ? (
             <MaterialCommunityIcons
               name="alert-circle-outline"
-              size={24}
+              size={20}
               color={themeContext.lightUtilColor}
             />
           ) : (
             <MaterialCommunityIcons
               name="alert-circle"
-              size={24}
+              size={20}
               color={themeContext.orangeColor}
             />
           )}

@@ -35,7 +35,14 @@ const UnitText = styled.Text`
   color: ${(props) => props.theme.mainColor + 90};
 `;
 
-export default GroupInfo = ({ data = null }) => {
+export default GroupInfo = ({
+  bouyCount,
+  group_weight,
+  group_water_temp,
+  group_salinity,
+  smart_buoy,
+  plain_buoy,
+}) => {
   const themeContext = useContext(ThemeContext);
 
   const [circleLen, setCircleLen] = useState(0);
@@ -70,7 +77,7 @@ export default GroupInfo = ({ data = null }) => {
             }}
           >
             <DonutChart
-              percentage={data.group_weight.toFixed(1)}
+              percentage={group_weight.toFixed(1)}
               radius={circleLen / 2}
               duration={500}
               // color={themeContext.darkBlueColor}
@@ -86,28 +93,28 @@ export default GroupInfo = ({ data = null }) => {
         <ColBox>
           <SubText>수온</SubText>
           <RowBox>
-            <MainText>{data.group_water_temp.toFixed(1)}</MainText>
+            <MainText>{group_water_temp.toFixed(1)}</MainText>
             <UnitText>º</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>염도</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>{data.group_salinity.toFixed(1)}</MainText>
+            <MainText>{group_salinity.toFixed(1)}</MainText>
             <UnitText>psu</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>스마트부표</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>{data.smart_buoy}</MainText>
-            <UnitText>/{data.smart_buoy}</UnitText>
+            <MainText>{bouyCount}</MainText>
+            <UnitText>/{bouyCount}</UnitText>
           </RowBox>
         </ColBox>
         <ColBox>
           <SubText>일반부표</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
-            <MainText>{data.plain_buoy}</MainText>
+            <MainText>{plain_buoy}</MainText>
             <UnitText>개</UnitText>
           </RowBox>
         </ColBox>

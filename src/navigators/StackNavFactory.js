@@ -31,16 +31,7 @@ export default ({ navigation, route, screenName, groupData }) => {
           )}
         </Stacks.Screen> */}
         <Stacks.Screen name={"BouyList"} component={BouyList} />
-        <Stacks.Screen
-          name={"BouyDetail"}
-          component={BouyDetail}
-          options={{
-            presentation: "card",
-            headerShown: false,
-            ...verticallTransition,
-            gestureEnabled: false,
-          }}
-        />
+        <Stacks.Screen name={"BouyDetail"} component={BouyDetail} />
       </Stacks.Navigator>
     );
   } else {

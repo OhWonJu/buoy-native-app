@@ -4,25 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import StackNavFactory from "./StackNavFactory";
 import DrawerBar from "../components/DrawerBar";
-
-const DrawHome = ({ navigation, route }) => {
-  return (
-    <StackNavFactory
-      navigation={navigation}
-      route={route}
-      screenName={"Home"}
-    />
-  );
-};
-const DrawGroupList = ({ navigation, route }) => {
-  return (
-    <StackNavFactory
-      navigation={navigation}
-      route={route}
-      screenName={"GroupList"}
-    />
-  );
-};
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const Drawer = createDrawerNavigator();
 
@@ -45,7 +27,15 @@ export default ({ groupData }) => {
     >
       {/* <Drawer.Screen name="DrawHome" component={DrawHome} /> */}
       {/* <Drawer.Screen name="DrawGroupList" component={DrawGroupList} /> */}
-      <Drawer.Screen name={"DrawHome"}>
+      <Drawer.Screen
+        name={"DrawHome"}
+        options={({ route }) => {
+          const routeName = getFocusedRouteNameFromRoute(route);
+          if (routeName == "BouyDetail") {
+            return { swipeEnabled: false };
+          }
+        }}
+      >
         {() => <StackNavFactory groupData={groupData} />}
       </Drawer.Screen>
     </Drawer.Navigator>

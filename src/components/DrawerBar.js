@@ -114,7 +114,7 @@ const InfoSubText = styled.Text`
 `;
 
 //                             setSwipealbe같은건,,redux로 관리하는게 안전쓰..
-const Item = ({ item, navigation, stackNav, disable }) => {
+const Item = ({ item, navigation, disable }) => {
   const {
     group_id: id,
     group_name: name,
@@ -159,9 +159,6 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
   const [index, setIndex] = useState(0);
   const [disable, setDisable] = useState(true);
 
-  const stackNav = useNavigation();
-  console.log(stackNav);
-
   const isDrawerOpen = useDrawerStatus() === "open";
 
   // Drawer가 제대로 안 닫히는 이유는. Drawer가 다 열리기전에 이벤트가 발생했기 때문.
@@ -196,12 +193,7 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
   // ------------------------------------------------
 
   const renderItem = ({ item }) => (
-    <Item
-      item={item}
-      navigation={navigation}
-      stackNav={stackNav}
-      disable={disable}
-    />
+    <Item item={item} navigation={navigation} disable={disable} />
   );
 
   return (

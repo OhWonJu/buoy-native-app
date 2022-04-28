@@ -5,13 +5,13 @@ import styled from "styled-components/native";
 import Header from "../../components/Header";
 import Container from "../../components/Container";
 
-export default BouyDetailView = () => {
+export default BouyDetailView = ({ data }) => {
   return (
     <>
-      <Header title="부이상세" />
-      <Container>
+      <Container style={{ justifyContent: "center" }}>
         <View>
           <Text>부이상세</Text>
+          <Text>{data.model}</Text>
         </View>
       </Container>
     </>

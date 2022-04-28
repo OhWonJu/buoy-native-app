@@ -1,6 +1,12 @@
 import React, { useCallback } from "react";
-import { View, StyleSheet, Text, Animated, Dimensions } from "react-native";
-import constants from "../../../constants";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Animated,
+  Dimensions,
+  RefreshControl,
+} from "react-native";
 
 const window = Dimensions.get("window");
 
@@ -11,6 +17,8 @@ export default CollapsibleFlatList = ({
   renderItem,
   onEndReachedThreshold,
   onEndReached,
+  refreshing,
+  onRefresh,
   contentContainerStyle,
 }) => {
   const keyExtractor = useCallback((item, index) => index.toString(), []);
@@ -33,6 +41,16 @@ export default CollapsibleFlatList = ({
       )}
       onEndReachedThreshold={onEndReachedThreshold}
       onEndReached={onEndReached}
+      refreshControl={
+        <RefreshControl
+          // style={{ position: "absolute", zIndex: 999 }}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+      removeClippedSubviews={true}
+      initialNumToRender={10}
+      legacyImplementation={true}
       bounces={false}
     />
   );

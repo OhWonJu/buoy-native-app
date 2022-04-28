@@ -10,8 +10,6 @@ export default HomeController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const [refreshing, setRefreshing] = useState(false);
-
   const [rTwidth, rTsetWidth] = useState(0);
   const [rBwidth, rBsetWidth] = useState(0);
   const [circleLen, setCircleLen] = useState(0);
@@ -24,8 +22,9 @@ export default HomeController = ({ navigation, route }) => {
       setData,
       setLoading
     );
-  }, [latitude, longitude]);
+  }, []);
 
+  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     _REFECTH(
