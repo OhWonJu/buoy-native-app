@@ -1,6 +1,14 @@
 import React, { useState, useContext, useCallback, useRef } from "react";
-import { View, TouchableOpacity, SafeAreaView, Animated } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  Animated,
+  StyleSheet,
+} from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
+
+import MapView, { Marker, Polygon } from "react-native-maps";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
@@ -77,6 +85,27 @@ export default GroupDetailView = ({
     const { height } = event.nativeEvent.layout;
     setHeaderHeight(height);
   }, []);
+
+  let longitudes = bouyData.map((bouy) => bouy.longitude);
+  let latitudes = bouyData.map((bouy) => bouy.latitude);
+
+  const points = [];
+  points.push({
+    longitude: Math.min(...longitudes),
+    latitude: Math.min(...latitudes),
+  });
+  points.push({
+    longitude: Math.min(...longitudes),
+    latitude: Math.max(...latitudes),
+  });
+  points.push({
+    longitude: Math.max(...longitudes),
+    latitude: Math.max(...latitudes),
+  });
+  points.push({
+    longitude: Math.max(...longitudes),
+    latitude: Math.min(...latitudes),
+  });
 
   const RENDERITEM = ({ item }) => {
     return (
@@ -169,6 +198,25 @@ export default GroupDetailView = ({
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
           <GroupGraphTab />
           <GroupMap />
+          <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: points[0].latitude,
+                longitude: points[0].longitude,
+                latitudeDelta: 0.00722,
+                longitudeDelta: 0.00221,
+              }}
+              mapType={"hybrid"}
+              showsUserLocation={true}
+            >
+              <Polygon
+                coordinates={points}
+                fillColor={themeContext.greenColor + 80}
+                strokeColor="rgba(0, 200, 0, 0)" // fallback for when `strokeColors` is not supported by the map-provider
+              />
+            </MapView>
+          </View>
         </CollapsibleHeader>
       </SafeAreaView>
       <TypeModal
@@ -181,3 +229,10 @@ export default GroupDetailView = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  map: {
+    width: "100%",
+    height: constants.screenW - 30,
+  },
+});

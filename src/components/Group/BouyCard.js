@@ -64,6 +64,14 @@ export default BouyCard = ({
   weight,
 }) => {
   const themeContext = useContext(ThemeContext);
+
+  const isConn = parseInt(Math.random().toFixed(0));
+  if (!isConn) {
+    warn = 0;
+    height = "--";
+    // weight = "--";
+  }
+
   return (
     <Container style={{ height: "100%" }}>
       <View
@@ -75,29 +83,42 @@ export default BouyCard = ({
         }}
       >
         <Svg height="8" width="8">
-          <Circle cx={4} cy={4} r={4} fill={"#3897f0"} />
+          <Circle
+            cx={4}
+            cy={4}
+            r={3}
+            fill={isConn === 1 ? themeContext.blueColor : themeContext.redColor}
+          />
         </Svg>
       </View>
       <BouyName numberOfLines={1}>{model}</BouyName>
       <InfoBox>
         <InfoWrapper>
-          <InfoSubText>침수</InfoSubText>
-          <RowBox style={{ alignItems: "flex-end" }}>
-            <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
-              {height.toFixed(1)}
-            </InfoMainText>
-            <UnitText>%</UnitText>
-          </RowBox>
+          {typeof height === "number" && (
+            <>
+              <InfoSubText>침수</InfoSubText>
+              <RowBox style={{ alignItems: "flex-end" }}>
+                <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
+                  {height.toFixed(1)}
+                </InfoMainText>
+                <UnitText>%</UnitText>
+              </RowBox>
+            </>
+          )}
         </InfoWrapper>
         <InfoWrapper>
-          <InfoSubText>하중</InfoSubText>
-          <RowBox style={{ alignItems: "flex-end" }}>
-            {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
-            <InfoMainText style={{ color: getAperB(100, 100 - weight) }}>
-              {weight.toFixed(1)}
-            </InfoMainText>
-            <UnitText>kg</UnitText>
-          </RowBox>
+          {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
+          {typeof height === "number" && (
+            <>
+              <InfoSubText>하중</InfoSubText>
+              <RowBox style={{ alignItems: "flex-end" }}>
+                <InfoMainText style={{ color: getAperB(100, 100 - weight) }}>
+                  {weight.toFixed(1)}
+                </InfoMainText>
+                <UnitText>kg</UnitText>
+              </RowBox>
+            </>
+          )}
         </InfoWrapper>
         <InfoWrapper>
           {warn === 0 ? (
