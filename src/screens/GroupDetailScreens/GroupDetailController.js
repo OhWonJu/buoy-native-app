@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useIsFocused } from "@react-navigation/native";
 
 import GroupDetailView from "./GroupDetailView";
-import { _GET, _REFECTH } from "../../../commonRestAPIModel";
+import { _GET, _REFECTH } from "../../../utils/Api";
 import { _GET_PAGE } from "./GroupDetailModel";
 
 export default GroupDetailController = ({ navigation, route }) => {
@@ -14,7 +14,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     _GET(
-      `http://192.168.0.20:3124/detail/buoy/list?group=${route.params?.groupName}`,
+      `detail/buoy/list?group=${route.params?.groupName}`,
       setBouyData,
       setLoading
     );
@@ -23,10 +23,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(
-      `http://192.168.0.20:3124/detail/buoy/list?group=${route.params?.groupName}`,
-      setBouyData
-    );
+    _REFECTH(`detail/buoy/list?group=${route.params?.groupName}`, setBouyData);
     setRefreshing(false);
   }, []);
 

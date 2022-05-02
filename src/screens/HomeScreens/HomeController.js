@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
 import { getCoordinate } from "../../../store/coordinateReducer";
-import { _GET, _REFECTH } from "../../../commonRestAPIModel";
+import { _GET, _REFECTH } from "../../../utils/Api";
+// import { _GET, _REFECTH } from "../../../commonRestAPIModel";
 
 import HomeView from "./HomeView";
 
@@ -18,7 +19,7 @@ export default HomeController = ({ navigation, route }) => {
 
   useEffect(() => {
     _GET(
-      `http://192.168.0.20:3124/main/data?latitude=${latitude}&longitude=${longitude}`,
+      `main/data?latitude=${latitude}&longitude=${longitude}`,
       setData,
       setLoading
     );
@@ -27,10 +28,7 @@ export default HomeController = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(
-      `http://192.168.0.20:3124/main/data?latitude=${latitude}&longitude=${longitude}`,
-      setData
-    );
+    _REFECTH(`main/data?latitude=${latitude}&longitude=${longitude}`, setData);
     setRefreshing(false);
   }, []);
 

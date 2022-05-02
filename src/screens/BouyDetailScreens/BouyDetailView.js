@@ -8,7 +8,7 @@ import Container from "../../components/Container";
 import constants from "../../../constants";
 
 export default BouyDetailView = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <Container style={{ justifyContent: "center" }}>

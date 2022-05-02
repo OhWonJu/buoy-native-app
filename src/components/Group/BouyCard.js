@@ -4,7 +4,7 @@ import styled, { ThemeContext } from "styled-components/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Svg, Circle } from "react-native-svg";
 
-import { getAperB } from "../../../commonFuncs";
+import { getAperB } from "../../../utils/commonFuncs";
 import RowBox from "../RowBox";
 
 const Container = styled.View`

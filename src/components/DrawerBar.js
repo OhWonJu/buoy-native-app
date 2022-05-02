@@ -10,7 +10,9 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 
 import { _GET } from "../../commonRestAPIModel";
 import constants from "../../constants";
-import { useNavigation } from "@react-navigation/native";
+import { userSignOut } from "../../auth";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../store/authReducer";
 
 const Container = styled(Animated.View)`
   flex: 1;
@@ -156,6 +158,9 @@ const Item = ({ item, navigation, disable }) => {
 
 export default DrawerBar = ({ state, navigation, groupData }) => {
   const themeContext = useContext(ThemeContext);
+
+  const dispatch = useDispatch();
+
   const [index, setIndex] = useState(0);
   const [disable, setDisable] = useState(true);
 
@@ -235,7 +240,13 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
           </BtnBox>
         </Mid>
         <Bottom>
-          <TouchableOpacity disabled={disable}>
+          <TouchableOpacity
+            disabled={disable}
+            onPress={() => {
+              userSignOut();
+              dispatch(setAuth({ isSignIn: false, tokenVal: "" }));
+            }}
+          >
             <TitleText style={{ padding: 20 }}>로그아웃</TitleText>
           </TouchableOpacity>
         </Bottom>
