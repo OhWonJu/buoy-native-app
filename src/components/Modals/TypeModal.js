@@ -1,24 +1,8 @@
 import React from "react";
 import { Modal, TouchableOpacity } from "react-native";
-import Animated, {
-  Extrapolate,
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-  withTiming,
-  Easing,
-} from "react-native-reanimated";
 import styled from "styled-components/native";
+import ModalFade from "./ModalFade";
 
-const BlurGround = styled(Animated.View)`
-  /* flex: 1; */
-  /* min-height: 100%; */
-  /* min-width: 100%; */
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: rgb(0, 0, 0);
-`;
 const Container = styled.View`
   flex: 1;
   justify-content: flex-end;
@@ -72,32 +56,9 @@ export default TypeModal = ({
   confirm = () => null,
   cancel = () => null,
 }) => {
-  const animationKey = useDerivedValue(() => (modalVisible ? 1 : 0));
-
-  const BlurZIndex = useDerivedValue(() => {
-    return interpolate(animationKey.value, [0, 1], [-1, 2], Extrapolate.CLAMP);
-  });
-  const BlurOpacity = useDerivedValue(() => {
-    return interpolate(
-      animationKey.value,
-      [0, 1],
-      [0, 0.25],
-      Extrapolate.CLAMP
-    );
-  });
-  const BlurAnimeStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(BlurOpacity.value, {
-        duration: 200,
-        easing: Easing.ease,
-      }),
-      zIndex: BlurZIndex.value,
-    };
-  });
-
   return (
     <>
-      <BlurGround style={BlurAnimeStyle} />
+      <ModalFade modalVisible={modalVisible} />
       <Modal
         animationType="slide"
         visible={modalVisible}

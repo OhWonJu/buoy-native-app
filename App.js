@@ -21,8 +21,9 @@ import { getAuth, setAuth } from "./store/authReducer";
 function App() {
   const [groupData, setGroupData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-
   const { isSignIn, tokenVal } = useSelector(getAuth);
+
+  console.log(isSignIn, tokenVal);
 
   const dispatch = useDispatch();
 
@@ -34,7 +35,7 @@ function App() {
   const preload = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      if (token != "") {
+      if (token != null) {
         API.defaults.headers.common["Authorization"] = "Bearer " + token;
         // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
         dispatch(setAuth({ isSignIn: true, tokenVal: token }));

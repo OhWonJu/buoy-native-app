@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { View, TouchableOpacity } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
+import { SvgXml } from "react-native-svg";
 import {
   MaterialIcons,
   Ionicons,
@@ -9,17 +10,17 @@ import {
 } from "@expo/vector-icons";
 
 import Container from "../../../components/Container";
+import AuthHeader from "../../../components/Auth/AuthHeader";
 import AuthButton from "../../../components/Auth/AuthButton";
+import { Google } from "../../../../styles/Icons";
 
 const InputView = styled.View`
   margin-top: 5px;
   padding: 35px 0px 10px 0px;
-  /* height: 28%; */
   height: 235px;
   align-items: center;
 `;
 const UtilView = styled.View`
-  /* height: 3%; */
   height: 35px;
   flex-direction: row;
   align-items: center;
@@ -38,12 +39,12 @@ const UtilText = styled.Text`
   font-size: 12px;
   font-weight: bold;
   top: 1%;
-  color: ${(props) => props.theme.subColor};
+  color: ${(props) => props.theme.mainColor};
 `;
 const EasySignInView = styled.View`
   border-style: solid;
-  border-top-color: ${(props) => props.theme.lightUtilColor};
-  border-top-width: 1.5px;
+  border-top-color: ${(props) => props.theme.mainColor};
+  border-top-width: 1.2px;
   margin: 8px 0px 40px 0px;
   align-items: center;
 `;
@@ -64,7 +65,7 @@ const EasySignText = styled.Text`
   padding: 15px 0px 25px 0px;
   font-size: 15px;
   font-weight: 700;
-  color: ${(props) => props.theme.subColor};
+  color: ${(props) => props.theme.mainColor};
 `;
 
 const NoticView = styled.View`
@@ -73,7 +74,7 @@ const NoticView = styled.View`
 `;
 const NoticText = styled.Text`
   font-size: 13px;
-  color: ${(props) => props.theme.darkUtilColor};
+  color: ${(props) => props.theme.lightUtilColor};
 `;
 
 const OpacityBox = styled.View`
@@ -89,12 +90,13 @@ const Text = styled.Text`
 `;
 
 const TextInput = styled.TextInput`
-  background-color: ${(props) => props.theme.lightUtilColor};
   height: 50px;
   width: 100%;
   padding: 10px;
-  border-radius: 10px;
   margin-bottom: 10px;
+  color: ${(props) => props.theme.mainColor};
+  border-bottom-color: ${(props) => props.theme.lightUtilColor};
+  border-bottom-width: 1.2px;
 `;
 
 const PasswordBox = styled.View`
@@ -127,15 +129,17 @@ export default SignInView = ({
   turnOff,
 }) => {
   const themeContext = useContext(ThemeContext);
+
   return (
-    <Container style={{ flex: 1 }}>
-      <View>
-        <Text>SignIn</Text>
-      </View>
+    <Container
+      style={{ flex: 1, backgroundColor: themeContext.authThemeColor }}
+    >
+      <AuthHeader leftOnPress={goBack} />
       <InputView>
         <TextInput
           value={watch("email")}
           placeholder={"이메일"}
+          placeholderTextColor={themeContext.lightUtilColor}
           keyboardType={"email-address"}
           returnKeyType="next"
           onChangeText={(text) => {
@@ -149,6 +153,7 @@ export default SignInView = ({
             value={watch("password")}
             ref={passwordRef}
             placeholder={"비밀번호"}
+            placeholderTextColor={themeContext.lightUtilColor}
             returnKeyType={"done"}
             onChangeText={(text) => {
               passwordCompleted(text);
@@ -157,11 +162,14 @@ export default SignInView = ({
             secureTextEntry={passwordUnvisible}
             onSubmitEditing={handleSubmit(onValid)}
           />
-          <VisibleControler onPress={handlePasswordVisible}>
+          <VisibleControler
+            onPressIn={handlePasswordVisible}
+            onPressOut={handlePasswordVisible}
+          >
             {passwordUnvisible === true ? (
-              <AntDesign name="eyeo" size={20} color="#262626" />
+              <AntDesign name="eyeo" size={20} color={themeContext.mainColor} />
             ) : (
-              <AntDesign name="eye" size={20} color="#262626" />
+              <AntDesign name="eye" size={20} color={themeContext.mainColor} />
             )}
           </VisibleControler>
         </PasswordBox>
@@ -169,6 +177,9 @@ export default SignInView = ({
           <AuthButton
             text={"로그인"}
             disabled={turnOff}
+            bgColor={turnOff ? null : themeContext.orangeColor}
+            txColor={themeContext.lightUtilColor}
+            containerStyle={{ borderRadius: 30 }}
             onPress={handleSubmit(onValid)}
           />
         </OpacityBox>
@@ -183,7 +194,7 @@ export default SignInView = ({
             <MaterialIcons
               name="keyboard-arrow-right"
               size={18}
-              color={themeContext.blackColor}
+              color={themeContext.mainColor}
             />
           </TouchableOpacity>
         </LeftBox>
@@ -194,7 +205,7 @@ export default SignInView = ({
           <Ionicons
             name="remove-outline"
             size={18}
-            color={themeContext.blackColor}
+            color={themeContext.mainColor}
             style={{ transform: [{ rotate: "90deg" }] }}
           />
           <TouchableOpacity>
@@ -205,22 +216,28 @@ export default SignInView = ({
       <EasySignInView>
         <EasySignText>간편 로그인 / 간편 가입</EasySignText>
         <EasySingBoxs>
-          <EasySignInBox bgColor={"#F7D500"} onPress={() => goSNSAuth("kakao")}>
+          <EasySignInBox
+            bgColor={"#F7D500"}
+            // onPress={() => goSNSAuth("kakao")}
+          >
             <Ionicons name="chatbubble-sharp" size={24} color="#573D1A" />
           </EasySignInBox>
           <EasySignInBox
             bgColor={"#4064AC"}
-            onPress={() => goSNSAuth("facebook")}
+            // onPress={() => goSNSAuth("facebook")}
           >
             <FontAwesome name="facebook" size={26} color="#FBFBFB" />
           </EasySignInBox>
           <EasySignInBox
-            bgColor={"#3897f0"}
-            onPress={() => goSNSAuth("twitter")}
+            bgColor={"#FBFBFB"}
+            // onPress={() => goSNSAuth("google")}
           >
-            <AntDesign name="twitter" size={24} color="#FBFBFB" />
+            <SvgXml xml={Google} width="70%" height="70%" />
           </EasySignInBox>
-          <EasySignInBox bgColor={"#03C157"} onPress={() => goSNSAuth("naver")}>
+          <EasySignInBox
+            bgColor={"#03C157"}
+            // onPress={() => goSNSAuth("naver")}
+          >
             <Text>N</Text>
           </EasySignInBox>
         </EasySingBoxs>

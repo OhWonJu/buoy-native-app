@@ -243,8 +243,8 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
           <TouchableOpacity
             disabled={disable}
             onPress={() => {
+              dispatch(setAuth({ isSignIn: false, tokenVal: null }));
               userSignOut();
-              dispatch(setAuth({ isSignIn: false, tokenVal: "" }));
             }}
           >
             <TitleText style={{ padding: 20 }}>로그아웃</TitleText>

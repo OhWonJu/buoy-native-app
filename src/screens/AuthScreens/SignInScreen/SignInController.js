@@ -48,8 +48,8 @@ export default SignInController = ({ navigation, route }) => {
       result = await _LOGIN(data, setLoading);
     }
     if (result.code === 1) {
-      await userSignIn(result.token);
       dispatch(setAuth({ isSignIn: true, tokenVal: result.token }));
+      await userSignIn(result.token);
     } else {
       console.log(result);
     }

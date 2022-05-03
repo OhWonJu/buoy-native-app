@@ -16,7 +16,7 @@ export default () => {
         presentation: "card",
         gestureEnabled: true,
         headerShown: false,
-        // ...verticallTransition,
+        ...verticallTransition,
       }}
     >
       <SignOutNav.Screen name="AuthHome" component={AuthHome} />

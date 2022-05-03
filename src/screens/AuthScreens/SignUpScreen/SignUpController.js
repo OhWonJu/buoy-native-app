@@ -42,10 +42,7 @@ export default SignUpController = ({ navigation, route }) => {
     register("passwordCheck", {
       required: true,
     });
-    register("firstName", {
-      required: true,
-    });
-    register("lastName", {
+    register("name", {
       required: true,
     });
     // register("phoneNumber");
@@ -56,7 +53,7 @@ export default SignUpController = ({ navigation, route }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordCheckRef = useRef();
-  const firstNameRef = useRef();
+  const nameRef = useRef();
   const onNext = (next) => {
     next?.current?.focus();
   };
@@ -67,7 +64,7 @@ export default SignUpController = ({ navigation, route }) => {
     if (!createLoading) {
       isDone = await _CREATE_ACCOUNT(
         {
-          name: data.lastName + data.firstName,
+          name: data.name,
           email: data.email,
           password: data.password,
         },
@@ -83,10 +80,12 @@ export default SignUpController = ({ navigation, route }) => {
   };
 
   // 인증 코드 발송
+  const [codeView, setCodeView] = useState(false);
   const [requestCodeLoading, setRequestCodeLoading] = useState(false);
   const onCompletedRequestCode = ({ ok, error }) => {
     if (!requestCodeLoading) {
       if (ok) {
+        setCodeView(true);
         alert("인증코드가 발송되었습니다.");
         return;
       } else if (error === "Email exist.") {
@@ -110,6 +109,7 @@ export default SignUpController = ({ navigation, route }) => {
     });
     if (isConfirm) {
       alert("인증되었습니다.");
+      setCodeView(false);
       setCondition((prevState) => {
         return { ...prevState, emailConfirm: true };
       });
@@ -136,7 +136,7 @@ export default SignUpController = ({ navigation, route }) => {
 
   // password 관련
   const passwordVerification = (text) => {
-    if (text.length > 6 && text.length < 17) {
+    if (text.length >= 4 && text.length < 17) {
       setCondition((prevState) => {
         return { ...prevState, passwordVerify: true };
       });
@@ -171,7 +171,7 @@ export default SignUpController = ({ navigation, route }) => {
       emailRef={emailRef}
       passwordRef={passwordRef}
       passwordCheckRef={passwordCheckRef}
-      firstNameRef={firstNameRef}
+      nameRef={nameRef}
       onNext={onNext}
       setCodeInput={setCodeInput}
       requestEmailCode={requestEmailCode}
@@ -180,6 +180,7 @@ export default SignUpController = ({ navigation, route }) => {
       passwordVerification={passwordVerification}
       passwordComparison={passwordComparison}
       goBack={goBack}
+      codeView={codeView}
     />
   );
 };

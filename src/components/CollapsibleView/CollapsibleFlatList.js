@@ -49,7 +49,7 @@ export default CollapsibleFlatList = ({
         />
       }
       removeClippedSubviews={true}
-      initialNumToRender={10}
+      initialNumToRender={5}
       legacyImplementation={true}
       bounces={false}
     />

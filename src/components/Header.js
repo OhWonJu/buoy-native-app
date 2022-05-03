@@ -75,7 +75,7 @@ export default ({
               />
             </TouchableOpacity>
             <Title>{title}</Title>
-            {leftChildren && { leftChildren }}
+            {leftChildren}
           </Left>
           <Center></Center>
           <Right>{rightChildren}</Right>

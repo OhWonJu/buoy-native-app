@@ -14,13 +14,14 @@ import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
 import GroupMap from "../../components/Group/GroupMap";
 import Header from "../../components/Header";
-import TypeModal from "../../components/Group/TypeModal";
+import TypeModal from "../../components/Modals/TypeModal";
 import GroupGraphTab from "../../components/Group/GroupGraphTab";
 import ColBox from "../../components/ColBox";
 import SwipeWrapper from "../../components/SwipeWrapper/SwipeWrapper";
 import BouyCard from "../../components/Group/BouyCard";
 import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
 import CollapsibleFlatList from "../../components/CollapsibleView/CollapsibleFlatList";
+import NameEditModal from "../../components/Modals/NameEditModal";
 
 const LINEHEADER_HEIGHT = 45 + constants.StatusBarHeight;
 
@@ -54,6 +55,9 @@ export default GroupDetailView = ({
   route,
   headerHeight,
   setHeaderHeight,
+  editNameModalVisible,
+  setEditNameModalVisible,
+  editName,
   typeModalVisible,
   setTypeModalVisible,
   typeModeIndex,
@@ -61,6 +65,7 @@ export default GroupDetailView = ({
   typeModeText,
   bouyData,
   groupInfo,
+  setGroupInfo,
   onSwipe,
   onEndReached,
   refreshing,
@@ -113,6 +118,7 @@ export default GroupDetailView = ({
         <TouchableOpacity onPress={() => goToBouyDetail(item)}>
           <BouyCard {...item} />
         </TouchableOpacity>
+        <View></View>
       </SwipeWrapper>
     );
   };
@@ -180,7 +186,19 @@ export default GroupDetailView = ({
           headerTranslateY={headerTranslateY}
         >
           <Header
-            title={groupInfo.group_name}
+            leftChildren={
+              <TouchableOpacity onPress={() => setEditNameModalVisible(true)}>
+                <EditText
+                  numberOfLines={1}
+                  style={{
+                    fontSize: groupInfo.group_name.length < 13 ? 24 : 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {groupInfo.group_name}
+                </EditText>
+              </TouchableOpacity>
+            }
             rightChildren={
               <RowBox>
                 <EditText style={{ fontSize: 12, paddingRight: 10 }}>
@@ -198,7 +216,7 @@ export default GroupDetailView = ({
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
           <GroupGraphTab />
           <GroupMap />
-          <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+          <View style={{ paddingHorizontal: 15, marginTop: 35 }}>
             <MapView
               style={styles.map}
               initialRegion={{
@@ -219,13 +237,23 @@ export default GroupDetailView = ({
           </View>
         </CollapsibleHeader>
       </SafeAreaView>
-      <TypeModal
-        modalVisible={typeModalVisible}
-        setModalVisible={setTypeModalVisible}
-        typeModeIndex={typeModeIndex}
-        setTypeModeIndex={setTypeModeIndex}
-        typeModeText={typeModeText}
-      />
+      {editNameModalVisible && (
+        <NameEditModal
+          modalVisible={editNameModalVisible}
+          setModalVisible={setEditNameModalVisible}
+          oldName={groupInfo.group_name}
+          confirm={editName}
+        />
+      )}
+      {typeModalVisible && (
+        <TypeModal
+          modalVisible={typeModalVisible}
+          setModalVisible={setTypeModalVisible}
+          typeModeIndex={typeModeIndex}
+          setTypeModeIndex={setTypeModeIndex}
+          typeModeText={typeModeText}
+        />
+      )}
     </>
   );
 };

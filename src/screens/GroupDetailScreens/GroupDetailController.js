@@ -14,7 +14,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     _GET(
-      `detail/buoy/list?group=${route.params?.groupName}`,
+      `detail/buoy/list?group_id=${route.params?.id}`,
       setBouyData,
       setLoading
     );
@@ -23,7 +23,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(`detail/buoy/list?group=${route.params?.groupName}`, setBouyData);
+    _REFECTH(`detail/buoy/list?group_id=${route.params?.id}`, setBouyData);
     setRefreshing(false);
   }, []);
 
@@ -50,6 +50,13 @@ export default GroupDetailController = ({ navigation, route }) => {
   const goToBouyDetail = (item) =>
     navigation.navigate("BouyDetail", { data: item });
 
+  const [editNameModalVisible, setEditNameModalVisible] = useState(false);
+  const editName = (newName) => {
+    setGroupInfo((prevState) => {
+      return { ...prevState, group_name: newName };
+    });
+  };
+
   const [typeModalVisible, setTypeModalVisible] = useState(false);
   const [typeModeIndex, setTypeModeIndex] = useState(0); // recent || createFirst || editFirst || popularity ||
   const typeModeText = [
@@ -69,6 +76,9 @@ export default GroupDetailController = ({ navigation, route }) => {
       route={route}
       headerHeight={headerHeight}
       setHeaderHeight={setHeaderHeight}
+      editNameModalVisible={editNameModalVisible}
+      setEditNameModalVisible={setEditNameModalVisible}
+      editName={editName}
       typeModalVisible={typeModalVisible}
       setTypeModalVisible={setTypeModalVisible}
       typeModeIndex={typeModeIndex}
@@ -76,6 +86,7 @@ export default GroupDetailController = ({ navigation, route }) => {
       typeModeText={typeModeText}
       bouyData={bouyData}
       groupInfo={groupInfo}
+      setGroupInfo={setGroupInfo}
       onSwipe={onSwipe}
       onEndReached={onEndReached}
       refreshing={refreshing}
