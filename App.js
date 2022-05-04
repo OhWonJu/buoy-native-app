@@ -15,22 +15,23 @@ import { setCoordinate } from "./store/coordinateReducer";
 import { darkTheme, lightTheme } from "./styles/Theme";
 import SignOutNav from "./src/navigators/SignOutNav";
 import SignInNav from "./src/navigators/SignInNav";
-import { API, _GET } from "./utils/Api";
+import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
+import { getGroupUpdate, setIsUpdate } from "./store/groupUpdateReducer";
 
 function App() {
   const [groupData, setGroupData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const { isSignIn, tokenVal } = useSelector(getAuth);
 
-  console.log(isSignIn, tokenVal);
+  // console.log(isSignIn, tokenVal);
 
   const dispatch = useDispatch();
 
   const onFinish = () =>
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
 
   const preload = async () => {
     try {
@@ -69,7 +70,16 @@ function App() {
       }
     };
     prepare();
-  }, []);
+  }, [isSignIn]);
+
+  // 그룹데이터 업데이트 시 다시 데이터 로드하기 위해...
+  const { isUpdate } = useSelector(getGroupUpdate);
+  useEffect(() => {
+    if (isUpdate) {
+      _REFECTH("main/group", setGroupData);
+      dispatch(setIsUpdate({ isUpdate: false }));
+    }
+  }, [isUpdate]);
 
   let colorScheme = useColorScheme();
   // let Theme = colorScheme === "light" ? lightTheme : darkTheme;

@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
 
 import GroupDetailView from "./GroupDetailView";
 import { _GET, _REFECTH } from "../../../utils/Api";
-import { _GET_PAGE } from "./GroupDetailModel";
+import { _GET_PAGE, _GROUP_EDIT } from "./GroupDetailModel";
+import { setIsUpdate } from "../../../store/groupUpdateReducer";
 
 export default GroupDetailController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -58,13 +59,33 @@ export default GroupDetailController = ({ navigation, route }) => {
   };
 
   const [typeModalVisible, setTypeModalVisible] = useState(false);
-  const [typeModeIndex, setTypeModeIndex] = useState(0); // recent || createFirst || editFirst || popularity ||
+  const [typeModeIndex, setTypeModeIndex] = useState(groupInfo.group_system); // 일반 || 연승 || 떗목 || 기타 ||
   const typeModeText = [
     "일반 수하식",
     "연승 수하식",
     "땟목 수하식",
     "기타 수하식",
   ];
+
+  // 그룹 정보 업데이트
+  const dispatch = useDispatch();
+  // 최초 마운트될 때 업데이트 되는것을 막기 위해.
+  const firstRender = useRef(true);
+  useEffect(async () => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    } else {
+      const newData = {
+        group_id: groupInfo.group_id,
+        group_name: groupInfo.group_name,
+        group_system: typeModeIndex,
+        plain_buoy: groupInfo.plain_buoy,
+      };
+      await _GROUP_EDIT(newData);
+      dispatch(setIsUpdate({ isUpdate: true }));
+    }
+  }, [groupInfo, typeModeIndex]);
 
   if (isLoading) {
     return null;

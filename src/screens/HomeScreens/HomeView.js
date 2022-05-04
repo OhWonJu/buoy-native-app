@@ -107,6 +107,7 @@ export default HomeView = ({
   meteoVal,
   obsData,
   tidal,
+  groupTotal,
   refreshing,
   onRefresh,
   waveHight,
@@ -186,7 +187,7 @@ export default HomeView = ({
               <Carousel
                 data={[
                   {
-                    temperature: meteoVal.water_temp,
+                    temperature: groupTotal.water_temp.toFixed(1),
                     type: "water",
                   },
                   { temperature: meteoVal.data.temperature, type: "atmo" },
@@ -213,7 +214,7 @@ export default HomeView = ({
                 <UtilsInfoPage
                   width={rBwidth}
                   title={"염도"}
-                  context={`${parseFloat(obsData.Salinity).toFixed(1)}psu`}
+                  context={`${groupTotal.salinity.toFixed(1)}psu`}
                 />
                 <UtilsInfoPage
                   width={rBwidth}
@@ -254,7 +255,7 @@ export default HomeView = ({
               }}
             >
               <DonutChart
-                percentage={perc}
+                percentage={groupTotal.weight.toFixed(1)}
                 radius={circleLen / 2}
                 duration={800}
                 // color={themeContext.darkBlueColor}
@@ -276,15 +277,15 @@ export default HomeView = ({
             <View>
               <TotalTitle>스마트 부표</TotalTitle>
               <RowBox style={{ alignItems: "flex-end" }}>
-                <SubText>80</SubText>
-                <TotalUnit>/100</TotalUnit>
+                <SubText>{groupTotal.smart_buoy}</SubText>
+                <TotalUnit>{groupTotal.smart_buoy}</TotalUnit>
               </RowBox>
             </View>
             {/* 일반 부표 */}
             <View>
               <Text style={{ fontSize: 16 }}>일반 부표</Text>
               <RowBox style={{ alignItems: "flex-end" }}>
-                <SubText>500</SubText>
+                <SubText>{groupTotal.plain_buoy}</SubText>
                 <TotalUnit>개</TotalUnit>
               </RowBox>
             </View>
@@ -292,7 +293,7 @@ export default HomeView = ({
             <View>
               <Text style={{ fontSize: 16 }}>구역</Text>
               <RowBox style={{ alignItems: "flex-end" }}>
-                <SubText>10</SubText>
+                <SubText>{groupTotal.group_count}</SubText>
                 <TotalUnit>개소</TotalUnit>
               </RowBox>
             </View>
