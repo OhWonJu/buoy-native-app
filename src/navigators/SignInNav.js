@@ -25,8 +25,6 @@ export default ({ groupData }) => {
         },
       }}
     >
-      {/* <Drawer.Screen name="DrawHome" component={DrawHome} /> */}
-      {/* <Drawer.Screen name="DrawGroupList" component={DrawGroupList} /> */}
       <Drawer.Screen
         name={"DrawHome"}
         options={({ route }) => {

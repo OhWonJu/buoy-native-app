@@ -7,12 +7,13 @@ import Animated, {
 } from "react-native-reanimated";
 import styled, { ThemeContext } from "styled-components/native";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 
 import { _GET } from "../../utils/Api";
 import constants from "../../constants";
 import { userSignOut } from "../../auth";
-import { useDispatch } from "react-redux";
 import { setAuth } from "../../store/authReducer";
+import { getDrawerIdx, setDrawerIdx } from "../../store/drawerBtnReducer";
 
 const Container = styled(Animated.View)`
   flex: 1;
@@ -161,7 +162,7 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
 
   const dispatch = useDispatch();
 
-  const [index, setIndex] = useState(0);
+  const { index } = useSelector(getDrawerIdx);
   const [disable, setDisable] = useState(true);
 
   const isDrawerOpen = useDrawerStatus() === "open";
@@ -230,7 +231,9 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
               disabled={disable}
               onPress={() => {
                 navigation.navigate(toggleBtn[index].nav);
-                setIndex((index + 1) % toggleBtn.length);
+                dispatch(
+                  setDrawerIdx({ index: (index + 1) % toggleBtn.length })
+                );
                 navigation.closeDrawer();
                 navigation.closeDrawer();
               }}

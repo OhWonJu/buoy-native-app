@@ -10,7 +10,7 @@ import HomeView from "./HomeView";
 
 export default HomeController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [groups, setGroups] = useState(null);
 
   const [rTwidth, rTsetWidth] = useState(0);

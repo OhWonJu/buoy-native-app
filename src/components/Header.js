@@ -7,7 +7,6 @@ import constants from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.View`
-  flex: 1;
   background-color: ${(props) => props.theme.idnColor};
   padding: 10px 15px 10px 15px;
 `;

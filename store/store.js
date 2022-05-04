@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authReducer";
 import coordinateReducer from "./coordinateReducer";
+import drawerIdxReducer from "./drawerBtnReducer";
 import groupUpdateReducer from "./groupUpdateReducer";
 
 export default store = configureStore({
@@ -8,6 +9,7 @@ export default store = configureStore({
     auth: authReducer,
     coordinate: coordinateReducer,
     groupUpdate: groupUpdateReducer,
+    drawerIdx: drawerIdxReducer,
     // groupIds
   },
 });

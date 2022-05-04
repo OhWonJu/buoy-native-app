@@ -119,12 +119,6 @@ export default HomeView = ({
   setCircleLen,
 }) => {
   const themeContext = useContext(ThemeContext);
-  const navigation = useNavigation();
-
-  const data = MockData;
-  let perc = 0;
-  data.forEach((d) => (perc += d.capacity * 0.01));
-  perc = (perc / data.length) * 100;
 
   return (
     <ScrollView
