@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { verticallTransition, horizontalTransition } from "./NavigationOptions";
 import Home from "../screens/HomeScreens/index";
-import BouyList from "../screens/BouyListScreens/index";
+import BuoyList from "../screens/BuoyListScreens/index";
 import GroupDetail from "../screens/GroupDetailScreens/index";
 import BouyDetail from "../screens/BouyDetailScreens/index";
 
@@ -13,6 +13,7 @@ export default ({ navigation, route, screenName, groupData }) => {
   if (groupData) {
     return (
       <Stacks.Navigator
+        initialRouteName="BuoyList"
         screenOptions={{
           headerShown: false,
         }}
@@ -25,8 +26,8 @@ export default ({ navigation, route, screenName, groupData }) => {
             )}
           </Stacks.Screen>
         ))}
-        <Stacks.Screen name={"BouyList"} component={BouyList} />
-        <Stacks.Screen name={"BouyDetail"} component={BouyDetail} />
+        <Stacks.Screen name={"BuoyList"} component={BuoyList} />
+        <Stacks.Screen name={"BuoyDetail"} component={BouyDetail} />
       </Stacks.Navigator>
     );
   } else {

@@ -18,6 +18,7 @@ import SignInNav from "./src/navigators/SignInNav";
 import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
 import { getGroupUpdate, setIsUpdate } from "./store/groupUpdateReducer";
+import { userSignOut } from "./auth";
 
 function App() {
   const [groupData, setGroupData] = useState(null);
@@ -34,27 +35,27 @@ function App() {
     }, 2000);
 
   const preload = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      if (token != null) {
-        API.defaults.headers.common["Authorization"] = "Bearer " + token;
-        // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
-        dispatch(setAuth({ isSignIn: true, tokenVal: token }));
-
-        await Location.requestForegroundPermissionsAsync();
-        const {
-          coords: { latitude, longitude },
-        } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-          maximumAge: 10000,
-        });
-        if (latitude) {
-          dispatch(setCoordinate({ latitude, longitude }));
-        }
-        _GET("main/group", setGroupData, setLoading);
+    const token = await AsyncStorage.getItem("token");
+    if (token != null) {
+      API.defaults.headers.common["Authorization"] = "Bearer " + token;
+      // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
+      dispatch(setAuth({ isSignIn: true, tokenVal: token }));
+      const result = await _GET("main/group", setGroupData, setLoading);
+      if (!result.ok) {
+        dispatch(setAuth({ isSignIn: false, tokenVal: null }));
+        userSignOut();
       }
-    } catch (e) {
-      console.log("getTOKEN ERROR: ", e);
+
+      await Location.requestForegroundPermissionsAsync();
+      const {
+        coords: { latitude, longitude },
+      } = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+        maximumAge: 10000,
+      });
+      if (latitude) {
+        dispatch(setCoordinate({ latitude, longitude }));
+      }
     }
     // return preloadAssets();
   };

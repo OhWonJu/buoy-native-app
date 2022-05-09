@@ -14,8 +14,10 @@ export async function _GET(endPoint, setData, setLoading) {
   try {
     const response = await API.get(endPoint);
     setData(response.data);
+    return { ok: true };
   } catch (e) {
     console.error(e);
+    return { ok: false };
   } finally {
     setLoading(false);
   }
@@ -40,13 +42,13 @@ export async function _POST(endPoint, params) {
   }
 }
 
-export function _POST2(endPoint, params) {
-  console.log(endPoint, params);
-  API.post("user/check", params)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+export async function _BUOY_DEALLOCATE(bouyName) {
+  const target = { model: bouyName };
+  console.log(target);
+  try {
+    const response = await API.put("detail/buoy/deallocate", target);
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
 }

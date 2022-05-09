@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import GroupDetailView from "./GroupDetailView";
-import { _GET, _REFECTH } from "../../../utils/Api";
+import { _BUOY_DEALLOCATE, _GET, _REFECTH } from "../../../utils/Api";
 import { _GET_PAGE, _GROUP_EDIT } from "./GroupDetailModel";
 import { setIsUpdate } from "../../../store/groupUpdateReducer";
 
@@ -28,13 +28,14 @@ export default GroupDetailController = ({ navigation, route }) => {
     setRefreshing(false);
   }, []);
 
-  const onSwipe = (item) => {
+  const onSwipe = async (item) => {
     const newData = [...bouyData];
     newData.splice(newData.indexOf(item), 1);
     setBouyData(newData);
     setGroupInfo((prevState) => {
       return { ...prevState, smart_buoy: prevState.smart_buoy - 1 };
     });
+    const result = await _BUOY_DEALLOCATE(item.model);
   };
 
   const onEndReached = () => {
@@ -49,7 +50,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   };
 
   const goToBouyDetail = (item) =>
-    navigation.navigate("BouyDetail", { data: item });
+    navigation.navigate("BuoyDetail", { data: item });
 
   const [editNameModalVisible, setEditNameModalVisible] = useState(false);
   const editName = (newName) => {
