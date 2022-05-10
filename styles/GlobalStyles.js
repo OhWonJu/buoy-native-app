@@ -15,7 +15,24 @@ export const shadows = StyleSheet.create({
         shadowRadius: 3,
       },
       android: {
-        elevation: 1,
+        elevation: 3,
+      },
+    }),
+  },
+  bottomShadow: {
+    backgroundColor: "#FBFBFB",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 3,
       },
     }),
   },

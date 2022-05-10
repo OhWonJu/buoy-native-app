@@ -1,13 +1,22 @@
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 
 import Deallocated from "../screens/BuoyListScreens/DeallocatedBuoyListScreen/index";
 import Allocated from "../screens/BuoyListScreens/AllocatedSBouyListcreen/index";
+import TopHeader from "../components/TopHeader";
 import TabHeader from "../components/TabHeader/TabHeader";
 
-const Tab = createMaterialTopTabNavigator();
+const Tabs = createMaterialCollapsibleTopTabNavigator();
 
-export default () => {
+export default ({ headerHeight, setHeaderHeight, goBack }) => {
+  const TOP_HEADER = () => (
+    <TopHeader
+      setHeaderHeight={setHeaderHeight}
+      leftOnPress={goBack}
+      title={"부표관리"}
+    />
+  );
+
   const tabContext = [
     {
       key: 1,
@@ -24,14 +33,27 @@ export default () => {
   ];
 
   return (
-    <Tab.Navigator
-      tabBar={({ navigation }) => (
-        <TabHeader data={tabContext} navigation={navigation} />
+    <Tabs.Navigator
+      collapsibleOptions={{
+        headerHeight: headerHeight,
+        renderHeader: TOP_HEADER,
+        disableSnap: true,
+      }}
+      tabBar={({ navigation, state }) => (
+        <TabHeader data={tabContext} navigation={navigation} state={state} />
       )}
     >
-      <Tab.Screen name="Deallocated" component={Deallocated} />
-      <Tab.Screen name="Allocated" component={Allocated} />
-    </Tab.Navigator>
+      <Tabs.Screen name="Deallocated">
+        {({ navigation, route }) => (
+          <Deallocated
+            navigation={navigation}
+            route={route}
+            headerHeight={headerHeight}
+          />
+        )}
+      </Tabs.Screen>
+      <Tabs.Screen name="Allocated" component={Allocated} />
+    </Tabs.Navigator>
   );
 };
 

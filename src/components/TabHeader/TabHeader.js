@@ -5,66 +5,84 @@ import React, {
   useCallback,
   useContext,
 } from "react";
-import { View, Text, FlatList, Animated, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import styled, { ThemeContext } from "styled-components/native";
 
 import constants from "../../../constants";
 
 const TabText = styled.Text`
-  color: ${(props) => props.theme.subColor};
+  color: ${(props) =>
+    props.isFocused ? props.theme.subColor : props.theme.utilColor};
   font-size: ${(props) => props.size}px;
   font-weight: bold;
 `;
 const IndicatorView = styled(Animated.View)`
   top: 4%;
-  height: 1.2px;
+  height: 1.65px;
   background-color: ${(props) => props.theme.subColor};
 `;
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const Tab = React.forwardRef(({ item, onItemPress }, ref) => {
-  return (
-    <TouchableOpacity
-      onPress={onItemPress}
-      activeOpacity={1}
-      style={{ paddingHorizontal: 15 }}
-    >
-      <View ref={ref}>
-        <TabText size={12}>{item.title}</TabText>
-      </View>
-    </TouchableOpacity>
-  );
-});
+const Tab = React.forwardRef(
+  ({ item, onItemPress, isFocused, scrollX, measure }, ref) => {
+    useEffect(() => {
+      if (isFocused && measure) {
+        scrollX.value = measure.x;
+      }
+    }, [isFocused, measure]);
+    return (
+      <TouchableOpacity
+        onPress={onItemPress}
+        activeOpacity={1}
+        style={{ paddingHorizontal: 15 }}
+      >
+        <View ref={ref}>
+          <TabText size={15} isFocused={isFocused}>
+            {item.title}
+          </TabText>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+);
 
-const Indicator = ({ data, measures, scrollX }) => {
-  const inputRange = data.map((_, index) => index * constants.screenW);
+const Indicator = ({ measures, scrollX }) => {
+  const inputRange = measures.map((measure) => measure.x);
+  const outputRange = measures.map((measure) => measure.width);
 
-  const indicatorWidth = scrollX.interpolate({
-    inputRange,
-    outputRange: measures.map((measure) => measure.width),
+  const indicatorWidth = useDerivedValue(() => {
+    return interpolate(scrollX.value, inputRange, outputRange);
   });
-  const indicatorX = scrollX.interpolate({
-    inputRange,
-    outputRange: measures.map((measure) => measure.x),
+  const indicatorX = useDerivedValue(() => {
+    return interpolate(scrollX.value, inputRange, inputRange);
   });
 
-  return (
-    <IndicatorView
-      style={{
-        width: indicatorWidth,
-        left: 0,
-        transform: [
-          {
-            translateX: indicatorX,
-          },
-        ],
-      }}
-    />
-  );
+  const DURATION = 200;
+
+  const animeStyle = useAnimatedStyle(() => {
+    return {
+      left: 0,
+      width: withTiming(indicatorWidth.value, {
+        duration: DURATION,
+      }),
+      transform: [
+        { translateX: withTiming(indicatorX.value, { duration: DURATION }) },
+      ],
+    };
+  });
+
+  return <IndicatorView style={animeStyle} />;
 };
 
-const Tabs = ({ scrollX, data, onItemPress }) => {
+const Tabs = ({ scrollX, data, state, onItemPress }) => {
   const [measures, setMeasures] = useState([]);
   const containerRef = useRef();
   useEffect(() => {
@@ -90,10 +108,10 @@ const Tabs = ({ scrollX, data, onItemPress }) => {
   return (
     <View
       style={{
-        height: 35,
+        height: 48,
         width: constants.screenW,
-        borderBottomWidth: 1.2,
-        borderBottomColor: "#E1E1E1",
+        borderBottomWidth: 1.65,
+        borderBottomColor: "#E1E1E1" + 30,
       }}
     >
       <View
@@ -110,29 +128,28 @@ const Tabs = ({ scrollX, data, onItemPress }) => {
             <Tab
               key={item.key}
               item={item}
-              ref={item.ref}
               onItemPress={() => onItemPress({ item, index })}
+              isFocused={state.index === index}
+              measure={measures[index]}
+              scrollX={scrollX}
+              ref={item.ref}
             />
           );
         })}
       </View>
       {measures.length > 0 && (
-        <Indicator data={data} measures={measures} scrollX={scrollX} />
+        <Indicator measures={measures} scrollX={scrollX} />
       )}
     </View>
   );
 };
 
-export default TabHeader = ({ data, navigation }) => {
+export default TabHeader = ({ data, navigation, state }) => {
   const themeContext = useContext(ThemeContext);
 
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const ref = useRef();
+  const scrollX = useSharedValue(0);
 
   const onItemPress = useCallback(({ item, index }) => {
-    ref?.current?.scrollToOffset({
-      offset: index * constants.screenW,
-    });
     navigation.navigate(item.name);
   });
 
@@ -141,22 +158,11 @@ export default TabHeader = ({ data, navigation }) => {
       style={{ backgroundColor: themeContext.mainColor }}
       pointerEvents="box-none"
     >
-      <Tabs scrollX={scrollX} data={data} onItemPress={onItemPress} />
-      <AnimatedFlatList
-        ref={ref}
+      <Tabs
+        scrollX={scrollX}
         data={data}
-        keyExtractor={(item) => item.key}
-        horizontal
-        pagingEnabled
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
-        )}
-        bounces={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={() => (
-          <View style={{ height: "0%", width: constants.screenW }} />
-        )}
+        state={state}
+        onItemPress={onItemPress}
       />
     </View>
   );

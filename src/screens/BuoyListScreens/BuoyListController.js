@@ -6,7 +6,7 @@ import { _GET } from "../../../utils/Api";
 import { getDrawerIdx, setDrawerIdx } from "../../../store/drawerBtnReducer";
 import BuoyListView from "./BuoyListView";
 
-export default BuoyListController = ({ route }) => {
+export default BuoyListController = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const { index } = useSelector(getDrawerIdx);
@@ -22,15 +22,14 @@ export default BuoyListController = ({ route }) => {
     return () => backHandler.remove();
   }, []);
 
-  const [unBuoys, setUnBuoys] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _GET(`/detail/buoy/unassigned`, setUnBuoys, setLoading);
-  }, []);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const goBack = () => navigation.goBack();
 
-  if (loading) {
-    return null;
-  }
-
-  return <BuoyListView unassignedBuoys={unBuoys} />;
+  return (
+    <BuoyListView
+      headerHeight={headerHeight}
+      setHeaderHeight={setHeaderHeight}
+      goBack={goBack}
+    />
+  );
 };
