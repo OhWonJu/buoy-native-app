@@ -43,25 +43,25 @@ const InfoMainText = styled.Text`
   font-weight: bold;
 `;
 const InfoSubText = styled.Text`
-  color: ${(props) => props.theme.subColor + 80};
+  color: ${(props) => props.theme.utilColor};
   font-size: 12px;
 `;
 const UnitText = styled.Text`
-  color: ${(props) => props.theme.subColor + 80};
+  color: ${(props) => props.theme.utilColor};
   font-size: 10px;
 `;
 
 export default BouyCard = ({
-  latitude,
-  longitude,
-  model,
-  model_idx,
-  salinity,
-  warn,
-  warn_detail,
-  water_temp,
-  height,
-  weight,
+  latitude = null,
+  longitude = null,
+  model = null,
+  model_idx = null,
+  salinity = null,
+  warn = null,
+  warn_detail = null,
+  water_temp = null,
+  height = null,
+  weight = null,
 }) => {
   const themeContext = useContext(ThemeContext);
 

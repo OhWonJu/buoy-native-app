@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { _GET } from "../../../../utils/Api";
+import { _GET, _REFECTH } from "../../../../utils/Api";
 import DeallocatedBuoyListView from "./DeallocatedBuoyListView";
 
 export default DeallocatedBuoyController = ({
@@ -13,10 +13,19 @@ export default DeallocatedBuoyController = ({
   useEffect(() => {
     _GET(`/detail/buoy/unassigned`, setUnBuoys, setLoading);
   }, []);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    _REFECTH(`/detail/buoy/unassigned`, setUnBuoys);
+    setRefreshing(false);
+  }, []);
 
   if (loading) {
     return null;
   }
+
+  const goToBuoyDetail = (item) =>
+    navigation.navigate("BuoyDetail", { data: item });
 
   return (
     <DeallocatedBuoyListView
@@ -24,6 +33,9 @@ export default DeallocatedBuoyController = ({
       route={route}
       headerHeight={headerHeight}
       deallocated={unBuoys}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      goToBuoyDetail={goToBuoyDetail}
     />
   );
 };

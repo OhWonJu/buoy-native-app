@@ -35,7 +35,6 @@ export async function _REFECTH(endPoint, setData) {
 export async function _POST(endPoint, params) {
   try {
     const response = await API.post(endPoint, params);
-    // console.log(response);
     return response;
   } catch (e) {
     console.error(e);
@@ -44,7 +43,6 @@ export async function _POST(endPoint, params) {
 
 export async function _BUOY_DEALLOCATE(bouyName) {
   const target = { model: bouyName };
-  console.log(target);
   try {
     const response = await API.put("detail/buoy/deallocate", target);
     return response;

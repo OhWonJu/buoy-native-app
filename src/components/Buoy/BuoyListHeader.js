@@ -21,7 +21,7 @@ const LeftText = styled.Text`
   color: ${(props) => props.theme.subColor};
 `;
 
-export default BuoyListHeader = ({}) => {
+export default BuoyListHeader = ({ buoyCount = 0 }) => {
   const themeContext = useContext(ThemeContext);
 
   return (
@@ -32,7 +32,9 @@ export default BuoyListHeader = ({}) => {
           <LeftText style={{ fontWeight: "bold", paddingRight: 3 }}>
             전체
           </LeftText>
-          <LeftText style={{ color: themeContext.idnColor }}>100</LeftText>
+          <LeftText style={{ color: themeContext.idnColor }}>
+            {buoyCount}
+          </LeftText>
         </RowBox>
         <RowBox>
           <TouchableOpacity>

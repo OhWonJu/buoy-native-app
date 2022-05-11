@@ -1,59 +1,70 @@
-import React, { useCallback, useContext, useRef } from "react";
-import { View, Text, Animated } from "react-native";
+import React, { useCallback, useContext } from "react";
+import { View, Animated, TouchableOpacity, RefreshControl } from "react-native";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import {
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-} from "react-native-reanimated";
-import { ThemeContext } from "styled-components";
+import styled, { ThemeContext } from "styled-components/native";
 
 import constants from "../../../../constants";
 import BuoyListHeader from "../../../components/Buoy/BuoyListHeader";
+import BuoyListCard from "../../../components/Buoy/BuoyListCard";
+
+const CardWrapper = styled.View`
+  height: 65px;
+`;
 
 export default DeallocatedBuoyListView = ({
   navigation,
   route,
   headerHeight,
   deallocated,
+  refreshing,
+  onRefresh,
+  goToBuoyDetail,
 }) => {
   const themeContext = useContext(ThemeContext);
   const scrollPropsAndRef = useCollapsibleScene(route.name);
 
-  const keyExtractor = useCallback((item, index) => index.toString(), []);
-  const d = new Array(20).fill(null);
-
-  const RENDERITEM = ({ item, index }) => {
+  const RENDERITEM = ({ item }) => {
     return (
-      <Text key={index} style={{ padding: 20, color: "red" }}>
-        {index}
-      </Text>
+      <CardWrapper>
+        <TouchableOpacity
+          onPress={() => goToBuoyDetail(item)}
+          activeOpacity={1}
+        >
+          <BuoyListCard {...item} />
+        </TouchableOpacity>
+      </CardWrapper>
     );
   };
 
-  //https://stackoverflow.com/questions/44874469/react-native-style-a-sticky-header-when-it-sticks 헤더 붙을 때 마진주면??
+  const keyExtractor = useCallback((_, index) => index.toString(), []);
+
   return (
-    <>
-      <View style={{ flex: 1, paddingTop: 48 }}>
-        <Animated.FlatList
-          {...scrollPropsAndRef}
-          data={d}
-          keyExtractor={keyExtractor}
-          renderItem={RENDERITEM}
-          ListHeaderComponent={<BuoyListHeader />}
-          stickyHeaderIndices={[0]}
-          contentContainerStyle={{
-            paddingTop: headerHeight,
-            minHeight: constants.screenH + 48,
-          }}
-          scrollEventThrottle={16}
-          removeClippedSubviews={true}
-          initialNumToRender={5}
-          legacyImplementation={true}
-          bounces={false}
-        />
-      </View>
-    </>
+    <View style={{ flex: 1, flexGrow: 1, paddingTop: 48 }}>
+      <Animated.FlatList
+        {...scrollPropsAndRef}
+        data={deallocated}
+        keyExtractor={keyExtractor}
+        renderItem={RENDERITEM}
+        ListHeaderComponent={<BuoyListHeader buoyCount={deallocated.length} />}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{
+          backgroundColor: themeContext.mainColor,
+          paddingTop: headerHeight,
+          minHeight: constants.screenH,
+        }}
+        scrollEventThrottle={16}
+        removeClippedSubviews={true}
+        initialNumToRender={5}
+        legacyImplementation={true}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={30}
+          />
+        }
+        bounces={false}
+      />
+    </View>
   );
 };

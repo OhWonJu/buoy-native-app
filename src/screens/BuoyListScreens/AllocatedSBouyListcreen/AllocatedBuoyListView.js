@@ -26,26 +26,25 @@ export default AllocatedBuoyListView = ({
   };
 
   return (
-    <>
-      <View style={{ flex: 1, flexGrow: 1, paddingTop: 48 }}>
-        <Animated.FlatList
-          {...scrollPropsAndRef}
-          data={d}
-          keyExtractor={keyExtractor}
-          renderItem={RENDERITEM}
-          ListHeaderComponent={<BuoyListHeader />}
-          stickyHeaderIndices={[0]}
-          contentContainerStyle={{
-            paddingTop: headerHeight,
-            minHeight: constants.screenH + 48,
-          }}
-          scrollEventThrottle={16}
-          removeClippedSubviews={true}
-          initialNumToRender={5}
-          legacyImplementation={true}
-          bounces={false}
-        />
-      </View>
-    </>
+    <View style={{ flex: 1, flexGrow: 1, paddingTop: 48 }}>
+      <Animated.FlatList
+        {...scrollPropsAndRef}
+        data={d}
+        keyExtractor={keyExtractor}
+        renderItem={RENDERITEM}
+        ListHeaderComponent={<BuoyListHeader />}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{
+          backgroundColor: themeContext.mainColor,
+          paddingTop: headerHeight,
+          minHeight: constants.screenH,
+        }}
+        scrollEventThrottle={16}
+        removeClippedSubviews={true}
+        initialNumToRender={5}
+        legacyImplementation={true}
+        bounces={false}
+      />
+    </View>
   );
 };

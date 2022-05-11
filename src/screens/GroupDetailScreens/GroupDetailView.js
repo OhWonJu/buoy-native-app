@@ -118,7 +118,6 @@ export default GroupDetailView = ({
         <TouchableOpacity onPress={() => goToBouyDetail(item)}>
           <BouyCard {...item} />
         </TouchableOpacity>
-        <View></View>
       </SwipeWrapper>
     );
   };
@@ -214,7 +213,7 @@ export default GroupDetailView = ({
           />
           <GroupInfo bouyCount={bouyData.length} {...groupInfo} />
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
-          <GroupGraphTab />
+          {/* <GroupGraphTab /> */}
           <GroupMap />
           <View style={{ paddingHorizontal: 15, marginTop: 35 }}>
             <MapView

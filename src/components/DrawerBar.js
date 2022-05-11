@@ -193,8 +193,8 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
 
   // 드로어 뷰 간 이동을 위한 토글
   const toggleBtn = [
-    { nav: "BuoyList", name: "부이 관리" },
-    { nav: "Home", name: "종합 정보" },
+    { nav: "BuoyList", name: "부표관리" },
+    { nav: "Home", name: "종합정보" },
   ];
   // ------------------------------------------------
 

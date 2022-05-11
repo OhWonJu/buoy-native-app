@@ -13,7 +13,7 @@ export default ({ navigation, route, screenName, groupData }) => {
   if (groupData) {
     return (
       <Stacks.Navigator
-        initialRouteName="BuoyList"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}

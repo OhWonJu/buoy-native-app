@@ -23,7 +23,10 @@ export default BuoyListController = ({ navigation, route }) => {
   }, []);
 
   const [headerHeight, setHeaderHeight] = useState(0);
-  const goBack = () => navigation.goBack();
+  const goBack = () => {
+    dispatch(setDrawerIdx({ index: (index + 1) % 2 }));
+    navigation.goBack();
+  };
 
   return (
     <BuoyListView

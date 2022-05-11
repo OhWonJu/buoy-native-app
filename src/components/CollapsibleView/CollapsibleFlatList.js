@@ -1,14 +1,6 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  Dimensions,
-  RefreshControl,
-} from "react-native";
-
-const window = Dimensions.get("window");
+import { Animated, RefreshControl } from "react-native";
+import constants from "../../../constants";
 
 export default CollapsibleFlatList = ({
   headerHeight,
@@ -21,7 +13,7 @@ export default CollapsibleFlatList = ({
   onRefresh,
   contentContainerStyle,
 }) => {
-  const keyExtractor = useCallback((item, index) => index.toString(), []);
+  const keyExtractor = useCallback((_, index) => index.toString(), []);
 
   return (
     <Animated.FlatList
@@ -30,11 +22,11 @@ export default CollapsibleFlatList = ({
       keyExtractor={keyExtractor}
       contentContainerStyle={{
         paddingTop: headerHeight,
-        minHeight: window.height + headerHeight,
+        minHeight: constants.windowH + headerHeight,
         ...contentContainerStyle,
       }}
       showsVerticalScrollIndicator={false}
-      scrollEventThrottle={16}
+      scrollEventThrottle={20}
       onScroll={Animated.event(
         [{ nativeEvent: { contentOffset: { y: scrollY } } }],
         { useNativeDriver: true }

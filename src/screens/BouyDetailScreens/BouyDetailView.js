@@ -7,19 +7,19 @@ import Header from "../../components/Header";
 import Container from "../../components/Container";
 import constants from "../../../constants";
 
-export default BouyDetailView = ({ data }) => {
+export default BouyDetailView = ({ model, latitude, longitude }) => {
   // console.log(data);
   return (
     <>
       <Container style={{ justifyContent: "center" }}>
         <View>
           <Text>부이상세</Text>
-          <Text>{data.model}</Text>
+          <Text>{model}</Text>
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: data.latitude,
-              longitude: data.longitude,
+              latitude: latitude,
+              longitude: longitude,
               latitudeDelta: 0.00722,
               longitudeDelta: 0.00221,
             }}
@@ -29,10 +29,10 @@ export default BouyDetailView = ({ data }) => {
             <Marker
               key={0}
               coordinate={{
-                latitude: data.latitude,
-                longitude: data.longitude,
+                latitude: latitude,
+                longitude: longitude,
               }}
-              title={data.model}
+              title={model}
             />
           </MapView>
         </View>
