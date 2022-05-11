@@ -18,7 +18,6 @@ export default BuoyListView = ({ headerHeight, setHeaderHeight, goBack }) => {
   return (
     <>
       <StatusBar />
-
       <BuoyListTopTabNav
         headerHeight={headerHeight}
         setHeaderHeight={setHeaderHeight}

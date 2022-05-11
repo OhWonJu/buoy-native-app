@@ -1,11 +1,16 @@
-import React, { useCallback, useRef } from "react";
-import { Text, StyleSheet, FlatList, Animated } from "react-native";
+import React, { useCallback, useContext, useRef } from "react";
+import { View, Text, Animated } from "react-native";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
+import {
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
+import { ThemeContext } from "styled-components";
 
 import constants from "../../../../constants";
 import BuoyListHeader from "../../../components/Buoy/BuoyListHeader";
-import CollapsibleFlatList from "../../../components/CollapsibleView/CollapsibleFlatList";
-import Container from "../../../components/Container";
 
 export default DeallocatedBuoyListView = ({
   navigation,
@@ -13,15 +18,8 @@ export default DeallocatedBuoyListView = ({
   headerHeight,
   deallocated,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const scrollPropsAndRef = useCollapsibleScene(route.name);
-
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const tabBarTranslateY = scrollY.interpolate({
-    inputRange: [0, headerHeight + 48],
-    outputRange: [headerHeight + 48, 0],
-    extrapolateRight: "clamp",
-  });
 
   const keyExtractor = useCallback((item, index) => index.toString(), []);
   const d = new Array(20).fill(null);
@@ -34,28 +32,28 @@ export default DeallocatedBuoyListView = ({
     );
   };
 
+  //https://stackoverflow.com/questions/44874469/react-native-style-a-sticky-header-when-it-sticks 헤더 붙을 때 마진주면??
   return (
     <>
-      {headerHeight > 0 && (
-        <>
-          <Animated.View
-            pointerEvents="box-none"
-            style={{ transform: [{ translateY: tabBarTranslateY }] }}
-          >
-            <BuoyListHeader />
-          </Animated.View>
-          <CollapsibleFlatList
-            headerHeight={headerHeight}
-            scrollY={scrollY}
-            data={d}
-            renderItem={RENDERITEM}
-            // onEndReachedThreshold={0.1}
-            // onEndReached={onEndReached}
-            // refreshing={refreshing}
-            // onRefresh={onRefresh}
-          />
-        </>
-      )}
+      <View style={{ flex: 1, paddingTop: 48 }}>
+        <Animated.FlatList
+          {...scrollPropsAndRef}
+          data={d}
+          keyExtractor={keyExtractor}
+          renderItem={RENDERITEM}
+          ListHeaderComponent={<BuoyListHeader />}
+          stickyHeaderIndices={[0]}
+          contentContainerStyle={{
+            paddingTop: headerHeight,
+            minHeight: constants.screenH + 48,
+          }}
+          scrollEventThrottle={16}
+          removeClippedSubviews={true}
+          initialNumToRender={5}
+          legacyImplementation={true}
+          bounces={false}
+        />
+      </View>
     </>
   );
 };

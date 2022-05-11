@@ -7,7 +7,6 @@ export default DeallocatedBuoyController = ({
   navigation,
   route,
   headerHeight,
-  scrollY,
 }) => {
   const [unBuoys, setUnBuoys] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,6 @@ export default DeallocatedBuoyController = ({
       route={route}
       headerHeight={headerHeight}
       deallocated={unBuoys}
-      scrollY={scrollY}
     />
   );
 };

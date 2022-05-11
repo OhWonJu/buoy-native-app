@@ -52,7 +52,15 @@ export default ({ headerHeight, setHeaderHeight, goBack }) => {
           />
         )}
       </Tabs.Screen>
-      <Tabs.Screen name="Allocated" component={Allocated} />
+      <Tabs.Screen name="Allocated">
+        {({ navigation, route }) => (
+          <Allocated
+            navigation={navigation}
+            route={route}
+            headerHeight={headerHeight}
+          />
+        )}
+      </Tabs.Screen>
     </Tabs.Navigator>
   );
 };

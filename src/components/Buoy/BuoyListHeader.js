@@ -26,7 +26,7 @@ export default BuoyListHeader = ({}) => {
 
   return (
     // tabbar height... 48
-    <View style={shadows.bottomShadow}>
+    <View style={[shadows.bottomShadow]}>
       <Container>
         <RowBox>
           <LeftText style={{ fontWeight: "bold", paddingRight: 3 }}>

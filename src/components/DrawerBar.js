@@ -77,8 +77,8 @@ const ListBox = styled.View`
   flex: 1;
   /* background-color: blue; */
   border: ${(props) => props.theme.boxBorder};
-  border-left-width: 0;
-  border-right-width: 0;
+  border-left-width: 0px;
+  border-right-width: 0px;
 `;
 
 const ItemBox = styled.TouchableOpacity`
