@@ -16,7 +16,7 @@ const BlurGround = styled(Animated.View)`
   background-color: rgb(0, 0, 0);
 `;
 
-export default ModalFade = ({ modalVisible }) => {
+export default ModalFade = ({ modalVisible, close = () => null }) => {
   const animationKey = useDerivedValue(() => (modalVisible ? 1 : 0));
   const BlurZIndex = useDerivedValue(() => {
     return interpolate(animationKey.value, [0, 1], [-1, 2], Extrapolate.CLAMP);
@@ -39,5 +39,5 @@ export default ModalFade = ({ modalVisible }) => {
     };
   });
 
-  return <BlurGround style={BlurAnimeStyle} />;
+  return <BlurGround style={BlurAnimeStyle}></BlurGround>;
 };

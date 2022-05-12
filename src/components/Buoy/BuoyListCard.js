@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { Entypo } from "@expo/vector-icons";
 import { Svg, Circle } from "react-native-svg";
+import { useDispatch } from "react-redux";
 
+import { setBuoyListModal } from "../../../store/BuoyListModalReducer";
 import { getAperB } from "../../../utils/commonFuncs";
 import RowBox from "../RowBox";
+import constants from "../../../constants";
 
 const Container = styled.View`
-  background-color: ${(props) => props.theme.mainColor};
+  /* background-color: ${(props) => props.theme.mainColor}; */
   border-bottom-color: ${(props) => props.theme.lightUtilColor};
   border-bottom-width: 1px;
   flex-direction: row;
@@ -40,6 +43,16 @@ export default BuoyListCard = ({
   model_idx = null,
 }) => {
   const themeContext = useContext(ThemeContext);
+  const dispatch = useDispatch();
+
+  const modalControl = () => {
+    dispatch(
+      setBuoyListModal({
+        modalVisible: true,
+        modalData: { latitude, longitude, model, model_idx },
+      })
+    );
+  };
 
   const isConn = parseInt(Math.random().toFixed(0));
 
@@ -67,13 +80,16 @@ export default BuoyListCard = ({
           <BouyName numberOfLines={1}>{model}</BouyName>
           <UnitText numberOfLines={1}>{model_idx}</UnitText>
         </View>
-        <View style={{ paddingHorizontal: 15 }}>
+        <TouchableOpacity
+          style={{ padding: 15 }}
+          onPress={() => modalControl()}
+        >
           <Entypo
             name="dots-three-vertical"
             size={15}
             color={themeContext.utilColor}
           />
-        </View>
+        </TouchableOpacity>
       </Section>
     </Container>
   );

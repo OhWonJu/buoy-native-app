@@ -112,13 +112,15 @@ export default GroupDetailView = ({
     latitude: Math.min(...latitudes),
   });
 
-  const RENDERITEM = ({ item }) => {
+  const RENDERITEM = ({ item, index }) => {
     return (
-      <SwipeWrapper key={item.model} onSwipe={() => onSwipe(item)} HEIGHT={65}>
-        <TouchableOpacity onPress={() => goToBouyDetail(item)}>
-          <BouyCard {...item} />
-        </TouchableOpacity>
-      </SwipeWrapper>
+      <BouyCard
+        key={item.model}
+        index={index}
+        onSwipe={onSwipe}
+        goToBouyDetail={goToBouyDetail}
+        {...item}
+      />
     );
   };
 

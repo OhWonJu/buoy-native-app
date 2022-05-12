@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { _GET } from "../../../utils/Api";
 import { getDrawerIdx, setDrawerIdx } from "../../../store/drawerBtnReducer";
 import BuoyListView from "./BuoyListView";
+import { getBuoyListModal } from "../../../store/BuoyListModalReducer";
 
 export default BuoyListController = ({ navigation, route }) => {
   const dispatch = useDispatch();
@@ -28,10 +29,14 @@ export default BuoyListController = ({ navigation, route }) => {
     navigation.goBack();
   };
 
+  const { modalVisible, modalData } = useSelector(getBuoyListModal);
+
   return (
     <BuoyListView
       headerHeight={headerHeight}
       setHeaderHeight={setHeaderHeight}
+      modalVisible={modalVisible}
+      modalData={modalData}
       goBack={goBack}
     />
   );

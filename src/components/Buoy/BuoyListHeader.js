@@ -20,9 +20,27 @@ const LeftText = styled.Text`
   font-size: 13px;
   color: ${(props) => props.theme.subColor};
 `;
+const ToggleText = styled.Text`
+  font-size: 13px;
+  color: ${(props) =>
+    props.select ? props.theme.idnColor : props.theme.subColor};
+`;
 
-export default BuoyListHeader = ({ buoyCount = 0 }) => {
+export default BuoyListHeader = ({
+  buoyCount = 0,
+  multiSelect,
+  setMultiSelect,
+  allSelect,
+  setAllSelect,
+}) => {
   const themeContext = useContext(ThemeContext);
+
+  const onPressHandler = () => {
+    setMultiSelect(!multiSelect);
+    if (allSelect) {
+      setAllSelect(false);
+    }
+  };
 
   return (
     // tabbar height... 48
@@ -43,11 +61,23 @@ export default BuoyListHeader = ({ buoyCount = 0 }) => {
         </RowBox>
       </Container>
       <Container style={{ height: 35, paddingBottom: 5 }}>
+        <RowBox>
+          <TouchableOpacity onPress={() => onPressHandler()}>
+            <ToggleText select={multiSelect}>다중선택</ToggleText>
+          </TouchableOpacity>
+          {multiSelect && (
+            <TouchableOpacity
+              style={{ paddingLeft: 7 }}
+              onPress={() => setAllSelect(!allSelect)}
+            >
+              <ToggleText select={allSelect}>
+                {allSelect ? "선택해제" : "전체선택"}
+              </ToggleText>
+            </TouchableOpacity>
+          )}
+        </RowBox>
         <TouchableOpacity>
-          <Text>다중선택</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Feather name="search" size={20} color="black" />
+          <Feather name="search" size={18} color="black" />
         </TouchableOpacity>
       </Container>
     </View>

@@ -4,25 +4,40 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 import constants from "../../../constants";
-import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
-import TopHeader from "../../components/TopHeader";
+import BuoyListModal from "../../components/Modals/BuoyListModal";
 import BuoyListTopTabNav from "../../navigators/BuoyListTopTabNav";
 
-const StatusBar = styled.View`
-  background-color: ${(props) => props.theme.mainColor};
-  height: ${constants.StatusBarHeight}px;
-  z-index: 999;
-`;
+// const StatusBar = styled.View`
+//   background-color: ${(props) => props.theme.mainColor};
+//   height: ${constants.StatusBarHeight}px;
+//   z-index: 9;
+// `;
 
-export default BuoyListView = ({ headerHeight, setHeaderHeight, goBack }) => {
+const Container = styled.View`
+  flex: 1;
+  padding-top: ${constants.StatusBarHeight}px;
+  background-color: ${(props) => props.theme.mainColor};
+`;
+export default BuoyListView = ({
+  headerHeight,
+  setHeaderHeight,
+  goBack,
+  modalVisible,
+  modalData,
+}) => {
   return (
     <>
-      <StatusBar />
-      <BuoyListTopTabNav
-        headerHeight={headerHeight}
-        setHeaderHeight={setHeaderHeight}
-        goBack={goBack}
-      />
+      {/* <StatusBar /> */}
+      <Container>
+        <BuoyListTopTabNav
+          headerHeight={headerHeight}
+          setHeaderHeight={setHeaderHeight}
+          goBack={goBack}
+        />
+      </Container>
+      {modalVisible && (
+        <BuoyListModal modalVisible={modalVisible} modalData={modalData} />
+      )}
     </>
   );
 };

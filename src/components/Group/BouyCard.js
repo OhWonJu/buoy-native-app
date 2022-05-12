@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Svg, Circle } from "react-native-svg";
 
 import { getAperB } from "../../../utils/commonFuncs";
 import RowBox from "../RowBox";
+import SwipeWrapper from "../SwipeWrapper/SwipeWrapper";
+import RSwipeWrapper from "../SwipeWrapper/RSwipeWrapper";
 
 const Container = styled.View`
   background-color: ${(props) => props.theme.mainColor};
@@ -52,6 +54,9 @@ const UnitText = styled.Text`
 `;
 
 export default BouyCard = ({
+  index = 0,
+  onSwipe = () => null,
+  goToBouyDetail,
   latitude = null,
   longitude = null,
   model = null,
@@ -72,70 +77,158 @@ export default BouyCard = ({
     // weight = "--";
   }
 
+  // return (
+  //   <SwipeWrapper onSwipe={() => onSwipe(model, index)} HEIGHT={65}>
+  //     <TouchableOpacity
+  //       onPress={() => goToBouyDetail({ model, latitude, longitude })}
+  //     >
+  //       <Container style={{ height: "100%" }}>
+  //         <View
+  //           style={{
+  //             height: "100%",
+  //             paddingHorizontal: 10,
+  //             justifyContent: "center",
+  //             alignItems: "center",
+  //           }}
+  //         >
+  //           <Svg height="8" width="8">
+  //             <Circle
+  //               cx={4}
+  //               cy={4}
+  //               r={3}
+  //               fill={
+  //                 isConn === 1 ? themeContext.blueColor : themeContext.redColor
+  //               }
+  //             />
+  //           </Svg>
+  //         </View>
+  //         <BouyName numberOfLines={1}>{model}</BouyName>
+  //         <InfoBox>
+  //           <InfoWrapper>
+  //             {typeof height === "number" && (
+  //               <>
+  //                 <InfoSubText>침수</InfoSubText>
+  //                 <RowBox style={{ alignItems: "flex-end" }}>
+  //                   <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
+  //                     {height.toFixed(1)}
+  //                   </InfoMainText>
+  //                   <UnitText>%</UnitText>
+  //                 </RowBox>
+  //               </>
+  //             )}
+  //           </InfoWrapper>
+  //           <InfoWrapper>
+  //             {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
+  //             {typeof height === "number" && (
+  //               <>
+  //                 <InfoSubText>하중</InfoSubText>
+  //                 <RowBox style={{ alignItems: "flex-end" }}>
+  //                   <InfoMainText
+  //                     style={{ color: getAperB(100, 100 - weight) }}
+  //                   >
+  //                     {weight.toFixed(1)}
+  //                   </InfoMainText>
+  //                   <UnitText>kg</UnitText>
+  //                 </RowBox>
+  //               </>
+  //             )}
+  //           </InfoWrapper>
+  //           <InfoWrapper>
+  //             {warn === 0 ? (
+  //               <MaterialCommunityIcons
+  //                 name="alert-circle-outline"
+  //                 size={20}
+  //                 color={themeContext.lightUtilColor}
+  //               />
+  //             ) : (
+  //               <MaterialCommunityIcons
+  //                 name="alert-circle"
+  //                 size={20}
+  //                 color={themeContext.orangeColor}
+  //               />
+  //             )}
+  //           </InfoWrapper>
+  //         </InfoBox>
+  //       </Container>
+  //     </TouchableOpacity>
+  //   </SwipeWrapper>
+  // );
+
   return (
-    <Container style={{ height: "100%" }}>
-      <View
-        style={{
-          height: "100%",
-          paddingHorizontal: 10,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+    <RSwipeWrapper onSwipe={() => onSwipe(model, index)} height={65}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => goToBouyDetail({ model, latitude, longitude })}
       >
-        <Svg height="8" width="8">
-          <Circle
-            cx={4}
-            cy={4}
-            r={3}
-            fill={isConn === 1 ? themeContext.blueColor : themeContext.redColor}
-          />
-        </Svg>
-      </View>
-      <BouyName numberOfLines={1}>{model}</BouyName>
-      <InfoBox>
-        <InfoWrapper>
-          {typeof height === "number" && (
-            <>
-              <InfoSubText>침수</InfoSubText>
-              <RowBox style={{ alignItems: "flex-end" }}>
-                <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
-                  {height.toFixed(1)}
-                </InfoMainText>
-                <UnitText>%</UnitText>
-              </RowBox>
-            </>
-          )}
-        </InfoWrapper>
-        <InfoWrapper>
-          {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
-          {typeof height === "number" && (
-            <>
-              <InfoSubText>하중</InfoSubText>
-              <RowBox style={{ alignItems: "flex-end" }}>
-                <InfoMainText style={{ color: getAperB(100, 100 - weight) }}>
-                  {weight.toFixed(1)}
-                </InfoMainText>
-                <UnitText>kg</UnitText>
-              </RowBox>
-            </>
-          )}
-        </InfoWrapper>
-        <InfoWrapper>
-          {warn === 0 ? (
-            <MaterialCommunityIcons
-              name="alert-circle-outline"
-              size={20}
-              color={themeContext.lightUtilColor}
-            />
-          ) : (
-            <MaterialCommunityIcons
-              name="alert-circle"
-              size={20}
-              color={themeContext.orangeColor}
-            />
-          )}
-        </InfoWrapper>
-      </InfoBox>
-    </Container>
+        <Container style={{ height: "100%" }}>
+          <View
+            style={{
+              height: "100%",
+              paddingHorizontal: 10,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Svg height="8" width="8">
+              <Circle
+                cx={4}
+                cy={4}
+                r={3}
+                fill={
+                  isConn === 1 ? themeContext.blueColor : themeContext.redColor
+                }
+              />
+            </Svg>
+          </View>
+          <BouyName numberOfLines={1}>{model}</BouyName>
+          <InfoBox>
+            <InfoWrapper>
+              {typeof height === "number" && (
+                <>
+                  <InfoSubText>침수</InfoSubText>
+                  <RowBox style={{ alignItems: "flex-end" }}>
+                    <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
+                      {height.toFixed(1)}
+                    </InfoMainText>
+                    <UnitText>%</UnitText>
+                  </RowBox>
+                </>
+              )}
+            </InfoWrapper>
+            <InfoWrapper>
+              {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
+              {typeof height === "number" && (
+                <>
+                  <InfoSubText>하중</InfoSubText>
+                  <RowBox style={{ alignItems: "flex-end" }}>
+                    <InfoMainText
+                      style={{ color: getAperB(100, 100 - weight) }}
+                    >
+                      {weight.toFixed(1)}
+                    </InfoMainText>
+                    <UnitText>kg</UnitText>
+                  </RowBox>
+                </>
+              )}
+            </InfoWrapper>
+            <InfoWrapper>
+              {warn === 0 ? (
+                <MaterialCommunityIcons
+                  name="alert-circle-outline"
+                  size={20}
+                  color={themeContext.lightUtilColor}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name="alert-circle"
+                  size={20}
+                  color={themeContext.orangeColor}
+                />
+              )}
+            </InfoWrapper>
+          </InfoBox>
+        </Container>
+      </TouchableOpacity>
+    </RSwipeWrapper>
   );
 };

@@ -28,14 +28,14 @@ export default GroupDetailController = ({ navigation, route }) => {
     setRefreshing(false);
   }, []);
 
-  const onSwipe = async (item) => {
+  const onSwipe = async (model, index) => {
     const newData = [...bouyData];
-    newData.splice(newData.indexOf(item), 1);
+    newData.splice(index, 1);
     setBouyData(newData);
     setGroupInfo((prevState) => {
       return { ...prevState, smart_buoy: prevState.smart_buoy - 1 };
     });
-    const result = await _BUOY_DEALLOCATE(item.model);
+    const result = await _BUOY_DEALLOCATE(model);
   };
 
   const onEndReached = () => {
