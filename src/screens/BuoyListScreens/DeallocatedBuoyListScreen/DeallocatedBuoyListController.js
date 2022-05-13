@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import _ from "underscore";
 
@@ -9,11 +10,17 @@ export default DeallocatedBuoyController = ({
   route,
   headerHeight,
 }) => {
+  const [seletedItem, setSeletedItem] = useState([]);
+
   const [unBuoys, setUnBuoys] = useState(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    _GET(`/detail/buoy/unassigned`, setUnBuoys, setLoading);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      _GET(`/detail/buoy/unassigned`, setUnBuoys, setLoading);
+      setSeletedItem([]);
+    }, [])
+  );
+
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -22,12 +29,12 @@ export default DeallocatedBuoyController = ({
   }, []);
 
   const [multiSelect, setMultiSelect] = useState(false);
-  const [seletedItem, setSeletedItem] = useState([]);
   const [allSelect, setAllSelect] = useState(false);
   useEffect(() => {
     if (allSelect && multiSelect) {
       _.forEach(unBuoys, (data) => (data.selected = true));
-      setSeletedItem(unBuoys);
+      const list = _.map(unBuoys, (data) => data.model);
+      setSeletedItem(list);
       setUnBuoys(unBuoys);
     } else {
       _.forEach(unBuoys, (data) => (data.selected = false));
@@ -36,20 +43,17 @@ export default DeallocatedBuoyController = ({
     }
   }, [allSelect, multiSelect]);
 
-  const goToBuoyDetail = (item) =>
-    navigation.navigate("BuoyDetail", { data: item });
-
   const toggleSelect = (item) => {
     const target = _.find(unBuoys, item);
     if (target) {
       target.selected = target.selected == null ? true : !target.selected;
       if (target.selected) {
         setSeletedItem((prevState) => {
-          return [...prevState, target];
+          return [...prevState, target.model];
         });
       } else {
         const newData = [...seletedItem];
-        const index = _.findIndex(seletedItem, item);
+        const index = _.findIndex(seletedItem, item.model);
         newData.splice(index, 1);
         setSeletedItem(newData);
       }
@@ -64,6 +68,11 @@ export default DeallocatedBuoyController = ({
       goToBuoyDetail(item);
     }
   });
+
+  const goToBuoyDetail = (item) =>
+    navigation.navigate("BuoyDetail", { data: item });
+  const goToGroupList = (list) =>
+    navigation.navigate("GroupList", { buoyList: list, isAppend: true });
 
   if (loading) {
     return null;
@@ -81,7 +90,9 @@ export default DeallocatedBuoyController = ({
       setMultiSelect={setMultiSelect}
       allSelect={allSelect}
       setAllSelect={setAllSelect}
+      seletedItem={seletedItem}
       onPressHandler={onPressHandler}
+      goToGroupList={goToGroupList}
     />
   );
 };

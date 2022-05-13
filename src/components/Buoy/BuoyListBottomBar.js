@@ -29,12 +29,16 @@ const Button = styled.TouchableOpacity`
   justify-content: space-around;
 `;
 
-export default BuoyListBottomBar = ({ setMultiSelect }) => {
+export default BuoyListBottomBar = ({
+  seletedItem,
+  setMultiSelect,
+  goToGroupList,
+}) => {
   const themeContext = useContext(ThemeContext);
   return (
     <Container>
       <Col>
-        <Button>
+        <Button onPress={() => goToGroupList(seletedItem)}>
           <Feather name="plus" size={26} color={themeContext.mainColor} />
           <Text>할당</Text>
         </Button>

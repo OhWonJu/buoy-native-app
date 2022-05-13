@@ -27,7 +27,9 @@ export default DeallocatedBuoyListView = ({
   setMultiSelect,
   allSelect,
   setAllSelect,
+  seletedItem,
   onPressHandler,
+  goToGroupList,
 }) => {
   const themeContext = useContext(ThemeContext);
   const scrollPropsAndRef = useCollapsibleScene(route.name);
@@ -83,7 +85,13 @@ export default DeallocatedBuoyListView = ({
           }
           bounces={false}
         />
-        {multiSelect && <BuoyListBottomBar setMultiSelect={setMultiSelect} />}
+        {multiSelect && (
+          <BuoyListBottomBar
+            seletedItem={seletedItem}
+            setMultiSelect={setMultiSelect}
+            goToGroupList={goToGroupList}
+          />
+        )}
       </View>
     </>
   );

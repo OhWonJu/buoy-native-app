@@ -5,6 +5,7 @@ import { verticallTransition, horizontalTransition } from "./NavigationOptions";
 import Home from "../screens/HomeScreens/index";
 import BuoyList from "../screens/BuoyListScreens/index";
 import GroupDetail from "../screens/GroupDetailScreens/index";
+import GroupList from "../screens/GroupListScreens/index";
 import BouyDetail from "../screens/BouyDetailScreens/index";
 
 const Stacks = createStackNavigator();
@@ -26,6 +27,7 @@ export default ({ navigation, route, screenName, groupData }) => {
             )}
           </Stacks.Screen>
         ))}
+        <Stacks.Screen name={"GroupList"} component={GroupList} />
         <Stacks.Screen name={"BuoyList"} component={BuoyList} />
         <Stacks.Screen name={"BuoyDetail"} component={BouyDetail} />
       </Stacks.Navigator>

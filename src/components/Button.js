@@ -9,9 +9,13 @@ const Container = styled.TouchableOpacity`
   border-radius: ${(props) => (props.radius ? props.radius : "10px")};
   ${(props) => props.height && { height: props.height }}
   width: ${(props) => (props.width ? props.width : "50%")};
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+`;
+const Icon = styled.View`
+  justify-content: center;
+  align-items: center;
 `;
 const Text = styled.Text`
   /* color: #ffffff; */
@@ -40,7 +44,7 @@ const Button = ({
     height={height}
     radius={radius}
   >
-    {icon}
+    <Icon>{icon}</Icon>
     <Text txColor={txColor} txSize={txSize}>
       {text}
     </Text>

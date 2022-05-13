@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 
 import { setBuoyListModal } from "../../../store/BuoyListModalReducer";
@@ -69,6 +70,7 @@ const ModalButtonText = styled.Text`
 `;
 
 export default BuoyListModal = ({ modalVisible, modalData }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const cencel = () => {
     dispatch(
@@ -78,6 +80,12 @@ export default BuoyListModal = ({ modalVisible, modalData }) => {
       })
     );
   };
+
+  const goToGroupList = () =>
+    navigation.navigate("GroupList", {
+      buoyList: [modalData.model],
+      isAppend: true,
+    });
 
   return (
     <>
@@ -95,7 +103,12 @@ export default BuoyListModal = ({ modalVisible, modalData }) => {
               <SubText>{modalData.model_idx}</SubText>
             </ModalHeader>
             <ModalContextBox>
-              <ContextButton>
+              <ContextButton
+                onPress={() => {
+                  goToGroupList();
+                  cencel();
+                }}
+              >
                 <ModalContextText>구역 할당</ModalContextText>
               </ContextButton>
               <ContextButton>

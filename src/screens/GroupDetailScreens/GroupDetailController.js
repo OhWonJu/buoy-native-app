@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 
 import GroupDetailView from "./GroupDetailView";
 import { _BUOY_DEALLOCATE, _GET, _REFECTH } from "../../../utils/Api";
@@ -13,13 +14,15 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [bouyData, setBouyData] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    _GET(
-      `detail/buoy/list?group_id=${route.params?.id}`,
-      setBouyData,
-      setLoading
-    );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      _GET(
+        `detail/buoy/list?group_id=${route.params?.id}`,
+        setBouyData,
+        setLoading
+      );
+    }, [])
+  );
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
@@ -35,7 +38,7 @@ export default GroupDetailController = ({ navigation, route }) => {
     setGroupInfo((prevState) => {
       return { ...prevState, smart_buoy: prevState.smart_buoy - 1 };
     });
-    const result = await _BUOY_DEALLOCATE(model);
+    const result = await _BUOY_DEALLOCATE([model]);
   };
 
   const onEndReached = () => {

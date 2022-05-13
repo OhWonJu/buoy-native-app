@@ -36,7 +36,7 @@ const Title = styled.Text`
 `;
 
 export default TopHeader = ({
-  setHeaderHeight,
+  setHeaderHeight = () => null,
   title = null,
   titleColor = "#262626",
   leftOnPress = () => null,

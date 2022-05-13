@@ -41,10 +41,25 @@ export async function _POST(endPoint, params) {
   }
 }
 
-export async function _BUOY_DEALLOCATE(bouyName) {
-  const target = { model: bouyName };
+export async function _BUOY_ALLOCATE(list, groupId) {
+  const listForm = list.map((data) => {
+    return { model: data, group_id: groupId, line: 1 };
+  });
+
   try {
-    const response = await API.put("detail/buoy/deallocate", target);
+    const response = await API.put("detail/buoy/allocate/list", listForm);
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function _BUOY_DEALLOCATE(list) {
+  const listForm = list.map((data) => {
+    return { model: data };
+  });
+  try {
+    const response = await API.put("detail/buoy/deallocate/list", listForm);
     return response;
   } catch (e) {
     console.error(e);
