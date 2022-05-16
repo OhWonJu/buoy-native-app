@@ -46,7 +46,7 @@ export default GroupListController = ({ navigation, route }) => {
       const result = await _BUOY_ALLOCATE(route.params.buoyList, item.group_id);
       goBack();
     } else {
-      navigation.navigate("GroupDetail", {
+      navigation.navigate(String(item.group_id), {
         id: item.group_id,
         groupName: item.group_name,
         groupInfo: item,

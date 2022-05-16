@@ -11,8 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { _GET } from "../../utils/Api";
 import constants from "../../constants";
-import { userSignOut } from "../../auth";
-import { setAuth } from "../../store/authReducer";
 import { getDrawerIdx, setDrawerIdx } from "../../store/drawerBtnReducer";
 
 const Container = styled(Animated.View)`
@@ -131,7 +129,7 @@ const Item = ({ item, navigation, disable }) => {
       disabled={disable}
       onPress={() => {
         navigation.closeDrawer();
-        navigation.navigate("GroupDetail", {
+        navigation.navigate(String(id), {
           id: id,
           groupName: name,
           groupInfo: item,
