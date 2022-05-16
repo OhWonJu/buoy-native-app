@@ -55,9 +55,9 @@ export default BuoyListHeader = ({
           </LeftText>
         </RowBox>
         <RowBox>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text>편집</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </RowBox>
       </Container>
       <Container style={{ height: 35, paddingBottom: 5 }}>
@@ -76,9 +76,9 @@ export default BuoyListHeader = ({
             </TouchableOpacity>
           )}
         </RowBox>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Feather name="search" size={18} color="black" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Container>
     </View>
   );

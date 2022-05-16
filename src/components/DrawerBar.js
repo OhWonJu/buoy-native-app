@@ -39,6 +39,7 @@ const Mid = styled.View`
 `;
 const Bottom = styled.View`
   height: 65px;
+  width: 100%;
   justify-content: center;
   align-items: center;
 `;
@@ -130,7 +131,7 @@ const Item = ({ item, navigation, disable }) => {
       disabled={disable}
       onPress={() => {
         navigation.closeDrawer();
-        navigation.navigate(String(id), {
+        navigation.navigate("GroupDetail", {
           id: id,
           groupName: name,
           groupInfo: item,
@@ -192,10 +193,10 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
   // -------------------------------------------------
 
   // 드로어 뷰 간 이동을 위한 토글
-  const toggleBtn = [
-    { nav: "BuoyList", name: "부표관리" },
-    { nav: "Home", name: "종합정보" },
-  ];
+  // const toggleBtn = [
+  //   { nav: "BuoyList", name: "부표관리" },
+  //   { nav: "Home", name: "종합정보" },
+  // ];
   // ------------------------------------------------
 
   const renderItem = ({ item }) => (
@@ -230,19 +231,31 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
             <Button
               disabled={disable}
               onPress={() => {
-                navigation.navigate(toggleBtn[index].nav);
-                dispatch(
-                  setDrawerIdx({ index: (index + 1) % toggleBtn.length })
-                );
-                navigation.closeDrawer();
+                navigation.navigate("GroupList");
                 navigation.closeDrawer();
               }}
             >
-              <TitleText>{toggleBtn[index].name}</TitleText>
+              <TitleText>구역 관리</TitleText>
+            </Button>
+          </BtnBox>
+          <BtnBox style={{ paddingTop: 5 }}>
+            <Button
+              disabled={disable}
+              onPress={() => {
+                // navigation.navigate(toggleBtn[index].nav);
+                // dispatch(
+                //   setDrawerIdx({ index: (index + 1) % toggleBtn.length })
+                // );
+                navigation.navigate("BuoyList");
+                navigation.closeDrawer();
+              }}
+            >
+              {/* <TitleText>{toggleBtn[index].name}</TitleText> */}
+              <TitleText>부표 관리</TitleText>
             </Button>
           </BtnBox>
         </Mid>
-        <Bottom>
+        {/* <Bottom>
           <TouchableOpacity
             disabled={disable}
             onPress={() => {
@@ -252,7 +265,7 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
           >
             <TitleText style={{ padding: 20 }}>로그아웃</TitleText>
           </TouchableOpacity>
-        </Bottom>
+        </Bottom> */}
       </DrawerBox>
     </Container>
   );

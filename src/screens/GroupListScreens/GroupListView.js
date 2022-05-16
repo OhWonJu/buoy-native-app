@@ -17,6 +17,8 @@ import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeade
 import GroupCard from "../../components/Group/GroupCard";
 import RowBox from "../../components/RowBox";
 import TopHeader from "../../components/TopHeader";
+import GroupDeleteModal from "../../components/Modals/GroupDeleteModal";
+import GroupCreateModal from "../../components/Modals/GroupCreateModal";
 
 const LINEHEADER_HEIGHT = 80 + constants.StatusBarHeight;
 
@@ -68,6 +70,13 @@ export default GroupListView = ({
   headerOnLayout,
   refreshing,
   onRefresh,
+  createModalVisible,
+  setCreateModalVisible,
+  deleteModalVisible,
+  setDeleteModalVisible,
+  deleteGroup,
+  setDeleteGroup,
+  deleteHandler,
   goBack,
 }) => {
   const themeContext = useContext(ThemeContext);
@@ -90,8 +99,10 @@ export default GroupListView = ({
         key={item.group_id}
         index={index}
         onPressHandler={onPressHandler}
+        isAppend={isAppend}
+        setModalVisible={setDeleteModalVisible}
+        setDeleteGroup={setDeleteGroup}
         item={item}
-        {...item}
       />
     );
   };
@@ -140,11 +151,12 @@ export default GroupListView = ({
                       color={themeContext.mainColor}
                     />
                   }
-                  text={"새 구역 생성"}
+                  text={"새 구역 만들기"}
                   txColor={themeContext.mainColor}
                   txSize={14}
                   width={"100%"}
                   height={"40px"}
+                  onPress={() => setCreateModalVisible(true)}
                 />
               </View>
             </FlatListHeader>
@@ -172,6 +184,22 @@ export default GroupListView = ({
           </HeaderWrapper>
         </CollapsibleHeader>
       </SafeAreaView>
+      {createModalVisible && (
+        <GroupCreateModal
+          modalVisible={createModalVisible}
+          setModalVisible={setCreateModalVisible}
+          onRefresh={onRefresh}
+        />
+      )}
+      {deleteModalVisible && (
+        <GroupDeleteModal
+          modalVisible={deleteModalVisible}
+          setModalVisible={setDeleteModalVisible}
+          deleteGroup={deleteGroup}
+          setDeleteGroup={setDeleteGroup}
+          confirm={deleteHandler}
+        />
+      )}
     </>
   );
 };

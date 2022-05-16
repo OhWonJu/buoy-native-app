@@ -12,12 +12,10 @@ import MapView, { Marker, Polygon } from "react-native-maps";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
-import GroupMap from "../../components/Group/GroupMap";
 import Header from "../../components/Header";
 import TypeModal from "../../components/Modals/TypeModal";
 import GroupGraphTab from "../../components/Group/GroupGraphTab";
 import ColBox from "../../components/ColBox";
-import SwipeWrapper from "../../components/SwipeWrapper/SwipeWrapper";
 import BouyCard from "../../components/Group/BouyCard";
 import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
 import CollapsibleFlatList from "../../components/CollapsibleView/CollapsibleFlatList";
@@ -63,7 +61,7 @@ export default GroupDetailView = ({
   typeModeIndex,
   setTypeModeIndex,
   typeModeText,
-  bouyData,
+  buoyData,
   groupInfo,
   setGroupInfo,
   onSwipe,
@@ -91,8 +89,8 @@ export default GroupDetailView = ({
     setHeaderHeight(height);
   }, []);
 
-  let longitudes = bouyData.map((bouy) => bouy.longitude);
-  let latitudes = bouyData.map((bouy) => bouy.latitude);
+  let longitudes = buoyData?.map((bouy) => bouy.longitude);
+  let latitudes = buoyData?.map((bouy) => bouy.latitude);
 
   const points = [];
   points.push({
@@ -167,7 +165,7 @@ export default GroupDetailView = ({
             <CollapsibleFlatList
               headerHeight={headerHeight}
               scrollY={scrollY}
-              data={bouyData}
+              data={buoyData}
               renderItem={RENDERITEM}
               onEndReachedThreshold={0.1}
               onEndReached={onEndReached}
@@ -213,29 +211,30 @@ export default GroupDetailView = ({
               </RowBox>
             }
           />
-          <GroupInfo bouyCount={bouyData.length} {...groupInfo} />
+          <GroupInfo bouyCount={buoyData.length} {...groupInfo} />
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
           <GroupGraphTab />
-          <GroupMap />
-          <View style={{ paddingHorizontal: 15, marginTop: 35 }}>
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: points[0].latitude,
-                longitude: points[0].longitude,
-                latitudeDelta: 0.00722,
-                longitudeDelta: 0.00221,
-              }}
-              mapType={"hybrid"}
-              showsUserLocation={true}
-            >
-              <Polygon
-                coordinates={points}
-                fillColor={themeContext.greenColor + 80}
-                strokeColor="rgba(0, 200, 0, 0)" // fallback for when `strokeColors` is not supported by the map-provider
-              />
-            </MapView>
-          </View>
+          {buoyData.length > 0 && (
+            <View style={{ paddingHorizontal: 15, marginTop: 35 }}>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude: points[0].latitude,
+                  longitude: points[0].longitude,
+                  latitudeDelta: 0.00722,
+                  longitudeDelta: 0.00221,
+                }}
+                mapType={"hybrid"}
+                showsUserLocation={true}
+              >
+                <Polygon
+                  coordinates={points}
+                  fillColor={themeContext.greenColor + 80}
+                  strokeColor="transparent" // fallback for when `strokeColors` is not supported by the map-provider
+                />
+              </MapView>
+            </View>
+          )}
         </CollapsibleHeader>
       </SafeAreaView>
       {editNameModalVisible && (

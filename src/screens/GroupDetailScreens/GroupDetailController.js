@@ -11,14 +11,14 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [groupInfo, setGroupInfo] = useState(route.params.groupInfo);
 
-  const [bouyData, setBouyData] = useState(null);
+  const [buoyData, setBuoyData] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
   useFocusEffect(
     useCallback(() => {
       _GET(
         `detail/buoy/list?group_id=${route.params?.id}`,
-        setBouyData,
+        setBuoyData,
         setLoading
       );
     }, [])
@@ -27,14 +27,14 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(`detail/buoy/list?group_id=${route.params?.id}`, setBouyData);
+    _REFECTH(`detail/buoy/list?group_id=${route.params?.id}`, setBuoyData);
     setRefreshing(false);
   }, []);
 
   const onSwipe = async (model, index) => {
-    const newData = [...bouyData];
+    const newData = [...buoyData];
     newData.splice(index, 1);
-    setBouyData(newData);
+    setBuoyData(newData);
     setGroupInfo((prevState) => {
       return { ...prevState, smart_buoy: prevState.smart_buoy - 1 };
     });
@@ -109,7 +109,7 @@ export default GroupDetailController = ({ navigation, route }) => {
       typeModeIndex={typeModeIndex}
       setTypeModeIndex={setTypeModeIndex}
       typeModeText={typeModeText}
-      bouyData={bouyData}
+      buoyData={buoyData}
       groupInfo={groupInfo}
       setGroupInfo={setGroupInfo}
       onSwipe={onSwipe}

@@ -83,6 +83,7 @@ export default DeallocatedBuoyListView = ({
               progressViewOffset={30}
             />
           }
+          showsVerticalScrollIndicator={false}
           bounces={false}
         />
         {multiSelect && (

@@ -29,7 +29,11 @@ export default ({ groupData }) => {
         name={"DrawHome"}
         options={({ route }) => {
           const routeName = getFocusedRouteNameFromRoute(route);
-          if (routeName == "BouyDetail" || routeName == "BuoyList") {
+          if (
+            routeName == "GroupList" ||
+            routeName == "BouyDetail" ||
+            routeName == "BuoyList"
+          ) {
             return { swipeEnabled: false };
           }
         }}

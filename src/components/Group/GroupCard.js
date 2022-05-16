@@ -48,37 +48,37 @@ const ColBox = styled.View`
 `;
 
 export default GroupCard = ({
-  index = 0,
   onPressHandler,
+  setModalVisible,
+  setDeleteGroup,
   item,
-  group_id,
-  group_name,
-  region,
-  group_water_temp,
-  group_weight,
-  plain_buoy,
-  smart_buoy,
 }) => {
   const themeContext = useContext(ThemeContext);
 
   return (
-    <Container onPress={() => onPressHandler(item)}>
+    <Container
+      onPress={() => onPressHandler(item)}
+      onLongPress={() => {
+        setDeleteGroup({ groupName: item.group_name, groupId: item.group_id });
+        setModalVisible(true);
+      }}
+    >
       <NameView>
-        <TitleText>{group_name}</TitleText>
-        <SubText>{region}</SubText>
+        <TitleText>{item.group_name}</TitleText>
+        <SubText>{item.region}</SubText>
       </NameView>
       <InfoView>
         <ColBox>
           <InfoText>수온</InfoText>
-          <InfoSubText>{group_water_temp.toFixed(1)}º</InfoSubText>
+          <InfoSubText>{item.group_water_temp.toFixed(1)}º</InfoSubText>
         </ColBox>
         <ColBox>
           <InfoText>무게</InfoText>
-          <InfoSubText>{group_weight.toFixed(1)}kg</InfoSubText>
+          <InfoSubText>{item.group_weight.toFixed(1)}kg</InfoSubText>
         </ColBox>
         <ColBox>
           <InfoText>스마트부표</InfoText>
-          <InfoSubText>{smart_buoy}개</InfoSubText>
+          <InfoSubText>{item.smart_buoy}개</InfoSubText>
         </ColBox>
       </InfoView>
     </Container>

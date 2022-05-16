@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 import { getCoordinate } from "../../../store/coordinateReducer";
@@ -19,16 +20,18 @@ export default HomeController = ({ navigation, route }) => {
 
   const { latitude, longitude } = useSelector(getCoordinate);
 
-  useEffect(() => {
-    _GET_HOME(
-      [
-        `main/data?latitude=${latitude}&longitude=${longitude}`,
-        "main/group/total",
-      ],
-      [setData, setGroups],
-      setLoading
-    );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      _GET_HOME(
+        [
+          `main/data?latitude=${latitude}&longitude=${longitude}`,
+          "main/group/total",
+        ],
+        [setData, setGroups],
+        setLoading
+      );
+    }, [])
+  );
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {

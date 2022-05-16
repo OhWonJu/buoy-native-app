@@ -5,7 +5,7 @@ import { Entypo } from "@expo/vector-icons";
 import { Svg, Circle } from "react-native-svg";
 import { useDispatch } from "react-redux";
 
-import { setBuoyListModal } from "../../../store/BuoyListModalReducer";
+import { setBuoyListModal } from "../../../store/buoyListModalReducer";
 import { getAperB } from "../../../utils/commonFuncs";
 import RowBox from "../RowBox";
 import constants from "../../../constants";

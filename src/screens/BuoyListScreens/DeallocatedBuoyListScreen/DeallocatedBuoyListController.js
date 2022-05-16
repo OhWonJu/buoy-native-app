@@ -53,7 +53,7 @@ export default DeallocatedBuoyController = ({
         });
       } else {
         const newData = [...seletedItem];
-        const index = _.findIndex(seletedItem, item.model);
+        const index = seletedItem.findIndex((data) => data === item.model);
         newData.splice(index, 1);
         setSeletedItem(newData);
       }

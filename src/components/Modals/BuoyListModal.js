@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 
-import { setBuoyListModal } from "../../../store/BuoyListModalReducer";
+import { setBuoyListModal } from "../../../store/buoyListModalReducer";
 import ModalFade from "./ModalFade";
 
 const Container = styled.View`

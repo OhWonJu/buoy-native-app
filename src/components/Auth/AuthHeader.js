@@ -7,7 +7,8 @@ import constants from "../../../constants";
 
 const Container = styled.View`
   flex-direction: row;
-  background-color: ${(props) => props.theme.authThemeColor};
+  background-color: ${(props) =>
+    props.bgColor ? props.bgColor : props.theme.authThemeColor};
   height: ${constants.StatusBarHeight + 60}px;
   width: 100%;
   justify-content: center;
@@ -37,10 +38,11 @@ const Title = styled.Text`
 export default AuthHeader = ({
   title = null,
   titleColor = "#E1E1E1",
+  bgColor,
   leftOnPress = () => null,
 }) => {
   return (
-    <Container>
+    <Container bgColor={bgColor}>
       <Title titleColor={titleColor}>{title}</Title>
       <Left>
         <TouchableOpacity onPress={leftOnPress}>

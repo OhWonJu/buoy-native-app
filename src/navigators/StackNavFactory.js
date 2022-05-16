@@ -27,6 +27,7 @@ export default ({ navigation, route, screenName, groupData }) => {
             )}
           </Stacks.Screen>
         ))}
+        <Stacks.Screen name={"GroupDetail"} component={GroupDetail} />
         <Stacks.Screen name={"GroupList"} component={GroupList} />
         <Stacks.Screen name={"BuoyList"} component={BuoyList} />
         <Stacks.Screen name={"BuoyDetail"} component={BouyDetail} />

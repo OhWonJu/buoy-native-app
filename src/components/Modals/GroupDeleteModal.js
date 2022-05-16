@@ -3,32 +3,51 @@ import { Modal, View } from "react-native";
 import styled from "styled-components/native";
 
 import constants from "../../../constants";
-import Container from "../Container";
 import ModalFade from "./ModalFade";
 
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  /* background-color: rgba(0, 0, 0, 0.25); */
+`;
 const ModalView = styled.View`
   background-color: ${(props) => props.theme.mainColor};
   border-radius: 20px;
   align-items: center;
   justify-content: center;
-  height: ${constants.windowH * 0.3}px;
-  width: 90%;
+  height: ${constants.windowH * 0.23}px;
+  width: 70%;
+`;
+const ModalHeader = styled.View`
+  height: 30%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+const ModalHeaderText = styled.Text`
+  font-weight: bold;
+  font-size: 19px;
+  color: ${(props) => props.theme.subColor};
 `;
 const ModalContextBox = styled.View`
   flex: 1;
   width: 100%;
-  padding: 20px;
+  padding: 5px 20px 20px 20px;
+  justify-content: space-around;
+  align-items: center;
 `;
 const ModalContextText = styled.Text`
   padding: 5px 0px 5px 0px;
   color: ${(props) => props.theme.subColor};
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
 `;
 const ModalSubText = styled.Text`
   padding: 3px 0px 5px 0px;
   color: ${(props) => props.theme.darkUtilColor};
-  font-size: 12px;
+  font-size: 11px;
 `;
 
 const ModalButtonBox = styled.View`
@@ -56,59 +75,36 @@ const ModalButtonText = styled.Text`
   font-weight: bold;
 `;
 
-const TextInput = styled.TextInput`
-  background-color: ${(props) => props.theme.lightUtilColor};
-  height: 50px;
-  width: ${(props) => (props.width ? props.width : "100%")};
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 2px;
-  border: ${(props) => (props.length < 1 ? 1 : 0)}px;
-  border-color: ${(props) => props.theme.redColor + 80};
-`;
-
-export default NameEditModal = ({
+export default GroupDeleteModal = ({
   modalVisible,
   setModalVisible,
-  oldName,
+  deleteGroup,
+  setDeleteGroup,
   confirm = () => null,
   cancel = () => null,
 }) => {
-  const [newName, setNewName] = useState("");
-
   return (
     <>
-      <ModalFade modalVisible={modalVisible} />
       <Modal
         animationType="fade"
         visible={modalVisible}
         transparent={true}
         onRequestClose={() => setModalVisible(false)}
       >
-        <Container
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-            zIndex: 3,
-          }}
-        >
+        <ModalFade modalVisible={modalVisible} />
+        <Container>
           <ModalView>
+            <ModalHeader>
+              <ModalHeaderText>알림</ModalHeaderText>
+            </ModalHeader>
             <ModalContextBox>
-              <ModalContextText>구역 이름 변경</ModalContextText>
-              <View style={{ flex: 1, justifyContent: "flex-end" }}>
-                <TextInput
-                  defaultValue={oldName}
-                  returnKeyType={"done"}
-                  onChangeText={(text) => setNewName(text)}
-                  length={newName.length}
-                />
-                <ModalSubText>최소 1글자 이상 입력해주세요.</ModalSubText>
-              </View>
+              <ModalContextText>{deleteGroup.groupName}</ModalContextText>
+              <ModalSubText>선택 하신 구역을 삭제하시겠습니까?</ModalSubText>
             </ModalContextBox>
             <ModalButtonBox>
               <ModalButton
                 onPress={() => {
+                  setDeleteGroup({ groupName: "", groupId: null });
                   setModalVisible(false);
                   cancel();
                 }}
@@ -119,17 +115,10 @@ export default NameEditModal = ({
               <ModalButton
                 onPress={() => {
                   setModalVisible(false);
-                  confirm(newName);
+                  confirm(deleteGroup.groupId);
                 }}
-                disabled={newName.length < 1 ? true : false}
               >
-                <ModalButtonText
-                  disable={
-                    newName.length < 1 || newName === oldName ? true : false
-                  }
-                >
-                  확인
-                </ModalButtonText>
+                <ModalButtonText>확인</ModalButtonText>
               </ModalButton>
             </ModalButtonBox>
           </ModalView>

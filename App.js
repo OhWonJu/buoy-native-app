@@ -18,10 +18,14 @@ import SignInNav from "./src/navigators/SignInNav";
 import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
 import { getGroupUpdate, setIsUpdate } from "./store/groupUpdateReducer";
+import {
+  getGroupListData,
+  setGroupListData,
+} from "./store/groupListDataReducer";
 import { userSignOut } from "./auth";
 
 function App() {
-  const [groupData, setGroupData] = useState(null);
+  const { groupData } = useSelector(getGroupListData);
   const [isLoading, setLoading] = useState(true);
   const { isSignIn, tokenVal } = useSelector(getAuth);
 
@@ -40,8 +44,13 @@ function App() {
       API.defaults.headers.common["Authorization"] = "Bearer " + token;
       // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
       dispatch(setAuth({ isSignIn: true, tokenVal: token }));
-      const result = await _GET("main/group", setGroupData, setLoading);
+      const result = await _GET(
+        "main/group",
+        (data) => dispatch(setGroupListData({ groupData: data })),
+        setLoading
+      );
       if (!result.ok) {
+        dispatch(setGroupData({ groupData: groupTempData }));
         dispatch(setAuth({ isSignIn: false, tokenVal: null }));
         userSignOut();
       }
@@ -77,7 +86,9 @@ function App() {
   const { isUpdate } = useSelector(getGroupUpdate);
   useEffect(() => {
     if (isUpdate) {
-      _REFECTH("main/group", setGroupData);
+      _REFECTH("main/group", (data) =>
+        dispatch(setGroupListData({ groupData: data }))
+      );
       dispatch(setIsUpdate({ isUpdate: false }));
     }
   }, [isUpdate]);

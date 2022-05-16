@@ -65,3 +65,21 @@ export async function _BUOY_DEALLOCATE(list) {
     console.error(e);
   }
 }
+
+export async function _GROUP_CREATE(form) {
+  try {
+    const response = await API.post("detail/group/create", form);
+    return response;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function _GROUP_DELETE(id) {
+  try {
+    const response = await API.post("detail/group/delete", { group_id: id });
+    return response;
+  } catch (e) {
+    console.error;
+  }
+}

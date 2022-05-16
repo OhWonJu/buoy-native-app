@@ -36,12 +36,12 @@ const UnitText = styled.Text`
 `;
 
 export default GroupInfo = ({
-  bouyCount,
-  group_weight,
-  group_water_temp,
-  group_salinity,
-  smart_buoy,
-  plain_buoy,
+  bouyCount = 0,
+  group_weight = 0,
+  group_water_temp = 0,
+  group_salinity = 0,
+  smart_buoy = 0,
+  plain_buoy = 0,
 }) => {
   const themeContext = useContext(ThemeContext);
 

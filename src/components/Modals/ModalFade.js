@@ -32,7 +32,7 @@ export default ModalFade = ({ modalVisible, close = () => null }) => {
   const BlurAnimeStyle = useAnimatedStyle(() => {
     return {
       opacity: withTiming(BlurOpacity.value, {
-        duration: 200,
+        duration: 600,
         easing: Easing.ease,
       }),
       zIndex: BlurZIndex.value,
