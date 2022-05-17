@@ -68,7 +68,8 @@ export default GroupDetailView = ({
   onEndReached,
   refreshing,
   onRefresh,
-  goToBouyDetail,
+  goToBuoyDetail,
+  goToBuoyList,
 }) => {
   const themeContext = useContext(ThemeContext);
 
@@ -116,7 +117,7 @@ export default GroupDetailView = ({
         key={item.model}
         index={index}
         onSwipe={onSwipe}
-        goToBouyDetail={goToBouyDetail}
+        goToBuoyDetail={goToBuoyDetail}
         {...item}
       />
     );
@@ -149,7 +150,7 @@ export default GroupDetailView = ({
                     alignItems: "flex-end",
                   }}
                 >
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => goToBuoyList()}>
                     <EditText
                       style={{
                         fontWeight: "bold",

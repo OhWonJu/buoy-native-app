@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Svg, Circle } from "react-native-svg";
+import * as Notifications from "expo-notifications";
 
 import { getAperB } from "../../../utils/commonFuncs";
 import RowBox from "../RowBox";
@@ -56,7 +57,7 @@ const UnitText = styled.Text`
 export default BouyCard = ({
   index = 0,
   onSwipe = () => null,
-  goToBouyDetail,
+  goToBuoyDetail,
   latitude = null,
   longitude = null,
   model = null,
@@ -156,10 +157,7 @@ export default BouyCard = ({
 
   return (
     <RSwipeWrapper onSwipe={() => onSwipe(model, index)} height={65}>
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => goToBouyDetail({ model, latitude, longitude })}
-      >
+      <TouchableOpacity activeOpacity={1} onPress={() => goToBuoyDetail(model)}>
         <Container style={{ height: "100%" }}>
           <View
             style={{
@@ -187,7 +185,7 @@ export default BouyCard = ({
                 <>
                   <InfoSubText>침수</InfoSubText>
                   <RowBox style={{ alignItems: "flex-end" }}>
-                    <InfoMainText style={{ color: getAperB(40, 40 - height) }}>
+                    <InfoMainText style={{ color: getAperB(80, 80 - height) }}>
                       {height.toFixed(1)}
                     </InfoMainText>
                     <UnitText>%</UnitText>
@@ -197,7 +195,7 @@ export default BouyCard = ({
             </InfoWrapper>
             <InfoWrapper>
               {/* 수용률 관련 협의 필요. 전체 %를 할 것인지 무게 단위로 할 것인지 */}
-              {typeof height === "number" && (
+              {typeof weight === "number" && (
                 <>
                   <InfoSubText>하중</InfoSubText>
                   <RowBox style={{ alignItems: "flex-end" }}>
@@ -219,11 +217,26 @@ export default BouyCard = ({
                   color={themeContext.lightUtilColor}
                 />
               ) : (
-                <MaterialCommunityIcons
-                  name="alert-circle"
-                  size={20}
-                  color={themeContext.orangeColor}
-                />
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    Notifications.scheduleNotificationAsync({
+                      content: {
+                        title: "⚠️ Warning Test",
+                        body: "Buoy has some warning.",
+                      },
+                      trigger: {
+                        seconds: 3,
+                      },
+                    });
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="alert-circle"
+                    size={20}
+                    color={themeContext.orangeColor}
+                  />
+                </TouchableOpacity>
               )}
             </InfoWrapper>
           </InfoBox>

@@ -12,6 +12,7 @@ import {
   getGroupListData,
   setGroupListData,
 } from "../../../store/groupListDataReducer";
+import { setIsUpdate } from "../../../store/groupUpdateReducer";
 
 export default GroupListController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -44,6 +45,7 @@ export default GroupListController = ({ navigation, route }) => {
     // append 상태 + 대상 buoy가 있는 경우에만...
     if (route.params?.isAppend && route.params.buoyList) {
       const result = await _BUOY_ALLOCATE(route.params.buoyList, item.group_id);
+      dispatch(setIsUpdate({ isUpdate: true }));
       goBack();
     } else {
       navigation.navigate(String(item.group_id), {

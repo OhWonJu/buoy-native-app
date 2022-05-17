@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Text } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import StackNavFactory from "./StackNavFactory";
 import DrawerBar from "../components/DrawerBar";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import StackNavFactory from "./StackNavFactory";
+import Setting from "../screens/SettingScreens/index";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +41,7 @@ export default ({ groupData }) => {
       >
         {() => <StackNavFactory groupData={groupData} />}
       </Drawer.Screen>
+      <Drawer.Screen name={"Setting"} component={Setting} />
     </Drawer.Navigator>
   );
 };

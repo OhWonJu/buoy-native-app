@@ -52,8 +52,9 @@ export default GroupDetailController = ({ navigation, route }) => {
     null;
   };
 
-  const goToBouyDetail = (item) =>
-    navigation.navigate("BuoyDetail", { data: item });
+  const goToBuoyDetail = (model) =>
+    navigation.navigate("BuoyDetail", { model });
+  const goToBuoyList = () => navigation.navigate("BuoyList");
 
   const [editNameModalVisible, setEditNameModalVisible] = useState(false);
   const editName = (newName) => {
@@ -116,7 +117,8 @@ export default GroupDetailController = ({ navigation, route }) => {
       onEndReached={onEndReached}
       refreshing={refreshing}
       onRefresh={onRefresh}
-      goToBouyDetail={goToBouyDetail}
+      goToBuoyDetail={goToBuoyDetail}
+      goToBuoyList={goToBuoyList}
     />
   );
 };

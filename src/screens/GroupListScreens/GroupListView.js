@@ -130,7 +130,7 @@ export default GroupListView = ({
                   ) : (
                     <>
                       <LeftText style={{ fontWeight: "bold", paddingRight: 3 }}>
-                        전체 그룹
+                        전체 구역
                       </LeftText>
                       <LeftText style={{ color: themeContext.idnColor }}>
                         {groupData.length}
@@ -180,7 +180,10 @@ export default GroupListView = ({
           headerTranslateY={headerTranslateY}
         >
           <HeaderWrapper>
-            <TopHeader title={"구역 선택"} leftOnPress={goBack} />
+            <TopHeader
+              title={isAppend ? "구역 선택" : "구역 관리"}
+              leftOnPress={goBack}
+            />
           </HeaderWrapper>
         </CollapsibleHeader>
       </SafeAreaView>

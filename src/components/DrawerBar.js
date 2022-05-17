@@ -197,6 +197,8 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
   // ];
   // ------------------------------------------------
 
+  const goToSetting = () => navigation.navigate("Setting");
+
   const renderItem = ({ item }) => (
     <Item item={item} navigation={navigation} disable={disable} />
   );
@@ -205,7 +207,7 @@ export default DrawerBar = ({ state, navigation, groupData }) => {
     <Container style={color}>
       <DrawerBox>
         <Top>
-          <OptionBtn disabled={disable}>
+          <OptionBtn disabled={disable} onPress={() => goToSetting()}>
             <FontAwesome name="gear" size={24} color={themeContext.mainColor} />
           </OptionBtn>
         </Top>

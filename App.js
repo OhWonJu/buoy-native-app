@@ -9,6 +9,7 @@ import {
   useSelector,
 } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from "expo-notifications";
 
 import store from "./store/store";
 import { setCoordinate } from "./store/coordinateReducer";
@@ -23,6 +24,16 @@ import {
   setGroupListData,
 } from "./store/groupListDataReducer";
 import { userSignOut } from "./auth";
+
+// Notics
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+//
 
 function App() {
   const { groupData } = useSelector(getGroupListData);

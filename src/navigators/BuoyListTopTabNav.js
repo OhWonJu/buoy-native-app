@@ -13,7 +13,7 @@ export default ({ headerHeight, setHeaderHeight, goBack }) => {
     <TopHeader
       setHeaderHeight={setHeaderHeight}
       leftOnPress={goBack}
-      title={"부표관리"}
+      title={"부표 관리"}
     />
   );
 
