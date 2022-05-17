@@ -9,7 +9,7 @@ import {
 import styled, { ThemeContext } from "styled-components/native";
 import _ from "underscore";
 import hull from "hull.js";
-import MapView, { Marker, Polygon } from "react-native-maps";
+import MapView, { Circle, Marker, Polygon } from "react-native-maps";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
@@ -92,17 +92,36 @@ export default GroupDetailView = ({
   }, []);
 
   // concave hull algorithm...참고
-  let longitudes = buoyData?.map((bouy) => bouy.longitude); // y
-  let latitudes = buoyData?.map((bouy) => bouy.latitude); // x
-  const p = _.zip(latitudes, longitudes);
-  const h = hull(p, 50);
+  //https://www.npmjs.com/package/hull.js
 
-  const points = [];
-  if (p.length > 0) {
-    _.forEach(h, (p) => {
-      points.push({ longitude: p[1], latitude: p[0] });
+  const latLog = [];
+  const position = [];
+  const hullPositions = [];
+  if (buoyData.length > 0) {
+    _.forEach(buoyData, (data) => {
+      latLog.push({ latitude: data.latitude, longitude: data.longitude });
+      position.push([data.latitude, data.longitude]);
+    });
+    _.forEach(hull(position, 50), (p) => {
+      hullPositions.push({ latitude: p[0], longitude: p[1] });
     });
   }
+
+  // let longitudes = buoyData?.map((bouy) => bouy.longitude); // y
+  // let latitudes = buoyData?.map((bouy) => bouy.latitude); // x
+  // const p = _.zip(latitudes, longitudes);
+  // const h = hull(p, 50);
+  // const totalP = [];
+  // const points = [];
+
+  // if (p.length > 0) {
+  //   _.forEach(p, (p) => {
+  //     totalP.push({ latitude: p[0], longitude: p[1] });
+  //   });
+  //   _.forEach(h, (p) => {
+  //     points.push({ longitude: p[1], latitude: p[0] });
+  //   });
+  // }
 
   const RENDERITEM = ({ item, index }) => {
     return (
@@ -213,8 +232,8 @@ export default GroupDetailView = ({
               <MapView
                 style={styles.map}
                 initialRegion={{
-                  latitude: points[0].latitude,
-                  longitude: points[0].longitude,
+                  latitude: latLog[0].latitude,
+                  longitude: latLog[0].longitude,
                   latitudeDelta: 0.00722,
                   longitudeDelta: 0.00221,
                 }}
@@ -222,10 +241,23 @@ export default GroupDetailView = ({
                 showsUserLocation={true}
               >
                 <Polygon
-                  coordinates={points}
+                  coordinates={hullPositions}
                   fillColor={themeContext.greenColor + 80}
                   strokeColor="transparent" // fallback for when `strokeColors` is not supported by the map-provider
                 />
+                {latLog.map((p, index) => {
+                  return (
+                    <Circle
+                      key={index}
+                      center={p}
+                      radius={1}
+                      strokeWidth={1}
+                      strokeColor={themeContext.orangeColor}
+                      fillColor={themeContext.orangeColor}
+                      zIndex={999}
+                    />
+                  );
+                })}
               </MapView>
             </View>
           )}
