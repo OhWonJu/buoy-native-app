@@ -30,6 +30,7 @@
     "expo-notifications": "~0.14.0",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
+    "hull.js": "^1.0.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-hook-form": "^7.28.1",

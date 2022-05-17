@@ -7,7 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
-
+import _ from "underscore";
+import hull from "hull.js";
 import MapView, { Marker, Polygon } from "react-native-maps";
 
 import constants from "../../../constants";
@@ -90,26 +91,18 @@ export default GroupDetailView = ({
     setHeaderHeight(height);
   }, []);
 
-  let longitudes = buoyData?.map((bouy) => bouy.longitude);
-  let latitudes = buoyData?.map((bouy) => bouy.latitude);
+  // concave hull algorithm...참고
+  let longitudes = buoyData?.map((bouy) => bouy.longitude); // y
+  let latitudes = buoyData?.map((bouy) => bouy.latitude); // x
+  const p = _.zip(latitudes, longitudes);
+  const h = hull(p, 50);
 
   const points = [];
-  points.push({
-    longitude: Math.min(...longitudes),
-    latitude: Math.min(...latitudes),
-  });
-  points.push({
-    longitude: Math.min(...longitudes),
-    latitude: Math.max(...latitudes),
-  });
-  points.push({
-    longitude: Math.max(...longitudes),
-    latitude: Math.max(...latitudes),
-  });
-  points.push({
-    longitude: Math.max(...longitudes),
-    latitude: Math.min(...latitudes),
-  });
+  if (p.length > 0) {
+    _.forEach(h, (p) => {
+      points.push({ longitude: p[1], latitude: p[0] });
+    });
+  }
 
   const RENDERITEM = ({ item, index }) => {
     return (
