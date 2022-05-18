@@ -1,9 +1,10 @@
 import React, { useCallback, useContext, useMemo, useRef } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
 import styled, { ThemeContext } from "styled-components";
 import RowBox from "../RowBox";
 import { getAperB } from "../../../utils/commonFuncs";
+import WarnCard from "./WarnCard";
 
 const Container = styled.View`
   flex: 1;
@@ -41,6 +42,22 @@ const UnitText = styled.Text`
 `;
 const MainSection = styled.View`
   flex: 1;
+  padding: 30px 20px 0px 20px;
+`;
+const TitleText = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+  color: ${(props) => props.theme.subColor};
+`;
+const Line = styled.View`
+  border-top-width: 1px;
+  border-top-color: ${(props) => props.theme.lightUtilColor};
+  flex: 1;
+  height: 1px;
+`;
+const WarnListView = styled.View`
+  flex: 1;
+  padding-top: 10px;
 `;
 
 export default BuoyDetailBottomSheet = ({
@@ -58,7 +75,7 @@ export default BuoyDetailBottomSheet = ({
   // ref
   const bottomSheetRef = useRef(null);
   // variables
-  const snapPoints = useMemo(() => ["10%", "90%"], []);
+  const snapPoints = useMemo(() => ["10%", "50%"], []);
   // callbacks
   const handleSheetChanges = useCallback((index) => {
     // console.log("handleSheetChanges", index);
@@ -66,12 +83,11 @@ export default BuoyDetailBottomSheet = ({
 
   // renders
   return (
-    // <View style={styles.container}>
     <BottomSheet
       ref={bottomSheetRef}
       index={0}
       snapPoints={snapPoints}
-      onChange={handleSheetChanges}
+      // onChange={handleSheetChanges}
     >
       <Container>
         <HeaderSection>
@@ -124,9 +140,16 @@ export default BuoyDetailBottomSheet = ({
             </View>
           </RowBox>
         </HeaderSection>
-        <MainSection></MainSection>
+        <MainSection>
+          <RowBox style={{ alignItems: "center" }}>
+            <TitleText>알람</TitleText>
+            <Line style={{ marginLeft: 15 }} />
+          </RowBox>
+          <WarnListView>
+            {warn > 0 && <WarnCard warnDetail={warn_detail} />}
+          </WarnListView>
+        </MainSection>
       </Container>
     </BottomSheet>
-    // </View>
   );
 };

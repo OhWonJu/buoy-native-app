@@ -75,7 +75,7 @@ export default BouyCard = ({
   if (!isConn) {
     warn = 0;
     height = "--";
-    // weight = "--";
+    weight = "--";
   }
 
   // return (
