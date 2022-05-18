@@ -61,7 +61,7 @@ export default BuoyDetailBottomSheet = ({
   const snapPoints = useMemo(() => ["10%", "90%"], []);
   // callbacks
   const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
+    // console.log("handleSheetChanges", index);
   }, []);
 
   // renders

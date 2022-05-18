@@ -68,9 +68,8 @@ export default DeallocatedBuoyController = ({
       goToBuoyDetail(item);
     }
   });
-
   const goToBuoyDetail = (item) =>
-    navigation.navigate("BuoyDetail", { data: item });
+    navigation.navigate("BuoyDetail", { model: item.model });
   const goToGroupList = (list) =>
     navigation.navigate("GroupList", { buoyList: list, isAppend: true });
 

@@ -61,7 +61,7 @@ function App() {
         setLoading
       );
       if (!result.ok) {
-        dispatch(setGroupData({ groupData: groupTempData }));
+        // dispatch(setGroupData({ groupData: groupTempData }));
         dispatch(setAuth({ isSignIn: false, tokenVal: null }));
         userSignOut();
       }
