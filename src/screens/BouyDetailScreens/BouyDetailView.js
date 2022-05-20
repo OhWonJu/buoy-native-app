@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet } from "react-native";
 import styled, { ThemeContext } from "styled-components/native";
 
 import constants from "../../../constants";

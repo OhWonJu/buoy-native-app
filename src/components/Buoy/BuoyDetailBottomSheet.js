@@ -1,16 +1,19 @@
 import React, { useCallback, useContext, useMemo, useRef } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { View, TouchableOpacity } from "react-native";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import styled, { ThemeContext } from "styled-components";
+import { MaterialIcons } from "@expo/vector-icons";
+
 import RowBox from "../RowBox";
 import { getAperB } from "../../../utils/commonFuncs";
 import WarnCard from "./WarnCard";
+import constants from "../../../constants";
 
 const Container = styled.View`
   flex: 1;
 `;
 const HeaderSection = styled.View`
-  height: 10%;
+  height: ${constants.screenH * 0.08}px;
   padding: 0px 20px 0px 20px;
 `;
 const BuoyName = styled.Text`
@@ -42,7 +45,8 @@ const UnitText = styled.Text`
 `;
 const MainSection = styled.View`
   flex: 1;
-  padding: 30px 20px 0px 20px;
+  min-height: 500px;
+  padding: 0px 20px 0px 20px;
 `;
 const TitleText = styled.Text`
   font-size: 22px;
@@ -56,8 +60,8 @@ const Line = styled.View`
   height: 1px;
 `;
 const WarnListView = styled.View`
-  flex: 1;
   padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 export default BuoyDetailBottomSheet = ({
@@ -72,10 +76,12 @@ export default BuoyDetailBottomSheet = ({
   water_temp,
   weight,
 }) => {
+  const themeContext = useContext(ThemeContext);
+
   // ref
   const bottomSheetRef = useRef(null);
   // variables
-  const snapPoints = useMemo(() => ["10%", "50%"], []);
+  const snapPoints = useMemo(() => ["10%", "40%"], []);
   // callbacks
   const handleSheetChanges = useCallback((index) => {
     // console.log("handleSheetChanges", index);
@@ -140,15 +146,27 @@ export default BuoyDetailBottomSheet = ({
             </View>
           </RowBox>
         </HeaderSection>
-        <MainSection>
-          <RowBox style={{ alignItems: "center" }}>
-            <TitleText>알람</TitleText>
-            <Line style={{ marginLeft: 15 }} />
-          </RowBox>
-          <WarnListView>
-            {warn > 0 && <WarnCard warnDetail={warn_detail} />}
-          </WarnListView>
-        </MainSection>
+        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+          <MainSection>
+            <RowBox style={{ alignItems: "center" }}>
+              <TitleText>알람</TitleText>
+              <Line style={{ marginLeft: 15 }} />
+            </RowBox>
+            <WarnListView>
+              {warn > 0 && <WarnCard warnDetail={warn_detail} />}
+            </WarnListView>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+              <TitleText>부표 그래프 보기</TitleText>
+              <MaterialIcons
+                name="keyboard-arrow-right"
+                size={34}
+                color={themeContext.subColor}
+              />
+            </TouchableOpacity>
+          </MainSection>
+        </BottomSheetScrollView>
       </Container>
     </BottomSheet>
   );

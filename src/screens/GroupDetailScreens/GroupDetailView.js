@@ -152,7 +152,7 @@ export default GroupDetailView = ({
                     alignItems: "flex-start",
                   }}
                 >
-                  <Title>부이 정보</Title>
+                  <Title>부표 정보</Title>
                 </ColBox>
                 <ColBox
                   style={{
@@ -169,7 +169,7 @@ export default GroupDetailView = ({
                         color: themeContext.idnColor,
                       }}
                     >
-                      부이 추가
+                      부표 추가
                     </EditText>
                   </TouchableOpacity>
                 </ColBox>

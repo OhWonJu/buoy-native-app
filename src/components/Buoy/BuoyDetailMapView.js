@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import styled, { ThemeContext } from "styled-components/native";
-import { useSharedValue } from "react-native-reanimated";
 import * as Location from "expo-location";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -29,7 +28,6 @@ export default BouyDetailView = ({
   longitudeDelta,
 }) => {
   const themeContext = useContext(ThemeContext);
-  const y = useSharedValue(0);
 
   const mapRef = useRef(null);
 
