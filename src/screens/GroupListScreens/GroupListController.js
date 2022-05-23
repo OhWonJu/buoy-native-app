@@ -13,6 +13,7 @@ import {
   setGroupListData,
 } from "../../../store/groupListDataReducer";
 import { setIsUpdate } from "../../../store/groupUpdateReducer";
+import { useQueryClient } from "react-query";
 
 export default GroupListController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -20,6 +21,10 @@ export default GroupListController = ({ navigation, route }) => {
     const { height } = event.nativeEvent.layout;
     setHeaderHeight(height);
   }, []);
+
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData("groupData");
+  console.log(data);
 
   // const [groupData, setGroupData] = useState(null);
   const { groupData } = useSelector(getGroupListData);

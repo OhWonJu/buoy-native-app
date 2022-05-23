@@ -8,6 +8,7 @@ import {
   useDispatch,
   useSelector,
 } from "react-redux";
+import { QueryClient, QueryClientProvider } from "react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from "expo-notifications";
 
@@ -24,6 +25,19 @@ import {
   setGroupListData,
 } from "./store/groupListDataReducer";
 import { userSignOut } from "./auth";
+
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["Setting a timer"]);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Notics
 Notifications.setNotificationHandler({
@@ -47,7 +61,7 @@ function App() {
   const onFinish = () =>
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
 
   const preload = async () => {
     const token = await AsyncStorage.getItem("token");
@@ -129,8 +143,10 @@ function App() {
 
 export default function AppWrapper() {
   return (
-    <StoreProvider store={store}>
-      <App />
-    </StoreProvider>
+    <QueryClientProvider client={queryClient}>
+      <StoreProvider store={store}>
+        <App />
+      </StoreProvider>
+    </QueryClientProvider>
   );
 }

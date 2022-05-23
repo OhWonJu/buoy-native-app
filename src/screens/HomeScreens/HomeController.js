@@ -3,11 +3,12 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 import { getCoordinate } from "../../../store/coordinateReducer";
-import { _GET, _REFECTH } from "../../../utils/Api";
+import { API, _GET, _REFECTH } from "../../../utils/Api";
 import { _GET_HOME } from "./HomeModel";
 // import { _GET, _REFECTH } from "../../../commonRestAPIModel";
 
 import HomeView from "./HomeView";
+import { useQueries, useQuery } from "react-query";
 
 export default HomeController = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
@@ -19,6 +20,23 @@ export default HomeController = ({ navigation, route }) => {
   const [circleLen, setCircleLen] = useState(0);
 
   const { latitude, longitude } = useSelector(getCoordinate);
+
+  const { data: groupData } = useQuery("groupData", async () => {
+    const re = await API.get("main/group");
+    return re.data;
+  });
+  const { data: weatherData, isLoading: loading } = useQuery(
+    ["weatherData", latitude, longitude],
+    async () => {
+      const re = await API.get(
+        `main/data?latitude=${latitude}&longitude=${longitude}`
+      );
+      return re.data;
+    },
+    {
+      enabled: !!groupData,
+    }
+  );
 
   useFocusEffect(
     useCallback(() => {
