@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 
 import { getCoordinate } from "../../../store/coordinateReducer";
@@ -8,53 +7,44 @@ import { _GET_HOME } from "./HomeModel";
 // import { _GET, _REFECTH } from "../../../commonRestAPIModel";
 
 import HomeView from "./HomeView";
-import { useQueries, useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 export default HomeController = ({ navigation, route }) => {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
-  const [groups, setGroups] = useState(null);
+  const { latitude, longitude } = useSelector(getCoordinate);
+
+  const { data: groupTotal } = useQuery(
+    ["mainData", "groupTotal"],
+    async () => {
+      const res = await API.get("main/group/total");
+      return res.data;
+    },
+    {}
+  );
+  const { data: weatherData, isLoading } = useQuery(
+    ["mainData", "weatherData", latitude, longitude],
+    async () => {
+      const res = await API.get(
+        `main/data?latitude=${latitude}&longitude=${longitude}`
+      );
+      return res.data;
+    },
+    {
+      // 10분이 지나면 오래된 캐시로 간주
+      staleTime: 10 * 60 * 1000,
+      // staleTime이 지났고, focuse됐을때
+      refetchOnWindowFocus: true,
+    }
+  );
 
   const [rTwidth, rTsetWidth] = useState(0);
   const [rBwidth, rBsetWidth] = useState(0);
   const [circleLen, setCircleLen] = useState(0);
 
-  const { latitude, longitude } = useSelector(getCoordinate);
-
-  const { data: groupData } = useQuery("groupData", async () => {
-    const re = await API.get("main/group");
-    return re.data;
-  });
-  const { data: weatherData, isLoading: loading } = useQuery(
-    ["weatherData", latitude, longitude],
-    async () => {
-      const re = await API.get(
-        `main/data?latitude=${latitude}&longitude=${longitude}`
-      );
-      return re.data;
-    },
-    {
-      enabled: !!groupData,
-    }
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      _GET_HOME(
-        [
-          `main/data?latitude=${latitude}&longitude=${longitude}`,
-          "main/group/total",
-        ],
-        [setData, setGroups],
-        setLoading
-      );
-    }, [])
-  );
-
+  const queryClinet = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    _REFECTH(`main/data?latitude=${latitude}&longitude=${longitude}`, setData);
+    await queryClinet.refetchQueries(["mainData"]);
     setRefreshing(false);
   }, []);
 
@@ -64,13 +54,13 @@ export default HomeController = ({ navigation, route }) => {
 
   return (
     <HomeView
-      meteoVal={data.meteo_val}
-      obsData={data.obs_data}
-      tidal={data.tidal}
-      groupTotal={groups[0]}
+      meteoVal={weatherData.meteo_val}
+      obsData={weatherData.obs_data}
+      tidal={weatherData.tidal}
+      groupTotal={groupTotal[0]}
       refreshing={refreshing}
       onRefresh={onRefresh}
-      waveHight={data.wave_hight}
+      waveHight={weatherData.wave_hight}
       rTwidth={rTwidth}
       rTsetWidth={rTsetWidth}
       rBwidth={rBwidth}

@@ -133,7 +133,7 @@ export default GroupListView = ({
                         전체 구역
                       </LeftText>
                       <LeftText style={{ color: themeContext.idnColor }}>
-                        {groupData.length}
+                        {groupData?.length}
                       </LeftText>
                     </>
                   )}

@@ -7,13 +7,7 @@ import {
   _GROUP_DELETE,
   _REFECTH,
 } from "../../../utils/Api";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getGroupListData,
-  setGroupListData,
-} from "../../../store/groupListDataReducer";
-import { setIsUpdate } from "../../../store/groupUpdateReducer";
-import { useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 export default GroupListController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -23,22 +17,15 @@ export default GroupListController = ({ navigation, route }) => {
   }, []);
 
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData("groupData");
-  console.log(data);
-
-  // const [groupData, setGroupData] = useState(null);
-  const { groupData } = useSelector(getGroupListData);
-  const dispatch = useDispatch();
-  const setGroupData = (groupData) => dispatch(setGroupListData({ groupData }));
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    _GET("main/group", setGroupData, setLoading);
-  }, []);
+  const [groupData, setGroupData] = useState(
+    queryClient.getQueryData(["groupData"])
+  );
 
   const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    _REFECTH("main/group", setGroupData);
+    await queryClient.refetchQueries(["groupData"]);
+    setGroupData(queryClient.getQueryData(["groupData"]));
     setRefreshing(false);
   }, []);
 
@@ -50,7 +37,7 @@ export default GroupListController = ({ navigation, route }) => {
     // append 상태 + 대상 buoy가 있는 경우에만...
     if (route.params?.isAppend && route.params.buoyList) {
       const result = await _BUOY_ALLOCATE(route.params.buoyList, item.group_id);
-      dispatch(setIsUpdate({ isUpdate: true }));
+      // dispatch(setIsUpdate({ isUpdate: true }));
       goBack();
     } else {
       navigation.navigate(String(item.group_id), {
@@ -69,17 +56,21 @@ export default GroupListController = ({ navigation, route }) => {
     groupName: "",
     groupId: null,
   });
+  const { mutate, isLoading } = useMutation(_GROUP_DELETE, {
+    onSuccess: () => {
+      // mutation 성공시 기존 데이터를 오래된 데이터로 강제로 간주
+      queryClient.invalidateQueries(["groupData"]);
+      queryClient.invalidateQueries(["mainData", "groupTotal"]);
+      onRefresh();
+    },
+  });
   const deleteHandler = async (id) => {
     const newData = [...groupData];
     const index = groupData.findIndex((group) => group.group_id === id);
     newData.splice(index, 1);
     setGroupData(newData);
-    const result = await _GROUP_DELETE(id);
+    mutate(id);
   };
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <GroupListView

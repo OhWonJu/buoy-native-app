@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Text } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { useQueryClient } from "react-query";
 
 import DrawerBar from "../components/DrawerBar";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";

@@ -8,7 +8,7 @@ import {
   useDispatch,
   useSelector,
 } from "react-redux";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from "expo-notifications";
 
@@ -50,7 +50,20 @@ Notifications.setNotificationHandler({
 //
 
 function App() {
-  const { groupData } = useSelector(getGroupListData);
+  const [groupData, setGroupData] = useState(data);
+  const { data } = useQuery(
+    ["groupData"],
+    async () => {
+      const res = await API.get("main/group");
+      return res.data;
+    },
+    {
+      cacheTime: "Infinity",
+      onSettled: (data) => {
+        setGroupData(data);
+      },
+    }
+  );
   const [isLoading, setLoading] = useState(true);
   const { isSignIn, tokenVal } = useSelector(getAuth);
 
@@ -69,16 +82,13 @@ function App() {
       API.defaults.headers.common["Authorization"] = "Bearer " + token;
       // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
       dispatch(setAuth({ isSignIn: true, tokenVal: token }));
-      const result = await _GET(
-        "main/group",
-        (data) => dispatch(setGroupListData({ groupData: data })),
-        setLoading
-      );
-      if (!result.ok) {
-        // dispatch(setGroupData({ groupData: groupTempData }));
-        dispatch(setAuth({ isSignIn: false, tokenVal: null }));
-        userSignOut();
-      }
+
+      // if (!data) {
+      //   dispatch(setAuth({ isSignIn: false, tokenVal: null }));
+      //   userSignOut();
+      // } else {
+      //   setGroupData(data);
+      // }
 
       await Location.requestForegroundPermissionsAsync();
       const {
@@ -107,17 +117,6 @@ function App() {
     prepare();
   }, [isSignIn]);
 
-  // 그룹데이터 업데이트 시 다시 데이터 로드하기 위해...
-  const { isUpdate } = useSelector(getGroupUpdate);
-  useEffect(() => {
-    if (isUpdate) {
-      _REFECTH("main/group", (data) =>
-        dispatch(setGroupListData({ groupData: data }))
-      );
-      dispatch(setIsUpdate({ isUpdate: false }));
-    }
-  }, [isUpdate]);
-
   let colorScheme = useColorScheme();
   // let Theme = colorScheme === "light" ? lightTheme : darkTheme;
   let Theme = colorScheme === "light" ? lightTheme : lightTheme;
@@ -128,7 +127,6 @@ function App() {
 
   return (
     <>
-      {/* <ApolloProvider client={client}> */}
       <AppearanceProvider>
         <ThemeProvider theme={Theme}>
           <NavigationContainer>
@@ -136,7 +134,6 @@ function App() {
           </NavigationContainer>
         </ThemeProvider>
       </AppearanceProvider>
-      {/* </ApolloProvider> */}
     </>
   );
 }
