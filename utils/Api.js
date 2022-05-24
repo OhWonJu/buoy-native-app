@@ -23,7 +23,7 @@ export async function _GET(endPoint, setData, setLoading) {
   }
 }
 
-export async function _REFECTH(endPoint, setData) {
+export async function _REFETCH(endPoint, setData) {
   try {
     const response = await API.get(endPoint);
     setData(response.data);

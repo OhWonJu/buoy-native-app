@@ -19,11 +19,6 @@ import SignOutNav from "./src/navigators/SignOutNav";
 import SignInNav from "./src/navigators/SignInNav";
 import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
-import { getGroupUpdate, setIsUpdate } from "./store/groupUpdateReducer";
-import {
-  getGroupListData,
-  setGroupListData,
-} from "./store/groupListDataReducer";
 import { userSignOut } from "./auth";
 
 import { LogBox } from "react-native";
@@ -33,7 +28,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
-      refetchOnReconnect: false,
+      // refetchOnReconnect: false,
       refetchOnWindowFocus: false,
     },
   },
@@ -50,7 +45,8 @@ Notifications.setNotificationHandler({
 //
 
 function App() {
-  const [groupData, setGroupData] = useState(data);
+  const { isSignIn, tokenVal } = useSelector(getAuth);
+  const [groupData, setGroupData] = useState(null);
   const { data } = useQuery(
     ["groupData"],
     async () => {
@@ -58,6 +54,7 @@ function App() {
       return res.data;
     },
     {
+      enabled: !!isSignIn,
       cacheTime: "Infinity",
       onSettled: (data) => {
         setGroupData(data);
@@ -65,7 +62,6 @@ function App() {
     }
   );
   const [isLoading, setLoading] = useState(true);
-  const { isSignIn, tokenVal } = useSelector(getAuth);
 
   // console.log(isSignIn, tokenVal);
 
@@ -83,6 +79,7 @@ function App() {
       // 토큰 값을 redux에도 저장해서. 매번 AsyncStorage에서 get하지 않도록.
       dispatch(setAuth({ isSignIn: true, tokenVal: token }));
 
+      setGroupData(queryClient.getQueryData("groupData"));
       // if (!data) {
       //   dispatch(setAuth({ isSignIn: false, tokenVal: null }));
       //   userSignOut();

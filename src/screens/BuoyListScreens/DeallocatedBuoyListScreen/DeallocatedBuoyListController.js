@@ -2,7 +2,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import _ from "underscore";
 
-import { _GET, _REFECTH } from "../../../../utils/Api";
+import { _GET, _REFETCH } from "../../../../utils/Api";
 import DeallocatedBuoyListView from "./DeallocatedBuoyListView";
 
 export default DeallocatedBuoyController = ({
@@ -24,7 +24,7 @@ export default DeallocatedBuoyController = ({
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(`/detail/buoy/unassigned`, setUnBuoys);
+    _REFETCH(`/detail/buoy/unassigned`, setUnBuoys);
     setRefreshing(false);
   }, []);
 

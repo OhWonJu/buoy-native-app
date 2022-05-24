@@ -29,6 +29,7 @@ export default HomeController = ({ navigation, route }) => {
       return res.data;
     },
     {
+      // enabled: !!groupTotal,
       // 10분이 지나면 오래된 캐시로 간주
       staleTime: 10 * 60 * 1000,
       // staleTime이 지났고, focuse됐을때
@@ -40,11 +41,11 @@ export default HomeController = ({ navigation, route }) => {
   const [rBwidth, rBsetWidth] = useState(0);
   const [circleLen, setCircleLen] = useState(0);
 
-  const queryClinet = useQueryClient();
+  const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await queryClinet.refetchQueries(["mainData"]);
+    await queryClient.refetchQueries(["mainData"]);
     setRefreshing(false);
   }, []);
 

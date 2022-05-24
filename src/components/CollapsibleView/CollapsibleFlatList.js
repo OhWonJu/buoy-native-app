@@ -38,6 +38,7 @@ export default CollapsibleFlatList = ({
           // style={{ position: "absolute", zIndex: 999 }}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          progressViewOffset={headerHeight}
         />
       }
       removeClippedSubviews={true}

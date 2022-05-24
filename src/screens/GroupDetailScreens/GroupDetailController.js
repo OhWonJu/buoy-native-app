@@ -3,16 +3,16 @@ import { useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 
 import GroupDetailView from "./GroupDetailView";
-import { _BUOY_DEALLOCATE, _GET, _REFECTH } from "../../../utils/Api";
+import { _BUOY_DEALLOCATE, _GET, _REFETCH } from "../../../utils/Api";
 import { _GET_PAGE, _GROUP_EDIT } from "./GroupDetailModel";
-import { setIsUpdate } from "../../../store/groupUpdateReducer";
+import { useQueryClient } from "react-query";
 
 export default GroupDetailController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [groupInfo, setGroupInfo] = useState(route.params.groupInfo);
 
   const [buoyData, setBuoyData] = useState(null);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
   useFocusEffect(
     useCallback(() => {
@@ -27,7 +27,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    _REFECTH(`detail/buoy/list?group_id=${route.params?.id}`, setBuoyData);
+    _REFETCH(`detail/buoy/list?group_id=${route.params?.id}`, setBuoyData);
     setRefreshing(false);
   }, []);
 
@@ -73,7 +73,7 @@ export default GroupDetailController = ({ navigation, route }) => {
   ];
 
   // 그룹 정보 업데이트
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   // 최초 마운트될 때 업데이트 되는것을 막기 위해.
   const firstRender = useRef(true);
   useEffect(async () => {
@@ -88,7 +88,7 @@ export default GroupDetailController = ({ navigation, route }) => {
         plain_buoy: groupInfo.plain_buoy,
       };
       await _GROUP_EDIT(newData);
-      dispatch(setIsUpdate({ isUpdate: true }));
+      queryClient.invalidateQueries(["groupData"]);
     }
   }, [groupInfo, typeModeIndex]);
 

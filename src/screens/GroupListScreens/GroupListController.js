@@ -8,6 +8,7 @@ import {
   _REFECTH,
 } from "../../../utils/Api";
 import { useMutation, useQueryClient } from "react-query";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default GroupListController = ({ navigation, route }) => {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -17,8 +18,19 @@ export default GroupListController = ({ navigation, route }) => {
   }, []);
 
   const queryClient = useQueryClient();
-  const [groupData, setGroupData] = useState(
-    queryClient.getQueryData(["groupData"])
+  const [loading, setLoading] = useState(true);
+  const [groupData, setGroupData] = useState(null);
+  useFocusEffect(
+    useCallback(() => {
+      // hooks 안에서 비동기 처리를 하기 위해서는
+      // 부수 효과 함수를 훅스안에서 호출하는 형식으로 해야햠...
+      async function refetch() {
+        await queryClient.refetchQueries(["groupData"]);
+        setGroupData(queryClient.getQueryData(["groupData"]));
+      }
+      refetch();
+      setLoading(false);
+    }, [])
   );
 
   const [refreshing, setRefreshing] = useState(false);
@@ -30,7 +42,6 @@ export default GroupListController = ({ navigation, route }) => {
   }, []);
 
   const goBack = () => navigation.goBack();
-  // const goToGroupDetail = (id, groupName, groupInfo,) => navigation.navigate(id, {id, groupName: })
 
   // 부표 할당 or 일반 뷰에 따른 press핸들링
   const onPressHandler = async (item) => {
@@ -38,6 +49,9 @@ export default GroupListController = ({ navigation, route }) => {
     if (route.params?.isAppend && route.params.buoyList) {
       const result = await _BUOY_ALLOCATE(route.params.buoyList, item.group_id);
       // dispatch(setIsUpdate({ isUpdate: true }));
+      queryClient.invalidateQueries(["groupData"], {
+        refetchInactive: true,
+      });
       goBack();
     } else {
       navigation.navigate(String(item.group_id), {
@@ -59,8 +73,12 @@ export default GroupListController = ({ navigation, route }) => {
   const { mutate, isLoading } = useMutation(_GROUP_DELETE, {
     onSuccess: () => {
       // mutation 성공시 기존 데이터를 오래된 데이터로 강제로 간주
-      queryClient.invalidateQueries(["groupData"]);
-      queryClient.invalidateQueries(["mainData", "groupTotal"]);
+      queryClient.invalidateQueries(["groupData"], {
+        refetchInactive: true,
+      });
+      queryClient.invalidateQueries(["mainData", "groupTotal"], {
+        refetchInactive: true,
+      });
       onRefresh();
     },
   });
@@ -71,6 +89,10 @@ export default GroupListController = ({ navigation, route }) => {
     setGroupData(newData);
     mutate(id);
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <GroupListView
