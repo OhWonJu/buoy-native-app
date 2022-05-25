@@ -55,7 +55,7 @@ export default TopHeader = ({
             name="keyboard-arrow-left"
             size={35}
             color={titleColor}
-            style={{ paddingLeft: 15 }}
+            style={{ paddingLeft: 15, left: -10 }}
           />
         </TouchableOpacity>
       </Left>

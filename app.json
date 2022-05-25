@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "buoy-natvie-app",
-    "slug": "buoy-natvie-app",
+    "name": "buoy-native-app",
+    "slug": "buoy-native-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

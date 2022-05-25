@@ -10,7 +10,6 @@ import TemperaturePage from "../../components/Home/TemperaturePage";
 import UtilsInfoPage from "../../components/Home/UtilsInfoPage";
 import Carousel from "../../components/Carousel";
 import DonutChart from "../../components/DonutChart";
-import { MockData } from "../../../MockData";
 
 const WeatherBox = styled.View`
   /* background-color: ${(props) => props.theme.mainColor + 20}; */

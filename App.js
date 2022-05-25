@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Appearance } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
-import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import * as Location from "expo-location";
 import {
   Provider as StoreProvider,
@@ -19,7 +19,6 @@ import SignOutNav from "./src/navigators/SignOutNav";
 import SignInNav from "./src/navigators/SignInNav";
 import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
-import { userSignOut } from "./auth";
 
 import { LogBox } from "react-native";
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -114,7 +113,7 @@ function App() {
     prepare();
   }, [isSignIn]);
 
-  let colorScheme = useColorScheme();
+  const colorScheme = Appearance.getColorScheme();
   // let Theme = colorScheme === "light" ? lightTheme : darkTheme;
   let Theme = colorScheme === "light" ? lightTheme : lightTheme;
 
@@ -124,13 +123,11 @@ function App() {
 
   return (
     <>
-      <AppearanceProvider>
-        <ThemeProvider theme={Theme}>
-          <NavigationContainer>
-            {isSignIn ? <SignInNav groupData={groupData} /> : <SignOutNav />}
-          </NavigationContainer>
-        </ThemeProvider>
-      </AppearanceProvider>
+      <ThemeProvider theme={Theme}>
+        <NavigationContainer>
+          {isSignIn ? <SignInNav groupData={groupData} /> : <SignOutNav />}
+        </NavigationContainer>
+      </ThemeProvider>
     </>
   );
 }
