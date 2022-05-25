@@ -80,6 +80,14 @@ export async function _GROUP_DELETE(id) {
     const response = await API.post("detail/group/delete", { group_id: id });
     return response;
   } catch (e) {
-    console.error;
+    console.error(e);
+  }
+}
+
+export async function _GROUP_EDIT(params) {
+  try {
+    const response = await API.put("detail/group/modify", params);
+  } catch (e) {
+    console.error(e);
   }
 }

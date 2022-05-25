@@ -15,7 +15,7 @@ const Container = styled.View`
 const Header = styled.View`
   margin-top: ${constants.StatusBarHeight}px;
   padding: 5px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   justify-content: center;
 `;
 

@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import Checkbox from "expo-checkbox";
 
-import ModalFade from "./ModalFade";
-import { _GROUP_CREATE } from "../../../utils/Api";
-import RowBox from "../RowBox";
+import ModalFade from "../ModalFade";
+import { _GROUP_CREATE } from "../../../../utils/Api";
+import RowBox from "../../RowBox";
 
 const ModalView = styled.View`
   background-color: ${(props) => props.theme.mainColor};
@@ -88,18 +88,21 @@ const ColBox = styled.View`
   padding-bottom: 10px;
 `;
 
-export default GroupCreateModal = ({
+export default GroupDataFormView = ({
   modalVisible,
   setModalVisible,
-  onRefresh,
+  modalTitle,
+  oldeGroupName = "",
+  oldGroupSystem = 0,
+  oldPlainBuoy = "",
   confirm = () => null,
   cancel = () => null,
 }) => {
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
-      groupName: "",
-      groupSystem: 0,
-      plainBuoy: 0,
+      groupName: oldeGroupName,
+      groupSystem: oldGroupSystem,
+      plainBuoy: oldPlainBuoy,
     },
   });
   useEffect(() => {
@@ -114,32 +117,9 @@ export default GroupCreateModal = ({
     });
   }, [register]);
 
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(_GROUP_CREATE, {
-    onSuccess: () => {
-      // mutation 성공시 기존 데이터를 오래된 데이터로 강제로 간주
-      queryClient.invalidateQueries(["groupData"]);
-      queryClient.invalidateQueries(["mainData", "groupTotal"]);
-    },
-  });
-  const onRegist = async (data) => {
-    mutate(
-      {
-        group_name: data.groupName,
-        group_system: data.groupSystem,
-        plain_buoy: parseInt(data.plainBuoy),
-      },
-      {
-        onSuccess: () => {
-          setModalVisible(false);
-          onRefresh();
-        },
-        onError: () => alert("구역 생성에 실패했습니다."),
-      }
-    );
-  };
-
-  const [groupNameVerify, setGroupNameVerift] = useState(false);
+  const [groupNameVerify, setGroupNameVerift] = useState(
+    getValues("groupName").length < 1 ? false : true
+  );
   const groupNameVerification = (text) => {
     if (text.length < 1) {
       setGroupNameVerift(false);
@@ -197,13 +177,13 @@ export default GroupCreateModal = ({
         >
           <ModalView>
             <ModalHeader>
-              <ModalHeaderText>새 구역 만들기</ModalHeaderText>
+              <ModalHeaderText>{modalTitle}</ModalHeaderText>
             </ModalHeader>
             <ModalContextBox>
               <ColBox>
                 <ModalContextText>구역 이름</ModalContextText>
                 <TextInput
-                  //   defaultValue={}
+                  defaultValue={getValues("groupName")}
                   returnKeyType={"done"}
                   onChangeText={(text) => {
                     groupNameVerification(text), setValue("groupName", text);
@@ -215,6 +195,7 @@ export default GroupCreateModal = ({
               <ColBox>
                 <ModalContextText>일반 부표</ModalContextText>
                 <TextInput
+                  defaultValue={String(getValues("plainBuoy"))}
                   keyboardType={"number-pad"}
                   returnKeyType={"done"}
                   onChangeText={(text) => {
@@ -249,7 +230,7 @@ export default GroupCreateModal = ({
               </ModalButton>
               <ModalButton
                 disabled={groupNameVerify ? false : true}
-                onPress={handleSubmit(onRegist)}
+                onPress={handleSubmit(confirm)}
               >
                 <ModalButtonText disable={groupNameVerify ? false : true}>
                   확인

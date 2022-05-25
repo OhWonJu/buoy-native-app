@@ -15,13 +15,12 @@ const Header = styled.View`
   flex-direction: row;
   /* padding: 5px; */
   padding-top: ${constants.StatusBarHeight}px;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   justify-content: center;
 `;
 const Left = styled.View`
   flex: 2;
   flex-direction: row;
-  /* justify-content: center; */
   align-items: center;
 `;
 const Center = styled.View`
@@ -70,7 +69,7 @@ export default ({
                 name="menu"
                 size={20}
                 color={themeContext.mainColor}
-                style={{ paddingRight: 15 }}
+                style={{ paddingRight: 10 }}
               />
             </TouchableOpacity>
             <Title>{title}</Title>

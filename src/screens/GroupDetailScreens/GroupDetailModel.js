@@ -10,11 +10,3 @@ export async function _GET_PAGE(endPoint, oldData, setData, setPage) {
     console.error(e);
   }
 }
-
-export async function _GROUP_EDIT(params) {
-  try {
-    const response = await API.put("detail/group/modify", params);
-  } catch (e) {
-    console.error(e);
-  }
-}

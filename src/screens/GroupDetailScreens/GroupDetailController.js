@@ -56,15 +56,26 @@ export default GroupDetailController = ({ navigation, route }) => {
     navigation.navigate("BuoyDetail", { model });
   const goToBuoyList = () => navigation.navigate("BuoyList");
 
-  const [editNameModalVisible, setEditNameModalVisible] = useState(false);
-  const editName = (newName) => {
-    setGroupInfo((prevState) => {
-      return { ...prevState, group_name: newName };
-    });
-  };
+  // // 그룹 정보 업데이트
+  // const queryClient = useQueryClient();
+  // // 최초 마운트될 때 업데이트 되는것을 막기 위해.
+  // const firstRender = useRef(true);
+  // useEffect(async () => {
+  //   if (firstRender.current) {
+  //     firstRender.current = false;
+  //     return;
+  //   } else {
+  //     const newData = {
+  //       group_id: groupInfo.group_id,
+  //       group_name: groupInfo.group_name,
+  //       group_system: typeModeIndex,
+  //       plain_buoy: groupInfo.plain_buoy,
+  //     };
+  //     await _GROUP_EDIT(newData);
+  //     queryClient.invalidateQueries(["groupData"]);
+  //   }
+  // }, [groupInfo, typeModeIndex]);
 
-  const [typeModalVisible, setTypeModalVisible] = useState(false);
-  const [typeModeIndex, setTypeModeIndex] = useState(groupInfo.group_system); // 일반 || 연승 || 떗목 || 기타 ||
   const typeModeText = [
     "일반 수하식",
     "연승 수하식",
@@ -72,25 +83,7 @@ export default GroupDetailController = ({ navigation, route }) => {
     "기타 수하식",
   ];
 
-  // 그룹 정보 업데이트
-  const queryClient = useQueryClient();
-  // 최초 마운트될 때 업데이트 되는것을 막기 위해.
-  const firstRender = useRef(true);
-  useEffect(async () => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    } else {
-      const newData = {
-        group_id: groupInfo.group_id,
-        group_name: groupInfo.group_name,
-        group_system: typeModeIndex,
-        plain_buoy: groupInfo.plain_buoy,
-      };
-      await _GROUP_EDIT(newData);
-      queryClient.invalidateQueries(["groupData"]);
-    }
-  }, [groupInfo, typeModeIndex]);
+  const [editModalVisible, setEditModalVisible] = useState(false);
 
   if (isLoading) {
     return null;
@@ -102,13 +95,6 @@ export default GroupDetailController = ({ navigation, route }) => {
       route={route}
       headerHeight={headerHeight}
       setHeaderHeight={setHeaderHeight}
-      editNameModalVisible={editNameModalVisible}
-      setEditNameModalVisible={setEditNameModalVisible}
-      editName={editName}
-      typeModalVisible={typeModalVisible}
-      setTypeModalVisible={setTypeModalVisible}
-      typeModeIndex={typeModeIndex}
-      setTypeModeIndex={setTypeModeIndex}
       typeModeText={typeModeText}
       buoyData={buoyData}
       groupInfo={groupInfo}
@@ -119,6 +105,8 @@ export default GroupDetailController = ({ navigation, route }) => {
       onRefresh={onRefresh}
       goToBuoyDetail={goToBuoyDetail}
       goToBuoyList={goToBuoyList}
+      editModalVisible={editModalVisible}
+      setEditModalVisible={setEditModalVisible}
     />
   );
 };

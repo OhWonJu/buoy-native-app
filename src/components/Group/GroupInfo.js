@@ -50,10 +50,10 @@ export default GroupInfo = ({
   return (
     <Container
       style={{ backgroundColor: themeContext.idnColor }}
-      pointerEvents="none"
+      pointerEvents="box-none"
     >
       {/* 수용량 그래프 뷰 */}
-      <CapacityView>
+      <CapacityView pointerEvents="none">
         <RowBox
           style={{
             height: 140,
@@ -89,7 +89,7 @@ export default GroupInfo = ({
         </RowBox>
       </CapacityView>
       {/* 부가 정보 뷰 */}
-      <UtilInfoView>
+      <UtilInfoView pointerEvents="box-none">
         <ColBox>
           <SubText>수온</SubText>
           <RowBox>
@@ -111,7 +111,7 @@ export default GroupInfo = ({
             <UnitText>/{bouyCount}</UnitText>
           </RowBox>
         </ColBox>
-        <ColBox>
+        <ColBox pointerEvents="auto">
           <SubText>일반부표</SubText>
           <RowBox style={{ alignItems: "flex-end" }}>
             <MainText>{plain_buoy}</MainText>
