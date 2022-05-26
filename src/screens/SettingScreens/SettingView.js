@@ -8,6 +8,7 @@ import constants from "../../../constants";
 import { setAuth } from "../../../store/authReducer";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
+import Switch from "../../components/Switch";
 import TopHeader from "../../components/TopHeader";
 
 const HeaderWrapper = styled.View`
@@ -25,11 +26,12 @@ const ContextWrapper = styled.View`
   flex-direction: row;
 `;
 const Left = styled.View`
-  width: 80%;
+  width: 75%;
 `;
 const Right = styled.View`
-  width: 20%;
-  background-color: green;
+  width: 25%;
+  justify-content: center;
+  align-items: center;
 `;
 const Title = styled.Text`
   color: ${(props) => props.theme.subColor};
@@ -41,21 +43,9 @@ const Context = styled.Text`
   font-size: 11px;
 `;
 
-const PADDING = 32;
-const size = constants.windowW - PADDING * 2;
-const x = PADDING;
-const y = 75;
-
 export default SettingView = ({ goBack }) => {
   const themeContext = useContext(ThemeContext);
   const dispatch = useDispatch();
-
-  const pressed = useValue(0);
-  const onTouch = useTouchHandler({
-    onStart: () => {
-      runTiming(pressed, pressed.current ? 0 : 1, { duration: 150 });
-    },
-  });
 
   return (
     <>
@@ -70,7 +60,19 @@ export default SettingView = ({ goBack }) => {
               스마트 부표에서 보내오는 알람 수신 여부를 설정합니다.
             </Context>
           </Left>
-          <Right></Right>
+          <Right style={{ alignItems: "flex-end" }}>
+            <Switch
+              size={20}
+              toggleAction={(toggle) => {
+                if (toggle === 0) {
+                  alert("BYE");
+                }
+                if (toggle === 1) {
+                  alert("HI");
+                }
+              }}
+            />
+          </Right>
         </ContextWrapper>
         <ContextWrapper>
           <Left>
