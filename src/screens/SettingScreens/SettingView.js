@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 import styled, { ThemeContext } from "styled-components/native";
 
@@ -8,6 +8,7 @@ import constants from "../../../constants";
 import { setAuth } from "../../../store/authReducer";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
+import TimePickerModal from "../../components/Modals/TimePickerModal";
 import RowBox from "../../components/RowBox";
 import Switch from "../../components/Switch";
 import TopHeader from "../../components/TopHeader";
@@ -18,7 +19,7 @@ const HeaderWrapper = styled.View`
   width: ${constants.screenW}px;
 `;
 
-const ContextWrapper = styled.TouchableOpacity`
+const ContextWrapper = styled.View`
   width: 100%;
   padding-bottom: 12px;
   margin-bottom: 15px;
@@ -35,7 +36,8 @@ const Right = styled.View`
   align-items: flex-end;
 `;
 const Title = styled.Text`
-  color: ${(props) => props.theme.subColor};
+  color: ${(props) =>
+    props.disable ? props.theme.utilColor : props.theme.subColor};
   font-size: 16px;
   padding-bottom: 5px;
 `;
@@ -45,7 +47,24 @@ const Context = styled.Text`
   padding-bottom: 1px;
 `;
 
-export default SettingView = ({ goBack }) => {
+export default SettingView = ({
+  goBack,
+  alertActivate,
+  setAlertActivate,
+  cycleModalVisible,
+  setCycleModalVisible,
+  interferenceTimeActivate,
+  setInterferenceTimeActivate,
+  interferenceStartTime,
+  setInterferenceStartTime,
+  interferenceStopTime,
+  setInterferenceStopTime,
+  interfModalVisible,
+  isStart,
+  setIsStart,
+  setInterfModalVisible,
+  toggle,
+}) => {
   const themeContext = useContext(ThemeContext);
   const dispatch = useDispatch();
 
@@ -66,17 +85,20 @@ export default SettingView = ({ goBack }) => {
           </ContextWrapper>
           <ContextWrapper>
             <Left>
-              <Title>개인정보 수정</Title>
+              <TouchableOpacity activeOpacity={1}>
+                <Title>개인정보 수정</Title>
+              </TouchableOpacity>
             </Left>
             <Right></Right>
           </ContextWrapper>
           <ContextWrapper>
             <Left>
-              <Title>비밀번호 변경</Title>
+              <TouchableOpacity activeOpacity={1}>
+                <Title>비밀번호 변경</Title>
+              </TouchableOpacity>
             </Left>
             <Right></Right>
           </ContextWrapper>
-
           {/*  */}
           <ContextWrapper
             style={{ borderBottomWidth: 0, marginBottom: 0, paddingTop: 15 }}
@@ -85,58 +107,143 @@ export default SettingView = ({ goBack }) => {
           </ContextWrapper>
           <ContextWrapper>
             <Left>
-              <Title>알림</Title>
-              <Context>
-                스마트 부표에서 보내오는 알림 수신 여부를 설정합니다.
-              </Context>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => toggle(alertActivate, setAlertActivate)}
+              >
+                <Title>알림</Title>
+                <Context>
+                  스마트 부표에서 보내오는 알림 수신 여부를 설정합니다.
+                </Context>
+              </TouchableOpacity>
             </Left>
             <Right>
               <Switch
                 size={20}
                 toggleAction={(toggle) => {
                   if (toggle === 0) {
-                    alert("BYE");
+                    setAlertActivate(false);
                   }
                   if (toggle === 1) {
-                    alert("HI");
+                    setAlertActivate(true);
+                  }
+                }}
+                toggleValue={alertActivate}
+              />
+            </Right>
+          </ContextWrapper>
+          <ContextWrapper>
+            <TouchableOpacity
+              style={{ flexDirection: "row" }}
+              activeOpacity={1}
+            >
+              <Left>
+                <Title disable={!alertActivate}>알림 주기</Title>
+                <Context>
+                  스마트 부표에서 보내오는 알림 수신 주기를 설정합니다.
+                </Context>
+              </Left>
+              <Right>
+                <Context
+                  style={{
+                    color: alertActivate
+                      ? themeContext.blueColor
+                      : themeContext.utilColor,
+                  }}
+                >
+                  3 시간
+                </Context>
+              </Right>
+            </TouchableOpacity>
+          </ContextWrapper>
+          <ContextWrapper style={{ borderBottomWidth: 0, marginBottom: 0 }}>
+            <Left>
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() =>
+                  toggle(interferenceTimeActivate, setInterferenceTimeActivate)
+                }
+              >
+                <Title>방해금지 시간대 설정</Title>
+                <Context>알림을 수신하지 않을 시간대를 설정합니다.</Context>
+                <Context>
+                  {interferenceStartTime.getHours() < 12 ? "AM" : "PM"}{" "}
+                  {interferenceStartTime.getHours() > 12
+                    ? String(interferenceStartTime.getHours() - 12).padStart(
+                        2,
+                        "0"
+                      )
+                    : String(interferenceStartTime.getHours()).padStart(2, "0")}
+                  :{" "}
+                  {String(interferenceStartTime.getMinutes()).padStart(2, "0")}{" "}
+                  ~ {interferenceStopTime.getHours() < 12 ? "AM" : "PM"}{" "}
+                  {interferenceStopTime.getHours() > 12
+                    ? String(interferenceStopTime.getHours() - 12).padStart(
+                        2,
+                        "0"
+                      )
+                    : String(interferenceStopTime.getHours()).padStart(2, "0")}
+                  : {String(interferenceStopTime.getMinutes()).padStart(2, "0")}
+                </Context>
+              </TouchableOpacity>
+            </Left>
+            <Right style={{ alignItems: "flex-end" }}>
+              <Switch
+                size={20}
+                toggleAction={(toggle) => {
+                  if (toggle === 0) {
+                    setInterferenceTimeActivate(false);
+                  }
+                  if (toggle === 1) {
+                    setInterferenceTimeActivate(true);
                   }
                 }}
               />
             </Right>
           </ContextWrapper>
-          <ContextWrapper>
-            <Left>
-              <Title>알림 주기</Title>
-              <Context>
-                스마트 부표에서 보내오는 알림 수신 주기를 설정합니다.
-              </Context>
-            </Left>
-            <Right>
-              <Context>3 시간</Context>
-            </Right>
-          </ContextWrapper>
-          <ContextWrapper style={{ borderBottomWidth: 0, marginBottom: 0 }}>
-            <Left>
-              <Title>방해금지 시간대 설정</Title>
-              <Context>알림을 수신하지 않을 시간대를 설정합니다.</Context>
-              <Context>PM 11:00 - AM 08:00</Context>
-            </Left>
-            <Right style={{ alignItems: "flex-end" }}>
-              <Switch size={20} />
-            </Right>
-          </ContextWrapper>
           <RowBox>
             <ContextWrapper style={{ flex: 1 }}>
-              <View>
-                <Title>시작</Title>
-                <Title>PM 11:00</Title>
-              </View>
+              <TouchableOpacity
+                disabled={!interferenceTimeActivate}
+                onPress={() => {
+                  setIsStart(true);
+                  setInterfModalVisible(true);
+                }}
+              >
+                <Title disable={!interferenceTimeActivate}>시작</Title>
+                <Title disable={!interferenceTimeActivate}>
+                  {interferenceStartTime.getHours() < 12 ? "AM" : "PM"}{" "}
+                  {interferenceStartTime.getHours() > 12
+                    ? String(interferenceStartTime.getHours() - 12).padStart(
+                        2,
+                        "0"
+                      )
+                    : String(interferenceStartTime.getHours()).padStart(2, "0")}
+                  :{" "}
+                  {String(interferenceStartTime.getMinutes()).padStart(2, "0")}{" "}
+                </Title>
+              </TouchableOpacity>
             </ContextWrapper>
             <ContextWrapper style={{ flex: 1 }}>
-              <View>
-                <Title>종료</Title>
-                <Title>AM 08:00</Title>
-              </View>
+              <TouchableOpacity
+                disabled={!interferenceTimeActivate}
+                onPress={() => {
+                  setIsStart(false);
+                  setInterfModalVisible(true);
+                }}
+              >
+                <Title disable={!interferenceTimeActivate}>종료</Title>
+                <Title disable={!interferenceTimeActivate}>
+                  {interferenceStopTime.getHours() < 12 ? "AM" : "PM"}{" "}
+                  {interferenceStopTime.getHours() > 12
+                    ? String(interferenceStopTime.getHours() - 12).padStart(
+                        2,
+                        "0"
+                      )
+                    : String(interferenceStopTime.getHours()).padStart(2, "0")}
+                  : {String(interferenceStopTime.getMinutes()).padStart(2, "0")}
+                </Title>
+              </TouchableOpacity>
             </ContextWrapper>
           </RowBox>
           {/*  */}
@@ -151,6 +258,17 @@ export default SettingView = ({ goBack }) => {
           />
         </Container>
       </ScrollView>
+      {interfModalVisible && (
+        <TimePickerModal
+          modalVisible={interfModalVisible}
+          setModalVisible={setInterfModalVisible}
+          startTime={interferenceStartTime}
+          setStartTime={setInterferenceStartTime}
+          stopTime={interferenceStopTime}
+          setStopTime={setInterferenceStopTime}
+          isStart={isStart}
+        />
+      )}
     </>
   );
 };

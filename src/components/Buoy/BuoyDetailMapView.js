@@ -60,7 +60,9 @@ export default BouyDetailView = ({
 
   useEffect(() => {
     startForegroundUpdate();
-    return stopForegroundUpdate();
+    return () => {
+      stopForegroundUpdate();
+    };
   }, []);
 
   const goToUserLocation = async () => {

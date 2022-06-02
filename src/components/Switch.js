@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedGestureHandler,
   useAnimatedStyle,
-  useSharedValue,
   withTiming,
   interpolateColor,
   useDerivedValue,
@@ -16,11 +15,13 @@ const PADDING = 2;
 
 export default Switch = ({
   size,
+  toggleValue,
   value,
   onValueChange,
   toggleAction = () => null,
 }) => {
-  const [toggle, setToggle] = useState(0);
+  console.log(toggleValue);
+  const [toggle, setToggle] = useState(toggleValue ? 1 : 0);
   const progress = useDerivedValue(() => {
     return withTiming(toggle);
   }, [toggle]);

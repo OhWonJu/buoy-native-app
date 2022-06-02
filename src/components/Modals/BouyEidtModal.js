@@ -108,7 +108,7 @@ export default BouyEditModal = ({
               <ModalButton
                 onPress={() => {
                   setModalVisible(false);
-                  cancel();
+                  confirm();
                 }}
                 style={{ borderRightColor: "#EFEFEF", borderRightWidth: 1 }}
               >

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useRef } from "react";
+import React, { useContext, useCallback, useRef } from "react";
 import {
   View,
   Text,
@@ -10,19 +10,21 @@ import {
 import styled, { ThemeContext } from "styled-components/native";
 import _ from "underscore";
 import hull from "hull.js";
-import MapView, { Circle, Marker, Polygon } from "react-native-maps";
-import { WebView } from "react-native-webview";
+import MapView, {
+  Circle,
+  Marker,
+  Polygon,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
 import Header from "../../components/Header";
-import TypeModal from "../../components/Modals/TypeModal";
 import GroupGraphTab from "../../components/Group/GroupGraphTab";
 import ColBox from "../../components/ColBox";
 import BouyCard from "../../components/Group/BouyCard";
 import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeader";
 import CollapsibleFlatList from "../../components/CollapsibleView/CollapsibleFlatList";
-import NameEditModal from "../../components/Modals/NameEditModal";
 import GroupEditModal from "../../components/Modals/GroupDataFormModal/GroupEditModal";
 
 const LINEHEADER_HEIGHT = 45 + constants.StatusBarHeight;
@@ -259,8 +261,14 @@ export default GroupDetailView = ({
           {/* 그래프 관련도 무엇을 보여줄지 협의 필요.. */}
           <GroupGraphTab />
           {buoyData.length > 0 && (
-            <View style={{ paddingHorizontal: 15, marginTop: 35 }}>
+            <View
+              style={{
+                paddingHorizontal: 15,
+                marginTop: 35,
+              }}
+            >
               <MapView
+                provider={PROVIDER_GOOGLE}
                 style={styles.map}
                 initialRegion={{
                   latitude: latLog[0].latitude,
