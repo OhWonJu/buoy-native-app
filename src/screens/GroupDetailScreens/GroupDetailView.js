@@ -11,6 +11,7 @@ import styled, { ThemeContext } from "styled-components/native";
 import _ from "underscore";
 import hull from "hull.js";
 import MapView, { Circle, Marker, Polygon } from "react-native-maps";
+import { WebView } from "react-native-webview";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
