@@ -15,7 +15,7 @@ import BuoyListTopTabNav from "../../navigators/BuoyListTopTabNav";
 
 const Container = styled.View`
   flex: 1;
-  padding-top: ${constants.StatusBarHeight}px;
+  /* padding-top: ${constants.StatusBarHeight}px; */
   background-color: ${(props) => props.theme.mainColor};
 `;
 export default BuoyListView = ({

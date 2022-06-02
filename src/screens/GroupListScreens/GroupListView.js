@@ -25,10 +25,10 @@ const LINEHEADER_HEIGHT = 80 + constants.StatusBarHeight;
 const FlatListHeader = styled(Animated.View)`
   height: ${LINEHEADER_HEIGHT}px;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   /* align-items: center; */
   padding: 0px 15px 15px 15px;
-  padding-top: ${constants.StatusBarHeight}px;
+  /* padding-top: ${constants.StatusBarHeight}px; */
   background-color: ${(props) => props.theme.mainColor};
   z-index: 1;
 `;
@@ -53,7 +53,7 @@ const Title = styled.Text`
 `;
 
 const HeaderWrapper = styled.View`
-  padding-top: ${constants.StatusBarHeight}px;
+  /* padding-top: ${constants.StatusBarHeight}px; */
   justify-content: center;
   width: ${constants.screenW}px;
 `;
