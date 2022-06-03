@@ -8,6 +8,7 @@ import constants from "../../../constants";
 import { setAuth } from "../../../store/authReducer";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
+import HourPickerModal from "../../components/Modals/HourPickerModal";
 import TimePickerModal from "../../components/Modals/TimePickerModal";
 import RowBox from "../../components/RowBox";
 import Switch from "../../components/Switch";
@@ -51,6 +52,8 @@ export default SettingView = ({
   goBack,
   alertActivate,
   setAlertActivate,
+  cycleHour,
+  setCylceHour,
   cycleModalVisible,
   setCycleModalVisible,
   interferenceTimeActivate,
@@ -63,7 +66,6 @@ export default SettingView = ({
   isStart,
   setIsStart,
   setInterfModalVisible,
-  toggle,
 }) => {
   const themeContext = useContext(ThemeContext);
   const dispatch = useDispatch();
@@ -109,7 +111,7 @@ export default SettingView = ({
             <Left>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => toggle(alertActivate, setAlertActivate)}
+                onPress={() => setAlertActivate(alertActivate ? 0 : 1)}
               >
                 <Title>알림</Title>
                 <Context>
@@ -120,15 +122,8 @@ export default SettingView = ({
             <Right>
               <Switch
                 size={20}
-                toggleAction={(toggle) => {
-                  if (toggle === 0) {
-                    setAlertActivate(false);
-                  }
-                  if (toggle === 1) {
-                    setAlertActivate(true);
-                  }
-                }}
-                toggleValue={alertActivate}
+                value={alertActivate}
+                onValueChange={(toggle) => setAlertActivate(toggle)}
               />
             </Right>
           </ContextWrapper>
@@ -136,6 +131,8 @@ export default SettingView = ({
             <TouchableOpacity
               style={{ flexDirection: "row" }}
               activeOpacity={1}
+              disabled={!alertActivate}
+              onPress={() => setCycleModalVisible(true)}
             >
               <Left>
                 <Title disable={!alertActivate}>알림 주기</Title>
@@ -146,12 +143,13 @@ export default SettingView = ({
               <Right>
                 <Context
                   style={{
+                    fontSize: 13,
                     color: alertActivate
                       ? themeContext.blueColor
                       : themeContext.utilColor,
                   }}
                 >
-                  3 시간
+                  {cycleHour} 시간
                 </Context>
               </Right>
             </TouchableOpacity>
@@ -161,7 +159,7 @@ export default SettingView = ({
               <TouchableOpacity
                 activeOpacity={1}
                 onPress={() =>
-                  toggle(interferenceTimeActivate, setInterferenceTimeActivate)
+                  setInterferenceTimeActivate(interferenceTimeActivate ? 0 : 1)
                 }
               >
                 <Title>방해금지 시간대 설정</Title>
@@ -190,13 +188,9 @@ export default SettingView = ({
             <Right style={{ alignItems: "flex-end" }}>
               <Switch
                 size={20}
-                toggleAction={(toggle) => {
-                  if (toggle === 0) {
-                    setInterferenceTimeActivate(false);
-                  }
-                  if (toggle === 1) {
-                    setInterferenceTimeActivate(true);
-                  }
+                value={interferenceTimeActivate}
+                onValueChange={(toggle) => {
+                  setInterferenceTimeActivate(toggle);
                 }}
               />
             </Right>
@@ -258,6 +252,14 @@ export default SettingView = ({
           />
         </Container>
       </ScrollView>
+      {cycleModalVisible && (
+        <HourPickerModal
+          modalVisible={cycleModalVisible}
+          setModalVisible={setCycleModalVisible}
+          hour={cycleHour}
+          setHour={setCylceHour}
+        />
+      )}
       {interfModalVisible && (
         <TimePickerModal
           modalVisible={interfModalVisible}

@@ -14,7 +14,7 @@ const Container = styled.View`
 const Header = styled.View`
   flex-direction: row;
   /* padding: 5px; */
-  padding-top: ${constants.StatusBarHeight}px;
+  /* padding-top: ${constants.StatusBarHeight}px; */
   /* padding-left: 10px; */
   justify-content: center;
 `;

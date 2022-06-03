@@ -58,7 +58,7 @@ export default HomeController = ({ navigation, route }) => {
       meteoVal={weatherData.meteo_val}
       obsData={weatherData.obs_data}
       tidal={weatherData.tidal}
-      groupTotal={groupTotal[0]}
+      groupTotal={groupTotal ? groupTotal[0] : null}
       refreshing={refreshing}
       onRefresh={onRefresh}
       waveHight={weatherData.wave_hight}

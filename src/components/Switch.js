@@ -13,28 +13,30 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 
 const PADDING = 2;
 
-export default Switch = ({
-  size,
-  toggleValue,
-  value,
-  onValueChange,
-  toggleAction = () => null,
-}) => {
-  console.log(toggleValue);
-  const [toggle, setToggle] = useState(toggleValue ? 1 : 0);
+export default Switch = ({ size, value, onValueChange }) => {
+  const [toggle, setToggle] = useState(0);
+
+  useEffect(() => {
+    setToggle(value);
+  }, [value]);
+
+  // console.log("==============");
+  // console.log("value", value);
+  // console.log("toggle", toggle);
+
   const progress = useDerivedValue(() => {
     return withTiming(toggle);
   }, [toggle]);
 
-  const firstRender = useRef(true);
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    } else {
-      toggleAction(toggle);
-    }
-  }, [toggle]);
+  // const firstRender = useRef(true);
+  // useEffect(() => {
+  //   if (firstRender.current) {
+  //     firstRender.current = false;
+  //     return;
+  //   } else {
+  //     onValueChange(toggle);
+  //   }
+  // }, [toggle]);
 
   const PanGestureEvent = useAnimatedGestureHandler({
     onStart: (event) => {},
@@ -43,18 +45,20 @@ export default Switch = ({
     },
     onEnd: (event) => {
       if (event.translationX < -(size - size / 2)) {
+        runOnJS(onValueChange)(0);
         runOnJS(setToggle)(0);
         // progress.value = withTiming(0);
       }
       if (event.translationX > size - size / 2) {
+        runOnJS(onValueChange)(1);
         runOnJS(setToggle)(1);
-        // progress.value = withTiming(1);
       }
     },
   });
 
   const handler = useCallback(() => {
     setToggle(toggle === 1 ? 0 : 1);
+    onValueChange(toggle === 1 ? 0 : 1);
   });
 
   const color = useAnimatedStyle(() => {
