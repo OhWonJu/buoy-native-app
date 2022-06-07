@@ -1,21 +1,63 @@
 import React, { useState } from "react";
-import TimePickerModal from "../../components/Modals/TimePickerModal";
+import { useDispatch, useSelector } from "react-redux";
+import { userSignOut } from "../../../auth";
+import { setAlert, setInterfernce } from "../../../localStore";
+import {
+  getAlertInterval,
+  setAlertInterval,
+} from "../../../store/alertIntervalReducer";
+import { setAuth } from "../../../store/authReducer";
+
+import {
+  getInterferenceTime,
+  setInterferenceTime,
+} from "../../../store/interferenceTimeReducer";
 import SettingView from "./SettingView";
 
 export default SettingController = ({ navigation, route }) => {
   const goBack = () => navigation.goBack();
+  const dispatch = useDispatch();
 
-  const [alertActivate, setAlertActivate] = useState(1);
-  const [cycleHour, setCylceHour] = useState(1);
-  const [cycleModalVisible, setCycleModalVisible] = useState(false);
+  const { activate: alertActivate, interval } = useSelector(getAlertInterval);
+  const [intervalModalVisible, setIntervalModalVisible] = useState(false);
+  const setInterval = async (activate = alertActivate, inv = interval) => {
+    dispatch(setAlertInterval({ activate, interval: inv }));
+    await setAlert(activate, inv);
+  };
 
-  const [interferenceTimeActivate, setInterferenceTimeActivate] = useState(0);
-  const [interferenceStartTime, setInterferenceStartTime] = useState(
-    new Date()
-  );
-  const [interferenceStopTime, setInterferenceStopTime] = useState(new Date());
+  const {
+    activate: interferActive,
+    beginHour,
+    beginMin,
+    endHour,
+    endMin,
+  } = useSelector(getInterferenceTime);
+
   const [isStart, setIsStart] = useState(true);
   const [interfModalVisible, setInterfModalVisible] = useState(false);
+  const setInterference = async (
+    activate = interferActive,
+    beHour = beginHour,
+    beMin = beginMin,
+    enHour = endHour,
+    enMin = endMin
+  ) => {
+    dispatch(
+      setInterferenceTime({
+        activate,
+        beginHour: beHour,
+        beginMin: beMin,
+        endHour: enHour,
+        endMin: enMin,
+      })
+    );
+    await setInterfernce(activate, beHour, beMin, enHour, enMin);
+  };
+
+  const logOut = () => {
+    dispatch(setAuth({ isSignIn: false, tokenVal: null }));
+    userSignOut();
+  };
 
   return (
     <SettingView
@@ -23,21 +65,21 @@ export default SettingController = ({ navigation, route }) => {
       route={route}
       goBack={goBack}
       alertActivate={alertActivate}
-      setAlertActivate={setAlertActivate}
-      cycleHour={cycleHour}
-      setCylceHour={setCylceHour}
-      cycleModalVisible={cycleModalVisible}
-      setCycleModalVisible={setCycleModalVisible}
-      interferenceTimeActivate={interferenceTimeActivate}
-      setInterferenceTimeActivate={setInterferenceTimeActivate}
-      interferenceStartTime={interferenceStartTime}
-      setInterferenceStartTime={setInterferenceStartTime}
-      interferenceStopTime={interferenceStopTime}
-      setInterferenceStopTime={setInterferenceStopTime}
+      interval={interval}
+      setAlertInterval={setInterval}
+      intervalModalVisible={intervalModalVisible}
+      setIntervalModalVisible={setIntervalModalVisible}
+      interferenceTimeActivate={interferActive}
+      beginHour={beginHour}
+      beginMin={beginMin}
+      endHour={endHour}
+      endMin={endMin}
+      setInterference={setInterference}
       isStart={isStart}
       setIsStart={setIsStart}
       interfModalVisible={interfModalVisible}
       setInterfModalVisible={setInterfModalVisible}
+      logOut={logOut}
     />
   );
 };

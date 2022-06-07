@@ -67,7 +67,7 @@ export default HourPickerModal = ({
   modalVisible,
   setModalVisible,
   hour,
-  setHour,
+  setAlertInterval,
   confirm = () => null,
   cancel = () => null,
 }) => {
@@ -107,9 +107,11 @@ export default HourPickerModal = ({
                   // height: 110,
                 }}
                 visibleRest={1}
-                // itemStyle={{ top: -60 }}
-                itemHeight={45}
-                itemTextStyle={{ fontSize: 15, color: themeContext.subColor }}
+                itemHeight={40}
+                itemTextStyle={{
+                  fontSize: 20,
+                  color: themeContext.subColor,
+                }}
               />
             </ModalContextBox>
             <ModalButtonBox>
@@ -124,7 +126,7 @@ export default HourPickerModal = ({
               <ModalButton
                 onPress={() => {
                   setModalVisible(false);
-                  setHour(options[selectedIndex]);
+                  setAlertInterval(undefined, options[selectedIndex]);
                   confirm();
                 }}
               >

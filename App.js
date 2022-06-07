@@ -21,6 +21,11 @@ import { API, _GET, _REFECTH } from "./utils/Api";
 import { getAuth, setAuth } from "./store/authReducer";
 
 import { LogBox } from "react-native";
+import {
+  getAlertInterval,
+  setAlertInterval,
+} from "./store/alertIntervalReducer";
+import { setInterferenceTime } from "./store/interferenceTimeReducer";
 LogBox.ignoreLogs(["Setting a timer"]);
 
 const queryClient = new QueryClient({
@@ -45,6 +50,7 @@ Notifications.setNotificationHandler({
 
 function App() {
   const { isSignIn, tokenVal } = useSelector(getAuth);
+
   const [groupData, setGroupData] = useState(null);
   const { data } = useQuery(
     ["groupData"],
@@ -96,6 +102,32 @@ function App() {
       if (latitude) {
         dispatch(setCoordinate({ latitude, longitude }));
       }
+    }
+
+    const alertInterval = JSON.parse(
+      await AsyncStorage.getItem("AlertInterval")
+    );
+    if (alertInterval != null) {
+      dispatch(
+        setAlertInterval({
+          activate: alertInterval.activate,
+          interval: alertInterval.interval,
+        })
+      );
+    }
+    const interfTimes = JSON.parse(
+      await AsyncStorage.getItem("InterfernceTime")
+    );
+    if (interfTimes != null) {
+      dispatch(
+        setInterferenceTime({
+          activate: interfTimes.activate,
+          beginHour: interfTimes.beginHour,
+          beginMin: interfTimes.beginMin,
+          endHour: interfTimes.endHour,
+          endMin: interfTimes.endMin,
+        })
+      );
     }
     // return preloadAssets();
   };

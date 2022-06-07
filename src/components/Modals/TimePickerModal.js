@@ -14,7 +14,8 @@ const Container = styled.View`
   /* background-color: rgba(0, 0, 0, 0.25); */
 `;
 const ModalView = styled.View`
-  background-color: ${(props) => props.theme.mainColor};
+  /* background-color: ${(props) => props.theme.mainColor}; */
+  background-color: white;
   border-radius: 20px;
   align-items: center;
   justify-content: center;
@@ -73,17 +74,19 @@ const ModalButtonText = styled.Text`
 export default TimePickerModal = ({
   modalVisible,
   setModalVisible,
-  startTime,
-  setStartTime,
-  stopTime,
-  setStopTime,
+  beginHour,
+  beginMin,
+  endHour,
+  endMin,
   isStart = true,
   confirm = () => null,
   cancel = () => null,
 }) => {
   const [trigger, setTrigger] = useState(isStart);
-  const [sTime, setSTime] = useState(startTime);
-  const [eTime, setETime] = useState(stopTime);
+  const [sTime, setSTime] = useState(
+    new Date(1996, 1, 1, beginHour, beginMin, 0)
+  );
+  const [eTime, setETime] = useState(new Date(1996, 1, 1, endHour, endMin, 0));
 
   return (
     <>
@@ -98,12 +101,14 @@ export default TimePickerModal = ({
           <ModalView>
             <ModalHeader>
               <ModalHeaderTextBox
+                activeOpacity={1}
                 active={trigger}
                 onPress={() => setTrigger(true)}
               >
                 <ModalHeaderText>시작</ModalHeaderText>
               </ModalHeaderTextBox>
               <ModalHeaderTextBox
+                activeOpacity={1}
                 active={!trigger}
                 onPress={() => setTrigger(false)}
               >
@@ -119,7 +124,8 @@ export default TimePickerModal = ({
                   is24hourSource={"locale"}
                   date={sTime}
                   onDateChange={setSTime}
-                  androidVariant={"nativeAndroid"}
+                  androidVariant={"iosClone"}
+                  style={{ height: 120 }}
                 />
               ) : (
                 <DatePicker
@@ -129,7 +135,7 @@ export default TimePickerModal = ({
                   is24hourSource={"locale"}
                   date={eTime}
                   onDateChange={setETime}
-                  androidVariant={"nativeAndroid"}
+                  androidVariant={"iosClone"}
                 />
               )}
             </ModalContextBox>
@@ -145,9 +151,13 @@ export default TimePickerModal = ({
               <ModalButton
                 onPress={() => {
                   setModalVisible(false);
-                  setStartTime(sTime);
-                  setStopTime(eTime);
-                  confirm();
+                  confirm(
+                    undefined,
+                    sTime.getHours(),
+                    sTime.getMinutes(),
+                    eTime.getHours(),
+                    eTime.getMinutes()
+                  );
                 }}
               >
                 <ModalButtonText>확인</ModalButtonText>

@@ -51,21 +51,21 @@ const Context = styled.Text`
 export default SettingView = ({
   goBack,
   alertActivate,
-  setAlertActivate,
-  cycleHour,
-  setCylceHour,
-  cycleModalVisible,
-  setCycleModalVisible,
+  interval,
+  setAlertInterval,
+  intervalModalVisible,
+  setIntervalModalVisible,
   interferenceTimeActivate,
-  setInterferenceTimeActivate,
-  interferenceStartTime,
-  setInterferenceStartTime,
-  interferenceStopTime,
-  setInterferenceStopTime,
+  beginHour,
+  beginMin,
+  endHour,
+  endMin,
   interfModalVisible,
+  setInterference,
   isStart,
   setIsStart,
   setInterfModalVisible,
+  logOut,
 }) => {
   const themeContext = useContext(ThemeContext);
   const dispatch = useDispatch();
@@ -111,7 +111,7 @@ export default SettingView = ({
             <Left>
               <TouchableOpacity
                 activeOpacity={1}
-                onPress={() => setAlertActivate(alertActivate ? 0 : 1)}
+                onPress={() => setAlertInterval(alertActivate ? 0 : 1)}
               >
                 <Title>알림</Title>
                 <Context>
@@ -123,7 +123,7 @@ export default SettingView = ({
               <Switch
                 size={20}
                 value={alertActivate}
-                onValueChange={(toggle) => setAlertActivate(toggle)}
+                onValueChange={(toggle) => setAlertInterval(toggle)}
               />
             </Right>
           </ContextWrapper>
@@ -132,7 +132,7 @@ export default SettingView = ({
               style={{ flexDirection: "row" }}
               activeOpacity={1}
               disabled={!alertActivate}
-              onPress={() => setCycleModalVisible(true)}
+              onPress={() => setIntervalModalVisible(true)}
             >
               <Left>
                 <Title disable={!alertActivate}>알림 주기</Title>
@@ -149,7 +149,7 @@ export default SettingView = ({
                       : themeContext.utilColor,
                   }}
                 >
-                  {cycleHour} 시간
+                  {interval} 시간
                 </Context>
               </Right>
             </TouchableOpacity>
@@ -159,29 +159,22 @@ export default SettingView = ({
               <TouchableOpacity
                 activeOpacity={1}
                 onPress={() =>
-                  setInterferenceTimeActivate(interferenceTimeActivate ? 0 : 1)
+                  setInterference(interferenceTimeActivate ? 0 : 1)
                 }
               >
                 <Title>방해금지 시간대 설정</Title>
                 <Context>알림을 수신하지 않을 시간대를 설정합니다.</Context>
                 <Context>
-                  {interferenceStartTime.getHours() < 12 ? "AM" : "PM"}{" "}
-                  {interferenceStartTime.getHours() > 12
-                    ? String(interferenceStartTime.getHours() - 12).padStart(
-                        2,
-                        "0"
-                      )
-                    : String(interferenceStartTime.getHours()).padStart(2, "0")}
-                  :{" "}
-                  {String(interferenceStartTime.getMinutes()).padStart(2, "0")}{" "}
-                  ~ {interferenceStopTime.getHours() < 12 ? "AM" : "PM"}{" "}
-                  {interferenceStopTime.getHours() > 12
-                    ? String(interferenceStopTime.getHours() - 12).padStart(
-                        2,
-                        "0"
-                      )
-                    : String(interferenceStopTime.getHours()).padStart(2, "0")}
-                  : {String(interferenceStopTime.getMinutes()).padStart(2, "0")}
+                  {beginHour < 12 ? "AM" : "PM"}{" "}
+                  {beginHour > 12
+                    ? String(beginHour - 12).padStart(2, "0")
+                    : String(beginHour).padStart(2, "0")}
+                  :{String(beginMin).padStart(2, "0")} ~{" "}
+                  {endHour < 12 ? "AM" : "PM"}{" "}
+                  {endHour > 12
+                    ? String(endHour - 12).padStart(2, "0")
+                    : String(endHour).padStart(2, "0")}
+                  :{String(endMin).padStart(2, "0")}
                 </Context>
               </TouchableOpacity>
             </Left>
@@ -190,7 +183,7 @@ export default SettingView = ({
                 size={20}
                 value={interferenceTimeActivate}
                 onValueChange={(toggle) => {
-                  setInterferenceTimeActivate(toggle);
+                  setInterference(toggle);
                 }}
               />
             </Right>
@@ -206,15 +199,11 @@ export default SettingView = ({
               >
                 <Title disable={!interferenceTimeActivate}>시작</Title>
                 <Title disable={!interferenceTimeActivate}>
-                  {interferenceStartTime.getHours() < 12 ? "AM" : "PM"}{" "}
-                  {interferenceStartTime.getHours() > 12
-                    ? String(interferenceStartTime.getHours() - 12).padStart(
-                        2,
-                        "0"
-                      )
-                    : String(interferenceStartTime.getHours()).padStart(2, "0")}
-                  :{" "}
-                  {String(interferenceStartTime.getMinutes()).padStart(2, "0")}{" "}
+                  {beginHour < 12 ? "AM" : "PM"}{" "}
+                  {beginHour > 12
+                    ? String(beginHour - 12).padStart(2, "0")
+                    : String(beginHour).padStart(2, "0")}
+                  :{String(beginMin).padStart(2, "0")} ~{" "}
                 </Title>
               </TouchableOpacity>
             </ContextWrapper>
@@ -228,14 +217,11 @@ export default SettingView = ({
               >
                 <Title disable={!interferenceTimeActivate}>종료</Title>
                 <Title disable={!interferenceTimeActivate}>
-                  {interferenceStopTime.getHours() < 12 ? "AM" : "PM"}{" "}
-                  {interferenceStopTime.getHours() > 12
-                    ? String(interferenceStopTime.getHours() - 12).padStart(
-                        2,
-                        "0"
-                      )
-                    : String(interferenceStopTime.getHours()).padStart(2, "0")}
-                  : {String(interferenceStopTime.getMinutes()).padStart(2, "0")}
+                  {endHour < 12 ? "AM" : "PM"}{" "}
+                  {endHour > 12
+                    ? String(endHour - 12).padStart(2, "0")
+                    : String(endHour).padStart(2, "0")}
+                  :{String(endMin).padStart(2, "0")}
                 </Title>
               </TouchableOpacity>
             </ContextWrapper>
@@ -246,29 +232,29 @@ export default SettingView = ({
             width={"100%"}
             txSize={16}
             onPress={() => {
-              dispatch(setAuth({ isSignIn: false, tokenVal: null }));
-              userSignOut();
+              logOut();
             }}
           />
         </Container>
       </ScrollView>
-      {cycleModalVisible && (
+      {intervalModalVisible && (
         <HourPickerModal
-          modalVisible={cycleModalVisible}
-          setModalVisible={setCycleModalVisible}
-          hour={cycleHour}
-          setHour={setCylceHour}
+          modalVisible={intervalModalVisible}
+          setModalVisible={setIntervalModalVisible}
+          hour={interval}
+          setAlertInterval={setAlertInterval}
         />
       )}
       {interfModalVisible && (
         <TimePickerModal
           modalVisible={interfModalVisible}
           setModalVisible={setInterfModalVisible}
-          startTime={interferenceStartTime}
-          setStartTime={setInterferenceStartTime}
-          stopTime={interferenceStopTime}
-          setStopTime={setInterferenceStopTime}
+          beginHour={beginHour}
+          beginMin={beginMin}
+          endHour={endHour}
+          endMin={endMin}
           isStart={isStart}
+          confirm={setInterference}
         />
       )}
     </>
