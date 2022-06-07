@@ -6,9 +6,6 @@ import constants from "../../../constants";
 import BuoyDetailBottomSheet from "../../components/Buoy/BuoyDetailBottomSheet";
 import BuoyDetailMapView from "../../components/Buoy/BuoyDetailMapView";
 
-const LATITUDEDELTA = 0.01022;
-const LONGITUDEDELTA = 0.01021;
-
 export default BouyDetailView = ({
   group_name,
   height,
@@ -31,8 +28,6 @@ export default BouyDetailView = ({
         latitude={latitude}
         longitude={longitude}
         model={model}
-        latitudeDelta={LATITUDEDELTA}
-        longitudeDelta={LONGITUDEDELTA}
       />
       <BuoyDetailBottomSheet
         group_name={group_name}

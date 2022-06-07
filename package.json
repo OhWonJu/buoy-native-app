@@ -39,7 +39,7 @@
     "react-native-collapsible-tab-view": "^2.0.2",
     "react-native-date-picker": "^4.2.2",
     "react-native-gesture-handler": "~2.2.1",
-    "react-native-maps": "0.30.2",
+    "react-native-nmap": "^0.0.66",
     "react-native-pager-view": "5.4.15",
     "react-native-reanimated": "^2.8.0",
     "react-native-redash": "^16.3.0",

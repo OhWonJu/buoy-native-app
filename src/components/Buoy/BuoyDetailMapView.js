@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { StyleSheet, View } from "react-native";
+import NaverMapView, { Marker, MapType, Circle } from "react-native-nmap";
 import styled, { ThemeContext } from "styled-components/native";
 import * as Location from "expo-location";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import constants from "../../../constants";
+import { templateSettings } from "underscore";
 
 const MarkerBtn = styled.TouchableOpacity`
   position: absolute;
@@ -20,13 +21,7 @@ const MarkerBtn = styled.TouchableOpacity`
 
 let foregroundSubscription = null;
 
-export default BouyDetailView = ({
-  latitude,
-  longitude,
-  model,
-  latitudeDelta,
-  longitudeDelta,
-}) => {
+export default BouyDetailView = ({ latitude, longitude, model }) => {
   const themeContext = useContext(ThemeContext);
 
   const mapRef = useRef(null);
@@ -66,39 +61,33 @@ export default BouyDetailView = ({
   }, []);
 
   const goToUserLocation = async () => {
+    // setLocationTrackingMode 설정 기능도 해야할둣
     if (position) {
       const { latitude, longitude } = position;
-      mapRef.current.animateToRegion({
+      mapRef.current.animateToCoordinate({
         latitude,
         longitude,
-        latitudeDelta: latitudeDelta,
-        longitudeDelta: longitudeDelta,
       });
     }
   };
   const goToMarker = () =>
-    mapRef.current.animateToRegion({
+    mapRef.current.animateToCoordinate({
       latitude: latitude,
       longitude: longitude,
-      latitudeDelta: latitudeDelta,
-      longitudeDelta: longitudeDelta,
     });
 
   return (
     <>
-      <MapView
+      <NaverMapView
         ref={mapRef}
         style={StyleSheet.absoluteFill}
-        initialRegion={{
+        center={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: latitudeDelta,
-          longitudeDelta: longitudeDelta,
+          zoom: 14,
         }}
-        mapType={"hybrid"}
-        showsUserLocation={true}
-        showsMyLocationButton={false}
-        mapPadding={{ top: constants.StatusBarHeight }}
+        mapType={MapType.Hybrid}
+        // mapPadding={{ top: constants.StatusBarHeight }}
       >
         <Marker
           key={0}
@@ -106,9 +95,51 @@ export default BouyDetailView = ({
             latitude: latitude,
             longitude: longitude,
           }}
-          title={model}
+          caption={{ text: model, requestedWidth: 100 }}
         />
-      </MapView>
+        {position && (
+          <Marker
+            coordinate={{
+              latitude: position.latitude,
+              longitude: position.longitude,
+            }}
+            width={40}
+            height={40}
+          >
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1,
+                backgroundColor: themeContext.blueColor + 50,
+                borderRadius: 20,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "50%",
+                  height: "50%",
+                  backgroundColor: "rgb(255, 255, 255)",
+                  borderRadius: 20,
+                }}
+              >
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "80%",
+                    height: "80%",
+                    backgroundColor: themeContext.blueColor,
+                    borderRadius: 20,
+                  }}
+                />
+              </View>
+            </View>
+          </Marker>
+        )}
+      </NaverMapView>
       <MarkerBtn
         style={{
           bottom: "12%",

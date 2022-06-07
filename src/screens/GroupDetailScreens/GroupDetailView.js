@@ -10,12 +10,7 @@ import {
 import styled, { ThemeContext } from "styled-components/native";
 import _ from "underscore";
 import hull from "hull.js";
-import MapView, {
-  Circle,
-  Marker,
-  Polygon,
-  PROVIDER_GOOGLE,
-} from "react-native-maps";
+import NaverMapView, { Circle, Polygon, MapType } from "react-native-nmap";
 
 import constants from "../../../constants";
 import GroupInfo from "../../components/Group/GroupInfo";
@@ -268,37 +263,37 @@ export default GroupDetailView = ({
                 marginTop: 35,
               }}
             >
-              <MapView
-                provider={PROVIDER_GOOGLE}
+              <NaverMapView
                 style={styles.map}
-                initialRegion={{
-                  latitude: latLog[0].latitude,
-                  longitude: latLog[0].longitude,
-                  latitudeDelta: 0.00722,
-                  longitudeDelta: 0.00221,
+                center={{
+                  latitude:
+                    (latLog[0].latitude + latLog.slice(-1)[0].latitude) / 2,
+                  longitude:
+                    (latLog[0].longitude + latLog.slice(-1)[0].longitude) / 2,
+                  zoom: 16,
                 }}
-                mapType={"hybrid"}
-                showsUserLocation={true}
+                // mapType={"Hybrid"}
+                mapType={MapType.Hybrid}
               >
                 <Polygon
                   coordinates={hullPositions}
-                  fillColor={themeContext.greenColor + 80}
-                  strokeColor="transparent" // fallback for when `strokeColors` is not supported by the map-provider
+                  color={themeContext.greenColor + 80}
+                  // strokeColor="transparent" // fallback for when `strokeColors` is not supported by the map-provider
                 />
                 {latLog.map((p, index) => {
                   return (
                     <Circle
                       key={index}
-                      center={p}
+                      coordinate={p}
                       radius={1}
-                      strokeWidth={1}
-                      strokeColor={themeContext.orangeColor}
-                      fillColor={themeContext.orangeColor}
+                      outlineWidth={1}
+                      outlineColor={themeContext.orangeColor}
+                      color={themeContext.orangeColor}
                       zIndex={999}
                     />
                   );
                 })}
-              </MapView>
+              </NaverMapView>
             </View>
           )}
         </CollapsibleHeader>
