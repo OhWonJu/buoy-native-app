@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Modal, View } from "react-native";
 import styled from "styled-components/native";
 
-import constants from "../../../constants";
-import ModalFade from "./ModalFade";
+import constants from "../../../../constants";
+import ModalFade from "../ModalFade";
 
 const Container = styled.View`
   flex: 1;

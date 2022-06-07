@@ -25,7 +25,7 @@
       },
       "package": "com.ohwonju.buoynativeapp",
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyDwI8SgtLRsJ-fzqn6u30rXqCDdH3NxLMQ" }
+        "googleMaps": { "apiKey": "AIzaSyCD2zg7ZhN4bJ0VWW7vDNTJDp07HshIIqo" }
       }
     },
     "web": {

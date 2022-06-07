@@ -94,7 +94,7 @@ export default GroupDataFormView = ({
   modalTitle,
   oldeGroupName = "",
   oldGroupSystem = 0,
-  oldPlainBuoy = "",
+  oldPlainBuoy = "0",
   confirm = () => null,
   cancel = () => null,
 }) => {

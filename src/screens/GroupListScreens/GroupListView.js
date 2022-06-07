@@ -17,8 +17,8 @@ import CollapsibleHeader from "../../components/CollapsibleView/CollapsibleHeade
 import GroupCard from "../../components/Group/GroupCard";
 import RowBox from "../../components/RowBox";
 import TopHeader from "../../components/TopHeader";
-import GroupDeleteModal from "../../components/Modals/GroupDeleteModal";
 import GroupCreateModal from "../../components/Modals/GroupDataFormModal/GroupCreateModal";
+import GroupDeleteModal from "../../components/Modals/GroupDataFormModal/GroupDeleteModal";
 
 const LINEHEADER_HEIGHT = 80 + constants.StatusBarHeight;
 

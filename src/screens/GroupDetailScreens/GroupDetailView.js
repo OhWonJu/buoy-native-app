@@ -263,6 +263,7 @@ export default GroupDetailView = ({
           {buoyData.length > 0 && (
             <View
               style={{
+                flex: 1,
                 paddingHorizontal: 15,
                 marginTop: 35,
               }}
